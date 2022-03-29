@@ -42,31 +42,12 @@
   }
 }
 
-.sign-up-active {
-  .sign-in {
-    transform: translateX(100%);
-  }
-
-  .sign-up {
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
-    animation: show 0.5s;
-  }
-
+.sign-in-active {
   .overlay-container {
     transform: translateX(-100%);
   }
 
   .overlay {
     transform: translateX(50%);
-  }
-
-  .overlay-left {
-    transform: translateX(0);
-  }
-
-  .overlay-right {
-    transform: translateX(20%);
   }
 }
