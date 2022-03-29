@@ -74,7 +74,7 @@
     <v-row>
       <v-col cols="6">
         <div class="d-flex align-center justify-center">
-          <h1>Formulario de postulantes</h1>
+          <sign-up-form />
         </div>
       </v-col>
       <v-col cols="6">
@@ -89,9 +89,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import SignInForm from "@/views/loginOrRegister/partials/signIn/SignInForm.vue";
+import SignUpForm from "@/views/loginOrRegister/partials/signUp/SignUpForm.vue";
 
 @Component({
-  components: { SignInForm },
+  components: { SignUpForm, SignInForm },
 })
 export default class LoginOrRegister extends Vue {
   public signIn = false;
