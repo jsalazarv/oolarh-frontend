@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" style="background-color: #f5f7f9">
     <component :is="layout"></component>
   </v-app>
 </template>
