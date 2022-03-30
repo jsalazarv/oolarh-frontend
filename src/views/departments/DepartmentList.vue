@@ -6,7 +6,7 @@
           {{ $t("departments.list.title") }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn color="success">
+        <v-btn color="success" @click="openDepartmentDialog">
           {{ $t("departments.labels.create") }}
         </v-btn>
       </v-toolbar>
@@ -17,6 +17,7 @@
         :items="departmentList"
       ></v-data-table>
     </v-card>
+    <CreateOrEditDialog :open.sync="openDialog" />
   </div>
 </template>
 
@@ -24,12 +25,16 @@
 import { Component, Vue } from "vue-property-decorator";
 import DepartmentService from "@/services/DepartmentService";
 import { IDepartment } from "@/services/DepartmentService/types";
+import CreateOrEditDialog from "@/views/departments/components/CreateOrEditDialog.vue";
 
-@Component({})
+@Component({
+  components: { CreateOrEditDialog },
+})
 export default class DepartmentList extends Vue {
   protected departmentService = new DepartmentService();
   public departmentList: Array<IDepartment> = [];
   public isLoadingDepartmentList = false;
+  public openDialog = false;
   public headers = [
     {
       text: this.$t("departments.attributes.id"),
@@ -48,6 +53,10 @@ export default class DepartmentList extends Vue {
     this.departmentService.getAll().then((response) => {
       this.departmentList = response.data;
     });
+  }
+
+  openDepartmentDialog(): void {
+    this.openDialog = true;
   }
 
   mounted(): void {
