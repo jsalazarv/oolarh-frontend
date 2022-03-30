@@ -6,4 +6,9 @@ export default class WorkplaceService extends BaseService {
   getAll(): IServiceResponse<Array<IDepartment>> {
     return this.client.get("/departments");
   }
+
+  create(department: IDepartment) {
+    console.log("SERVICE", department);
+    return this.client.post(`/departments`, department);
+  }
 }

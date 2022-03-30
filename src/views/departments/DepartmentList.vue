@@ -15,14 +15,14 @@
         </v-btn>
       </v-toolbar>
       <v-data-table
-        :items-per-page="5"
+        :items-per-page="10"
         class="elevation-1 mt-5"
         :headers="headers"
         :items="departmentList"
         :loading="isLoadingDepartmentList"
       ></v-data-table>
     </v-card>
-    <CreateOrEditDialog :open.sync="openDialog" />
+    <CreateOrEditDialog :open.sync="openDialog" @onCreate="updateList" />
   </div>
 </template>
 
@@ -67,6 +67,10 @@ export default class DepartmentList extends Vue {
 
   openDepartmentDialog(): void {
     this.openDialog = true;
+  }
+
+  updateList(data: IDepartment): void {
+    this.departmentList.push(data);
   }
 
   mounted(): void {

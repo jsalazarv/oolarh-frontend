@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="isDialogOpen" max-width="450">
+  <v-dialog v-model="isDialogOpen" max-width="450" :persistent="isCreating">
     <ValidationObserver ref="form" v-slot="{ invalid }">
-      <v-card>
+      <v-card :loading="isCreating">
         <v-card-title
           class="subtitle-1 text-uppercase font-weight-regular mb-7"
         >
@@ -21,7 +21,8 @@
                   required
                   autocomplete="off"
                   name="name"
-                  v-model="name"
+                  v-model="department.name"
+                  :disabled="isCreating"
                   :label="$t('departments.attributes.name')"
                   :error-messages="errors"
                 ></v-text-field>
@@ -31,10 +32,17 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="light" @click="closeDialog">
+          <v-btn text color="light" :disabled="isCreating" @click="closeDialog">
             {{ $t("departments.labels.dialogs.create.actions.dismiss") }}
           </v-btn>
-          <v-btn text color="success" type="submit" :disabled="invalid">
+          <v-btn
+            text
+            color="success"
+            type="submit"
+            :loading="isCreating"
+            :disabled="isCreating || invalid"
+            @click="createDepartment"
+          >
             {{ $t("departments.labels.dialogs.create.actions.create") }}
           </v-btn>
         </v-card-actions>
@@ -45,16 +53,43 @@
 
 <script lang="ts">
 import { Component, PropSync, Vue } from "vue-property-decorator";
+import DepartmentService from "@/services/DepartmentService";
+import { IDepartment } from "@/services/DepartmentService/types";
 
 @Component({})
 export default class CreationDialog extends Vue {
+  protected departmentService = new DepartmentService();
+
   @PropSync("open")
   public isDialogOpen!: boolean;
 
-  public name = "";
+  public isCreating = false;
+  public department: IDepartment = {
+    id: null,
+    name: "",
+  };
 
   closeDialog(): void {
     this.isDialogOpen = false;
+  }
+
+  onCreate(data: IDepartment): void {
+    this.isCreating = false;
+    this.closeDialog();
+    this.$emit("onCreate", data);
+  }
+
+  createDepartment(): void {
+    this.isCreating = true;
+    this.departmentService
+      .create(this.department)
+      .then((response) => {
+        this.onCreate(response);
+      })
+      .catch()
+      .finally(() => {
+        this.isCreating = false;
+      });
   }
 }
 </script>
