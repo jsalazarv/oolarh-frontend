@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="isDialogOpen" max-width="450">
     <v-card>
-      <v-card-title class="subtitle-2 text-uppercase mb-7">
-        {{ $t("departments.attributes.createDepartment") }}
+      <v-card-title class="subtitle-1 text-uppercase font-weight-regular mb-7">
+        {{ $t("departments.labels.dialogs.create.title") }}
       </v-card-title>
       <v-card-text class="py-0">
         <v-row>
@@ -20,10 +20,11 @@
         </v-row>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="light darken-1" text @click="closeDialog">
+        <v-spacer></v-spacer>
+        <v-btn color="light" text @click="closeDialog">
           {{ $t("departments.labels.dialogs.create.actions.dismiss") }}
         </v-btn>
-        <v-btn color="success">
+        <v-btn color="success" text>
           {{ $t("departments.labels.dialogs.create.actions.create") }}
         </v-btn>
       </v-card-actions>

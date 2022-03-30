@@ -29,7 +29,9 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
+            <v-list-item-title class="text-sm-caption">{{
+              item.text
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -43,7 +45,7 @@ import { IModuleMenu } from "@/store/app/types";
 
 @Component({})
 export default class Sidebar extends Vue {
-  public mini = false;
+  public mini = true;
   public drawer = true;
 
   get menu(): IModuleMenu {

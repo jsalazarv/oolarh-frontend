@@ -6,7 +6,11 @@
           {{ $t("departments.list.title") }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn color="success" @click="openDepartmentDialog">
+        <v-btn
+          color="success"
+          :disabled="isLoadingDepartmentList"
+          @click="openDepartmentDialog"
+        >
           {{ $t("departments.labels.create") }}
         </v-btn>
       </v-toolbar>
@@ -15,6 +19,7 @@
         class="elevation-1 mt-5"
         :headers="headers"
         :items="departmentList"
+        :loading="isLoadingDepartmentList"
       ></v-data-table>
     </v-card>
     <CreateOrEditDialog :open.sync="openDialog" />
@@ -50,9 +55,14 @@ export default class DepartmentList extends Vue {
 
   getDepartmentList(): void {
     this.isLoadingDepartmentList = true;
-    this.departmentService.getAll().then((response) => {
-      this.departmentList = response.data;
-    });
+    this.departmentService
+      .getAll()
+      .then((response) => {
+        this.departmentList = response.data;
+      })
+      .finally(() => {
+        this.isLoadingDepartmentList = false;
+      });
   }
 
   openDepartmentDialog(): void {
