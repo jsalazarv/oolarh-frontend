@@ -1,40 +1,98 @@
 <template>
-  <v-card flat tile class="mx-auto" width="450" color="transparent">
-    <v-card-title class="justify-center">INICIAR SESIÓN</v-card-title>
-    <v-card-text>
-      <v-row>
-        <v-col cols="12">
-          <v-text-field
-            outlined
-            dense
-            autocomplete="off"
-            name="email"
-            label="Email"
-          ></v-text-field>
-          <v-text-field
-            outlined
-            dense
-            autocomplete="off"
-            name="password"
-            label="Password"
-            type="password"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </v-card-text>
-    <v-card-actions class="justify-center">
-      <v-btn large outlined rounded color="primary" class="px-10">
-        Entrar
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+  <ValidationObserver ref="form" v-slot="{ invalid }">
+    <v-card flat tile class="mx-auto" width="450" color="transparent">
+      <v-card-title class="justify-center">INICIAR SESIÓN</v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col cols="12">
+            <ValidationProvider
+              name="user"
+              rules="required"
+              v-slot="{ errors }"
+            >
+              <v-text-field
+                outlined
+                dense
+                required
+                autocomplete="off"
+                name="user"
+                label="Usuario"
+                v-model="user"
+                :error-messages="errors"
+              ></v-text-field>
+            </ValidationProvider>
+            <ValidationProvider
+              name="password"
+              rules="required|min:8"
+              v-slot="{ errors }"
+            >
+              <v-text-field
+                outlined
+                dense
+                required
+                autocomplete="off"
+                name="password"
+                label="Password"
+                v-model="password"
+                :type="showPassword ? 'text' : 'password'"
+                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :error-messages="errors"
+                @click:append="showPassword = !showPassword"
+              ></v-text-field>
+            </ValidationProvider>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-card-actions class="justify-center">
+        <v-btn
+          large
+          outlined
+          rounded
+          color="primary"
+          class="px-10"
+          type="submit"
+          :disabled="invalid"
+          @click="login"
+        >
+          Entrar
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </ValidationObserver>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { IValidationObserver } from "@/components/types";
 
 @Component({})
-export default class SignInForm extends Vue {}
+export default class SignInForm extends Vue {
+  public user = "";
+  public password = "";
+  public showPassword = false;
+  public error = "";
+  public alert = false;
+
+  async login(): Promise<void> {
+    if (await (this.$refs.form as IValidationObserver).validate()) {
+      this.$store
+        .dispatch("user/login", {
+          user: this.user,
+          password: this.password,
+        })
+        .then(() => {
+          this.$router.push({ name: "dashboard" });
+        })
+        .catch(() => {
+          this.error = "Error interno, Favor de verificar";
+          this.alert = true;
+        })
+        .finally(() => {
+          //TODO: Actions
+        });
+    }
+  }
+}
 </script>
 
 <style scoped></style>
