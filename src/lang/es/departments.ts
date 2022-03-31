@@ -3,10 +3,10 @@ export default {
     title: "Lista de departamentos",
   },
   show: {
-    title: "Consulta empleado",
+    title: "Consulta departamento",
   },
   edit: {
-    title: "Editar empleado",
+    title: "Editar departamento",
   },
   create: {
     title: "",
@@ -26,6 +26,13 @@ export default {
         actions: {
           dismiss: "Cancelar",
           create: "Registrar",
+        },
+      },
+      edit: {
+        title: "Editar departamento",
+        actions: {
+          dismiss: "Cancelar",
+          create: "Editar",
         },
       },
     },

@@ -9,7 +9,7 @@
         <v-btn
           color="success"
           :disabled="isLoadingDepartmentList"
-          @click="openDepartmentDialog"
+          @click="openCreateDialog"
         >
           {{ $t("departments.labels.create") }}
         </v-btn>
@@ -20,9 +20,22 @@
         :headers="headers"
         :items="departmentList"
         :loading="isLoadingDepartmentList"
-      ></v-data-table>
+      >
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn
+            class="mx-1"
+            color="primary"
+            x-small
+            fab
+            @click="openEditDialog(item)"
+          >
+            <v-icon dark>mdi-account-edit</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
     </v-card>
-    <CreateOrEditDialog :open.sync="openDialog" @onCreate="updateList" />
+    <CreateDialog :open.sync="openDialog" @onCreate="updateList" />
+    <EditDialog :open.sync="openDialog" :data="department" />
   </div>
 </template>
 
@@ -30,16 +43,21 @@
 import { Component, Vue } from "vue-property-decorator";
 import DepartmentService from "@/services/DepartmentService";
 import { IDepartment } from "@/services/DepartmentService/types";
-import CreateOrEditDialog from "@/views/departments/components/CreateOrEditDialog.vue";
+import CreateDialog from "@/views/departments/components/CreateDialog.vue";
+import EditDialog from "@/views/departments/components/EditDialog.vue";
 
 @Component({
-  components: { CreateOrEditDialog },
+  components: { EditDialog, CreateDialog },
 })
 export default class DepartmentList extends Vue {
   protected departmentService = new DepartmentService();
   public departmentList: Array<IDepartment> = [];
   public isLoadingDepartmentList = false;
   public openDialog = false;
+  public department: IDepartment = {
+    id: null,
+    name: "",
+  };
   public headers = [
     {
       text: this.$t("departments.attributes.id"),
@@ -51,6 +69,7 @@ export default class DepartmentList extends Vue {
       value: "name",
       sortable: false,
     },
+    { text: "", value: "actions", align: "end", sortable: false },
   ];
 
   getDepartmentList(): void {
@@ -65,8 +84,13 @@ export default class DepartmentList extends Vue {
       });
   }
 
-  openDepartmentDialog(): void {
+  openCreateDialog(): void {
     this.openDialog = true;
+  }
+
+  openEditDialog(item: IDepartment): void {
+    this.openDialog = true;
+    this.department = item;
   }
 
   updateList(data: IDepartment): void {

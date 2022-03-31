@@ -8,7 +8,10 @@ export default class WorkplaceService extends BaseService {
   }
 
   create(department: IDepartment) {
-    console.log("SERVICE", department);
     return this.client.post(`/departments`, department);
+  }
+
+  update(department: IDepartment) {
+    return this.client.put(`/departments/${department.id}`, department);
   }
 }
