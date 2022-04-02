@@ -32,7 +32,14 @@ export default {
         title: "Editar departamento",
         actions: {
           dismiss: "Cancelar",
-          create: "Editar",
+          edit: "Editar",
+        },
+      },
+      delete: {
+        title: "Eliminar departamento",
+        actions: {
+          dismiss: "Cancelar",
+          delete: "Eliminar",
         },
       },
     },

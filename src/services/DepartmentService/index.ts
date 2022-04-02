@@ -14,4 +14,8 @@ export default class WorkplaceService extends BaseService {
   update(department: IDepartment) {
     return this.client.put(`/departments/${department.id}`, department);
   }
+
+  delete(department: IDepartment) {
+    return this.client.delete(`/departments/${department.id}`);
+  }
 }

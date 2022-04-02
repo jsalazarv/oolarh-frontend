@@ -48,7 +48,7 @@
             :disabled="isEditing || invalid"
             @click="editDepartment"
           >
-            {{ $t("departments.labels.dialogs.edit.actions.create") }}
+            {{ $t("departments.labels.dialogs.edit.actions.edit") }}
           </v-btn>
         </v-card-actions>
       </v-card>

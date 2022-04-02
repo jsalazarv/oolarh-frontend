@@ -9,7 +9,7 @@
         <v-btn
           color="success"
           :disabled="isLoadingDepartmentList"
-          @click="openCreateDialog"
+          @click="createDialog"
         >
           {{ $t("departments.labels.create") }}
         </v-btn>
@@ -27,15 +27,29 @@
             color="primary"
             x-small
             fab
-            @click="openEditDialog(item)"
+            @click="editDialog(item)"
           >
             <v-icon dark>mdi-account-edit</v-icon>
+          </v-btn>
+          <v-btn
+            class="mx-1"
+            color="error"
+            x-small
+            fab
+            @click="deleteDialog(item)"
+          >
+            <v-icon dark>mdi-delete</v-icon>
           </v-btn>
         </template>
       </v-data-table>
     </v-card>
-    <CreateDialog :open.sync="openDialog" @onCreate="updateList" />
-    <EditDialog :open.sync="openDialog" :data="department" />
+    <CreateDialog :open.sync="openCreateDialog" @onCreate="updateList" />
+    <EditDialog :open.sync="openEditDialog" :data="department" />
+    <DeleteDialog
+      :open.sync="openDeleteDialog"
+      :data="department"
+      @onDelete="updateListAfterDelete"
+    />
   </div>
 </template>
 
@@ -45,15 +59,18 @@ import DepartmentService from "@/services/DepartmentService";
 import { IDepartment } from "@/services/DepartmentService/types";
 import CreateDialog from "@/views/departments/components/CreateDialog.vue";
 import EditDialog from "@/views/departments/components/EditDialog.vue";
+import DeleteDialog from "@/views/departments/components/DeleteDialog.vue";
 
 @Component({
-  components: { EditDialog, CreateDialog },
+  components: { DeleteDialog, EditDialog, CreateDialog },
 })
 export default class DepartmentList extends Vue {
   protected departmentService = new DepartmentService();
   public departmentList: Array<IDepartment> = [];
   public isLoadingDepartmentList = false;
-  public openDialog = false;
+  public openCreateDialog = false;
+  public openEditDialog = false;
+  public openDeleteDialog = false;
   public department: IDepartment = {
     id: null,
     name: "",
@@ -84,17 +101,27 @@ export default class DepartmentList extends Vue {
       });
   }
 
-  openCreateDialog(): void {
-    this.openDialog = true;
+  createDialog(): void {
+    this.openCreateDialog = true;
   }
 
-  openEditDialog(item: IDepartment): void {
-    this.openDialog = true;
+  editDialog(item: IDepartment): void {
+    this.openEditDialog = true;
+    this.department = item;
+  }
+
+  deleteDialog(item: IDepartment): void {
+    this.openDeleteDialog = true;
     this.department = item;
   }
 
   updateList(data: IDepartment): void {
     this.departmentList.push(data);
+  }
+
+  updateListAfterDelete(data: IDepartment): void {
+    const index = this.departmentList.indexOf(data);
+    this.departmentList.splice(index, 1);
   }
 
   mounted(): void {
