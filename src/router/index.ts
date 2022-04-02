@@ -16,6 +16,12 @@ const routes: Array<RouteConfig> = [
     component: () => import("@/views/dashboard/Dashboard.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/departments",
+    name: "departments:list",
+    component: () => import("@/views/departments/DepartmentList.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({

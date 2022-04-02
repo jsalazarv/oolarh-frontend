@@ -1,7 +1,5 @@
 export interface IApiResponse<T, M = string> {
-  Data: T;
-  Message: M;
-  Success: boolean;
+  data: T;
 }
 
 export type IServiceResponse<T = unknown, M = string> = Promise<
