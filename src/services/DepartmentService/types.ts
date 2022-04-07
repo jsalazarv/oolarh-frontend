@@ -5,4 +5,4 @@ export interface IDepartment {
   name: string;
 }
 
-export interface IDepartmentQueryParams extends IQueryParams {}
+export type IDepartmentQueryParams = IQueryParams;
