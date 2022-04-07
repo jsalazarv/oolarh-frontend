@@ -64,10 +64,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import DepartmentService from "@/services/DepartmentService";
-import { IDepartment } from "@/services/DepartmentService/types";
+import {
+  IDepartment,
+  IDepartmentQueryParams,
+} from "@/services/DepartmentService/types";
 import CreateDialog from "@/views/departments/components/CreateDialog.vue";
 import EditDialog from "@/views/departments/components/EditDialog.vue";
 import DeleteDialog from "@/views/departments/components/DeleteDialog.vue";
+import { IMeta } from "@/services/types";
 
 @Component({
   components: { DeleteDialog, EditDialog, CreateDialog },
@@ -83,8 +87,8 @@ export default class DepartmentList extends Vue {
     id: null,
     name: "",
   };
-  public params: {
-    query: "";
+  public params = {
+    query: "",
   };
   public headers = [
     {
@@ -100,7 +104,7 @@ export default class DepartmentList extends Vue {
     { text: "", value: "actions", align: "end", sortable: false },
   ];
 
-  public pagination = {
+  public pagination: IMeta = {
     current_page: 1,
     from: 1,
     last_page: 1,
@@ -109,7 +113,7 @@ export default class DepartmentList extends Vue {
     total: 0,
   };
 
-  get filters(): { query: ""; page: number; per_page: number } {
+  get filters(): IDepartmentQueryParams {
     return {
       ...this.params,
       page: this.pagination.current_page,
@@ -119,7 +123,6 @@ export default class DepartmentList extends Vue {
 
   search(): void {
     this.getDepartmentList(this.filters);
-    console.log(this.filters);
   }
 
   getDepartmentList(filters = {}): void {
