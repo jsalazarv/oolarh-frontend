@@ -89,7 +89,7 @@ export default class CreationDialog extends Vue {
     this.departmentService
       .create(this.department)
       .then((response) => {
-        this.onCreate(response);
+        this.onCreate(response.data);
       })
       .catch()
       .finally(() => {

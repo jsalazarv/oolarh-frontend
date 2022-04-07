@@ -77,7 +77,7 @@ export default class EditDialog extends Vue {
   editDepartment(): void {
     this.isEditing = true;
     this.departmentService
-      .update(this.data)
+      .update(this.data as IDepartment)
       .then((response) => {
         console.log(response);
       })

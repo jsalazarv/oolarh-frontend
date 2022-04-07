@@ -1,21 +1,30 @@
 import BaseService from "@/services/BaseService";
-import { IServiceResponse } from "@/services/types";
-import { IDepartment } from "@/services/DepartmentService/types";
+import {
+  INoContentResponse,
+  IPaginatedResponse,
+  IPlainResponse,
+} from "@/services/types";
+import {
+  IDepartment,
+  IDepartmentQueryParams,
+} from "@/services/DepartmentService/types";
 
 export default class WorkplaceService extends BaseService {
-  getAll(): IServiceResponse<Array<IDepartment>> {
-    return this.client.get("/departments");
+  getAll(
+    query: IDepartmentQueryParams = {}
+  ): IPaginatedResponse<Array<IDepartment>> {
+    return this.client.get("/departments", query);
   }
 
-  create(department: IDepartment) {
+  create(department: IDepartment): IPlainResponse<IDepartment> {
     return this.client.post(`/departments`, department);
   }
 
-  update(department: IDepartment) {
+  update(department: IDepartment): IPlainResponse<IDepartment> {
     return this.client.put(`/departments/${department.id}`, department);
   }
 
-  delete(department: IDepartment) {
-    return this.client.delete(`/departments/${department.id}`);
+  delete(department: IDepartment): INoContentResponse {
+    return this.client.delete<void>(`/departments/${department.id}`);
   }
 }

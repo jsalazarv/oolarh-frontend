@@ -61,8 +61,8 @@ export default class DeleteDialog extends Vue {
     this.isDeleting = true;
     this.departmentService
       .delete(data)
-      .then((response) => {
-        this.onDelete(response);
+      .then(() => {
+        this.onDelete(data);
       })
       .catch()
       .finally(() => {

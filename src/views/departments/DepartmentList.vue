@@ -15,11 +15,14 @@
         </v-btn>
       </v-toolbar>
       <v-data-table
-        :items-per-page="10"
         class="elevation-1 mt-5"
         :headers="headers"
         :items="departmentList"
         :loading="isLoadingDepartmentList"
+        :page.sync="pagination.current_page"
+        :items-per-page="pagination.per_page"
+        hide-default-footer
+        @page-count="pageCount = $event"
       >
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
@@ -42,6 +45,11 @@
           </v-btn>
         </template>
       </v-data-table>
+      <v-pagination
+        v-model="pagination.current_page"
+        :length="pagination.last_page"
+        @input="search"
+      ></v-pagination>
     </v-card>
     <CreateDialog :open.sync="openCreateDialog" @onCreate="updateList" />
     <EditDialog :open.sync="openEditDialog" :data="department" />
@@ -56,10 +64,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import DepartmentService from "@/services/DepartmentService";
-import { IDepartment } from "@/services/DepartmentService/types";
+import {
+  IDepartment,
+  IDepartmentQueryParams,
+} from "@/services/DepartmentService/types";
 import CreateDialog from "@/views/departments/components/CreateDialog.vue";
 import EditDialog from "@/views/departments/components/EditDialog.vue";
 import DeleteDialog from "@/views/departments/components/DeleteDialog.vue";
+import { IMeta } from "@/services/types";
 
 @Component({
   components: { DeleteDialog, EditDialog, CreateDialog },
@@ -75,6 +87,9 @@ export default class DepartmentList extends Vue {
     id: null,
     name: "",
   };
+  public params = {
+    query: "",
+  };
   public headers = [
     {
       text: this.$t("departments.attributes.id"),
@@ -89,12 +104,34 @@ export default class DepartmentList extends Vue {
     { text: "", value: "actions", align: "end", sortable: false },
   ];
 
-  getDepartmentList(): void {
+  public pagination: IMeta = {
+    current_page: 1,
+    from: 1,
+    last_page: 1,
+    per_page: 10,
+    to: 1,
+    total: 0,
+  };
+
+  get filters(): IDepartmentQueryParams {
+    return {
+      ...this.params,
+      page: this.pagination.current_page,
+      per_page: this.pagination.per_page,
+    };
+  }
+
+  search(): void {
+    this.getDepartmentList(this.filters);
+  }
+
+  getDepartmentList(filters = {}): void {
     this.isLoadingDepartmentList = true;
     this.departmentService
-      .getAll()
+      .getAll(filters)
       .then((response) => {
         this.departmentList = response.data;
+        this.pagination = response.meta;
       })
       .finally(() => {
         this.isLoadingDepartmentList = false;
@@ -125,7 +162,8 @@ export default class DepartmentList extends Vue {
   }
 
   mounted(): void {
-    this.getDepartmentList();
+    //this.getDepartmentList();
+    this.search();
   }
 }
 </script>
