@@ -4,8 +4,9 @@
     max-width="450"
     transition="fab-transition"
     :persistent="isCreating"
+    @click:outside="closeDialog"
   >
-    <ValidationObserver ref="formCreate" v-slot="{ invalid }">
+    <ValidationObserver ref="form" v-slot="{ invalid }">
       <v-card :loading="isCreating">
         <v-card-title
           class="subtitle-1 text-uppercase font-weight-regular mb-7"
@@ -60,6 +61,12 @@
 import { Component, PropSync, Vue } from "vue-property-decorator";
 import DepartmentService from "@/services/DepartmentService";
 import { IDepartment } from "@/services/DepartmentService/types";
+import { IValidationObserver } from "@/components/types";
+
+const initialDepartmentData: IDepartment = {
+  id: null,
+  name: "",
+};
 
 @Component({})
 export default class CreationDialog extends Vue {
@@ -76,12 +83,14 @@ export default class CreationDialog extends Vue {
 
   closeDialog(): void {
     this.isDialogOpen = false;
+    this.department = { ...initialDepartmentData };
+    (this.$refs.form as IValidationObserver).reset();
   }
 
   onCreate(data: IDepartment): void {
     this.isCreating = false;
-    this.closeDialog();
     this.$emit("onCreate", data);
+    this.closeDialog();
   }
 
   createDepartment(): void {
