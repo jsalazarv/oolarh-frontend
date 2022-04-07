@@ -13,6 +13,9 @@
         <v-list-item-avatar>
           <v-img src="/isotype.svg" @click="mini = !mini"></v-img>
         </v-list-item-avatar>
+        <v-list-item-title>
+          <v-img src="/logo.svg" width="100" @click="mini = !mini"></v-img>
+        </v-list-item-title>
       </v-list-item>
     </v-list>
     <v-list>
