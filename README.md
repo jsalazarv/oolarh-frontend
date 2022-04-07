@@ -1,5 +1,25 @@
 # oolarh-frontend
 
+## Requirements
+
+Install nvm
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+
+## Setup node version
+
+Run this command only the first time 
+```
+nvm install 
+```
+
+Run this command if you have installed the node version previously
+```
+nvm use 
+```
+
 ## Project setup
 ```
 npm install
