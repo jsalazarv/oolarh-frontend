@@ -74,16 +74,22 @@ export default class EditDialog extends Vue {
     this.isDialogOpen = false;
   }
 
+  onEdit(data: IDepartment): void {
+    this.isEditing = false;
+    this.closeDialog();
+    this.$emit("onEdit", data);
+  }
+
   editDepartment(): void {
     this.isEditing = true;
     this.departmentService
       .update(this.data as IDepartment)
       .then((response) => {
-        console.log(response);
+        this.onEdit(response.data);
       })
       .catch()
       .finally(() => {
-        this.isEditing = true;
+        this.isEditing = false;
         this.closeDialog();
       });
   }

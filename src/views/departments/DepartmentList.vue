@@ -51,8 +51,15 @@
         @input="search"
       ></v-pagination>
     </v-card>
-    <CreateDialog :open.sync="openCreateDialog" @onCreate="updateList" />
-    <EditDialog :open.sync="openEditDialog" :data="department" />
+    <CreateDialog
+      :open.sync="openCreateDialog"
+      @onCreate="updateListAfterCreate"
+    />
+    <EditDialog
+      :open.sync="openEditDialog"
+      :data="department"
+      @onEdit="updateListAfterEdit"
+    />
     <DeleteDialog
       :open.sync="openDeleteDialog"
       :data="department"
@@ -144,7 +151,7 @@ export default class DepartmentList extends Vue {
 
   editDialog(item: IDepartment): void {
     this.openEditDialog = true;
-    this.department = item;
+    this.department = { ...item };
   }
 
   deleteDialog(item: IDepartment): void {
@@ -152,17 +159,23 @@ export default class DepartmentList extends Vue {
     this.department = item;
   }
 
-  updateList(data: IDepartment): void {
+  updateListAfterCreate(data: IDepartment): void {
     this.departmentList.push(data);
   }
 
+  updateListAfterEdit(data: IDepartment): void {
+    let index = this.departmentList.findIndex(
+      (element) => element.id === data.id
+    );
+    this.departmentList.splice(index, 1, data);
+  }
+
   updateListAfterDelete(data: IDepartment): void {
-    const index = this.departmentList.indexOf(data);
+    let index = this.departmentList.indexOf(data);
     this.departmentList.splice(index, 1);
   }
 
   mounted(): void {
-    //this.getDepartmentList();
     this.search();
   }
 }
