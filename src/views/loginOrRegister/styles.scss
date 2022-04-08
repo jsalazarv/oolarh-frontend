@@ -33,11 +33,25 @@
 
     .overlay-left {
       @include overlays(0);
+
+      background-image: url("../../assets/background-left.svg");
+      height: 100vh;
+      background-position: center;
+      background-size: cover;
+      background-color: rgba(24, 47, 85, 1);
+      background-blend-mode: multiply;
     }
 
     .overlay-right {
       @include overlays(0);
       right: 0;
+
+      background-image: url("../../assets/background-right.svg");
+      height: 100vh;
+      background-position: center;
+      background-size: cover;
+      background-color: rgba(24, 47, 85, 1);
+      background-blend-mode: multiply;
     }
   }
 }

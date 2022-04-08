@@ -1,5 +1,12 @@
 <template>
   <v-card flat tile class="mx-auto" width="450" color="transparent">
+    <div class="d-flex flex-column align-center mb-7">
+      <v-img
+        class="d-flex justify-center align-center"
+        src="/imagotype-dark.svg"
+        width="200"
+      ></v-img>
+    </div>
     <v-card-title class="justify-center">POSTULARSE</v-card-title>
     <v-card-text>
       <v-row>
