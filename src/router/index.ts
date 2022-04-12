@@ -17,6 +17,12 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/applications",
+    name: "application:list",
+    component: () => import("@/views/applications/ApplicationList.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/departments",
     name: "departments:list",
     component: () => import("@/views/departments/DepartmentList.vue"),
