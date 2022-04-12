@@ -10,6 +10,12 @@ const appMenu: IModuleMenu = {
       route: "dashboard",
     },
     {
+      icon: "mdi-badge-account",
+      text: i18n.t("sidebar.items.applications") as string,
+      message: null,
+      route: "application:list",
+    },
+    {
       icon: "mdi-chair-rolling",
       text: i18n.t("sidebar.items.departments") as string,
       message: null,
