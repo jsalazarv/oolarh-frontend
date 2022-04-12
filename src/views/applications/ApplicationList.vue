@@ -91,6 +91,9 @@ export default class ApplicationList extends Vue {
   protected applicantService = new ApplicantService();
   public applicantList: Array<IApplicant> = [];
   public isLoadingApplicantList = false;
+  public params = {
+    query: "",
+  };
   public headers = [
     {
       text: this.$t("applications.attributes.id"),
