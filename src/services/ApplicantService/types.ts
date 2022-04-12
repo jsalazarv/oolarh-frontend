@@ -16,8 +16,8 @@ export interface IApplicant {
   email: string;
   cellphone: string;
   psychometric_test: string;
-  resume: IResume;
-  status: string;
+  resume: IResume | null;
+  status?: string;
 }
 
 export type IApplicantQueryParams = IQueryParams;

@@ -6,7 +6,11 @@
           {{ $t("applications.list.title") }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn color="success">
+        <v-btn
+          color="success"
+          :to="{ name: 'application:create' }"
+          :disabled="isLoadingApplicantList"
+        >
           {{ $t("applications.labels.create") }}
         </v-btn>
       </v-toolbar>
@@ -44,6 +48,7 @@
             color="success"
             x-small
             fab
+            disabled
             @click="editDialog(item)"
           >
             <v-icon dark>mdi-account-edit</v-icon>
@@ -53,6 +58,7 @@
             color="primary"
             x-small
             fab
+            disabled
             @click="editDialog(item)"
           >
             <v-icon dark>mdi-account-eye</v-icon>
@@ -91,7 +97,7 @@ import {
 } from "@/services/ApplicantService/types";
 import { IMeta } from "@/services/types";
 import DeleteDialog from "@/views/applications/components/DeleteDialog.vue";
-import { IDepartment } from "@/services/DepartmentService/types";
+
 @Component({
   components: { DeleteDialog },
 })

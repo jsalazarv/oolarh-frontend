@@ -9,7 +9,7 @@ export default {
     title: "Editar postulantes",
   },
   create: {
-    title: "",
+    title: "Registrar postulante",
   },
   delete: {
     title: "",
@@ -23,6 +23,7 @@ export default {
     cellphone: "Celular",
     psychometric_test: "Examen psicométrico",
     resume: "Currículum",
+    vacancy: "Vacante",
   },
   labels: {
     create: "Registrar",
