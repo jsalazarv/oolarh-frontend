@@ -10,7 +10,7 @@ interface IResume {
 export interface IApplicant {
   id: number | null;
   names: string;
-  vacancy: number;
+  vacancy: number | null;
   first_surname: string;
   second_surname: string;
   email: string;

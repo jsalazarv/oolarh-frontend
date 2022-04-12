@@ -28,6 +28,18 @@ export default {
     create: "Registrar",
     showPsychometricTest: "Ver examen",
     showResume: "Ver curriculum",
-    dialogs: {},
+    dialogs: {
+      delete: {
+        title: "Eliminar postulante",
+        labels: {
+          areYouSureYouWantToDelete: "Estas seguro de eliminar a",
+          fromTheListOfApplicants: "de la lista de postulantes",
+        },
+        actions: {
+          dismiss: "Cancelar",
+          delete: "Eliminar",
+        },
+      },
+    },
   },
 };
