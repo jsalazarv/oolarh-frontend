@@ -1,6 +1,6 @@
 <template>
   <div v-layout="'app-layout'" class="pa-4">
-    <v-card>
+    <v-card elevation="0">
       <v-toolbar flat>
         <v-toolbar-title class="subtitle-1 text-uppercase">
           {{ $t("departments.list.title") }}
@@ -15,7 +15,7 @@
         </v-btn>
       </v-toolbar>
       <v-data-table
-        class="elevation-1 mt-5"
+        class="elevation-0 mt-5"
         :headers="headers"
         :items="departmentList"
         :loading="isLoadingDepartmentList"
