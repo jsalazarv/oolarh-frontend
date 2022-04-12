@@ -37,6 +37,9 @@ export default {
       },
       delete: {
         title: "Eliminar departamento",
+        labels: {
+          areYouSureToDelete: "Estas seguro de eliminar",
+        },
         actions: {
           dismiss: "Cancelar",
           delete: "Eliminar",

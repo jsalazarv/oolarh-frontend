@@ -7,18 +7,27 @@
   >
     <v-card :loading="isDeleting">
       <v-card-title class="subtitle-1 text-uppercase font-weight-regular mb-7">
-        {{ $t("departments.labels.dialogs.delete.title") }}
+        {{ $t("applications.labels.dialogs.delete.title") }}
       </v-card-title>
       <v-card-text class="py-0">
         ¿{{
-          $t("departments.labels.dialogs.delete.labels.areYouSureToDelete")
-        }}: <span class="font-weight-black">{{ data.name }}</span
-        >?
+          $t(
+            "applications.labels.dialogs.delete.labels.areYouSureYouWantToDelete"
+          )
+        }}:
+        <span class="font-weight-black">{{ data.names }}&nbsp;</span>
+        <span class="font-weight-black">{{ data.first_surname }}&nbsp;</span>
+        <span class="font-weight-black">{{ data.second_surname }}</span>
+        {{
+          $t(
+            "applications.labels.dialogs.delete.labels.fromTheListOfApplicants"
+          )
+        }}:?
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text color="light" :disabled="isDeleting" @click="closeDialog">
-          {{ $t("departments.labels.dialogs.delete.actions.dismiss") }}
+          {{ $t("applications.labels.dialogs.delete.actions.dismiss") }}
         </v-btn>
         <v-btn
           text
@@ -26,9 +35,9 @@
           type="submit"
           :loading="isDeleting"
           :disabled="isDeleting"
-          @click="deleteDepartment(data)"
+          @click="deleteApplicant(data)"
         >
-          {{ $t("departments.labels.dialogs.delete.actions.delete") }}
+          {{ $t("applications.labels.dialogs.delete.actions.delete") }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -37,31 +46,31 @@
 
 <script lang="ts">
 import { Component, Prop, PropSync, Vue } from "vue-property-decorator";
-import { IDepartment } from "@/services/DepartmentService/types";
-import DepartmentService from "@/services/DepartmentService";
+import ApplicantService from "@/services/ApplicantService";
+import { IApplicant } from "@/services/ApplicantService/types";
 
-@Component({})
+@Component
 export default class DeleteDialog extends Vue {
-  protected departmentService = new DepartmentService();
+  protected applicantService = new ApplicantService();
   @PropSync("open")
   public isDialogOpen!: boolean;
   @Prop({ type: Object, default: {} })
-  data?: IDepartment;
+  data?: IApplicant;
   public isDeleting = false;
 
   closeDialog(): void {
     this.isDialogOpen = false;
   }
 
-  onDelete(data: IDepartment): void {
+  onDelete(data: IApplicant): void {
     this.isDeleting = false;
     this.closeDialog();
     this.$emit("onDelete", data);
   }
 
-  deleteDepartment(data: IDepartment): void {
+  deleteApplicant(data: IApplicant): void {
     this.isDeleting = true;
-    this.departmentService
+    this.applicantService
       .delete(data)
       .then(() => {
         this.onDelete(data);

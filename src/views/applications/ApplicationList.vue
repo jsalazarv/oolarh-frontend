@@ -74,6 +74,11 @@
         @input="search"
       ></v-pagination>
     </v-card>
+    <DeleteDialog
+      :open.sync="openDeleteDialog"
+      :data="applicant"
+      @onDelete="updateListAfterDelete"
+    />
   </div>
 </template>
 
@@ -85,12 +90,33 @@ import {
   IApplicantQueryParams,
 } from "@/services/ApplicantService/types";
 import { IMeta } from "@/services/types";
-
-@Component
+import DeleteDialog from "@/views/applications/components/DeleteDialog.vue";
+import { IDepartment } from "@/services/DepartmentService/types";
+@Component({
+  components: { DeleteDialog },
+})
 export default class ApplicationList extends Vue {
   protected applicantService = new ApplicantService();
   public applicantList: Array<IApplicant> = [];
   public isLoadingApplicantList = false;
+  public openDeleteDialog = false;
+  public applicant: IApplicant = {
+    id: null,
+    names: "",
+    vacancy: null,
+    first_surname: "",
+    second_surname: "",
+    email: "",
+    cellphone: "",
+    psychometric_test: "",
+    resume: {
+      id: null,
+      url: "",
+      path: "",
+      file_name: "",
+    },
+    status: "",
+  };
   public params = {
     query: "",
   };
@@ -170,6 +196,16 @@ export default class ApplicationList extends Vue {
       .finally(() => {
         this.isLoadingApplicantList = false;
       });
+  }
+
+  deleteDialog(item: IApplicant): void {
+    this.openDeleteDialog = true;
+    this.applicant = item;
+  }
+
+  updateListAfterDelete(data: IApplicant): void {
+    let index = this.applicantList.indexOf(data);
+    this.applicantList.splice(index, 1);
   }
 
   mounted(): void {
