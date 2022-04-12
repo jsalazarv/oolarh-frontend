@@ -1,6 +1,6 @@
 <template>
   <div v-layout="'app-layout'" class="pa-4">
-    <v-card>
+    <v-card elevation="0">
       <v-toolbar flat>
         <v-toolbar-title class="subtitle-1 text-uppercase">
           {{ $t("applications.list.title") }}
@@ -11,7 +11,7 @@
         </v-btn>
       </v-toolbar>
       <v-data-table
-        class="elevation-1 mt-5"
+        class="elevation-0 mt-5"
         :headers="headers"
         :loading="isLoadingApplicantList"
         :items="applicantList"
@@ -19,7 +19,55 @@
         :items-per-page="pagination.per_page"
         hide-default-footer
         @page-count="pageCount = $event"
-      ></v-data-table>
+      >
+        <template v-slot:[`item.psychometric_test`]="{ item }">
+          <a
+            class="text-decoration-none"
+            target="_blank"
+            :href="item.psychometric_test"
+          >
+            {{ $t("applications.labels.showPsychometricTest") }}
+          </a>
+        </template>
+        <template v-slot:[`item.resume`]="{ item }">
+          <a
+            class="text-decoration-none"
+            target="_blank"
+            :href="item.resume.url"
+          >
+            {{ $t("applications.labels.showResume") }}
+          </a>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn
+            class="mx-1"
+            color="success"
+            x-small
+            fab
+            @click="editDialog(item)"
+          >
+            <v-icon dark>mdi-account-edit</v-icon>
+          </v-btn>
+          <v-btn
+            class="mx-1"
+            color="primary"
+            x-small
+            fab
+            @click="editDialog(item)"
+          >
+            <v-icon dark>mdi-account-eye</v-icon>
+          </v-btn>
+          <v-btn
+            class="mx-1"
+            color="error"
+            x-small
+            fab
+            @click="deleteDialog(item)"
+          >
+            <v-icon dark>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
       <v-pagination
         v-model="pagination.current_page"
         :length="pagination.last_page"
@@ -81,7 +129,7 @@ export default class ApplicationList extends Vue {
     },
     {
       text: this.$t("applications.attributes.resume"),
-      value: "resume.url",
+      value: "resume",
       sortable: false,
     },
     { text: "", value: "actions", align: "end", sortable: false },
