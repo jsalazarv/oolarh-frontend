@@ -48,6 +48,7 @@
             color="success"
             x-small
             fab
+            disabled
             @click="editDialog(item)"
           >
             <v-icon dark>mdi-account-edit</v-icon>
@@ -57,6 +58,7 @@
             color="primary"
             x-small
             fab
+            disabled
             @click="editDialog(item)"
           >
             <v-icon dark>mdi-account-eye</v-icon>
