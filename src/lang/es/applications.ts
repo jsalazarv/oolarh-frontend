@@ -16,7 +16,7 @@ export default {
   },
   attributes: {
     id: "Id",
-    names: "Nombres",
+    name: "Nombre",
     first_surname: "Apellido paterno",
     second_surname: "Apellido materno",
     email: "Correo electrónico",
@@ -24,6 +24,7 @@ export default {
     psychometric_test: "Examen psicométrico",
     resume: "Currículum",
     vacancy: "Vacante",
+    status: "Estado",
   },
   labels: {
     create: "Registrar",

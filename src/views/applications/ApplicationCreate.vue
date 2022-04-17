@@ -11,7 +11,7 @@
           <v-row>
             <v-col cols="12" md="4">
               <ValidationProvider
-                :name="$t('applications.attributes.names')"
+                :name="$t('applications.attributes.name')"
                 rules="required"
                 v-slot="{ errors }"
               >
@@ -20,9 +20,9 @@
                   dense
                   required
                   autocomplete="off"
-                  name="names"
+                  name="name"
                   :disabled="isCreating"
-                  :label="$t('applications.attributes.names')"
+                  :label="$t('applications.attributes.name')"
                   :error-messages="errors"
                   v-model="applicant.names"
                 ></v-text-field>

@@ -42,6 +42,34 @@
             {{ $t("applications.labels.showResume") }}
           </a>
         </template>
+        <template v-slot:[`item.status`]="{ item }">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                dark
+                small
+                rounded
+                elevation="0"
+                :id="item"
+                v-bind="attrs"
+                v-on="on"
+                :color="statuses[item.status].color"
+              >
+                {{ statuses[item.status].text }}
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(state, index) in items"
+                :key="index"
+                @click="item.status = state.status"
+                :value="item.status"
+              >
+                <v-list-item-title>{{ state.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             class="mx-1"
@@ -94,6 +122,8 @@ import ApplicantService from "@/services/ApplicantService";
 import {
   IApplicant,
   IApplicantQueryParams,
+  IStatuses,
+  IStatusListItem,
 } from "@/services/ApplicantService/types";
 import { IMeta } from "@/services/types";
 import DeleteDialog from "@/views/applications/components/DeleteDialog.vue";
@@ -109,6 +139,7 @@ export default class ApplicationList extends Vue {
   public applicant: IApplicant = {
     id: null,
     names: "",
+    fullName: "",
     vacancy: null,
     first_surname: "",
     second_surname: "",
@@ -133,18 +164,8 @@ export default class ApplicationList extends Vue {
       sortable: false,
     },
     {
-      text: this.$t("applications.attributes.names"),
-      value: "names",
-      sortable: false,
-    },
-    {
-      text: this.$t("applications.attributes.first_surname"),
-      value: "first_surname",
-      sortable: false,
-    },
-    {
-      text: this.$t("applications.attributes.second_surname"),
-      value: "second_surname",
+      text: this.$t("applications.attributes.name"),
+      value: "fullName",
       sortable: false,
     },
     {
@@ -167,6 +188,11 @@ export default class ApplicationList extends Vue {
       value: "resume",
       sortable: false,
     },
+    {
+      text: this.$t("applications.attributes.status"),
+      value: "status",
+      sortable: false,
+    },
     { text: "", value: "actions", align: "end", sortable: false },
   ];
   public pagination: IMeta = {
@@ -177,6 +203,30 @@ export default class ApplicationList extends Vue {
     to: 1,
     total: 0,
   };
+
+  public statuses: IStatuses = {
+    refused: {
+      text: "Rechazado",
+      color: "error",
+    },
+    processing: {
+      text: "En proceso",
+      color: "orange",
+    },
+    accepted: {
+      text: "Aceptado",
+      color: "success",
+    },
+  };
+
+  get items(): Array<IStatusListItem> {
+    let statuses: Array<IStatusListItem> = [];
+    return Object.entries(this.statuses).reduce((carry, item) => {
+      const [status, value] = item;
+      carry.push({ status, text: value.text });
+      return carry;
+    }, statuses);
+  }
 
   get filters(): IApplicantQueryParams {
     return {
