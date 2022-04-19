@@ -42,27 +42,29 @@
             {{ $t("applications.labels.showResume") }}
           </a>
         </template>
-        <template v-slot:[`item.status`]="{ item }">
+        <template v-slot:[`item.status`]="{ item, index }">
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                dark
                 small
                 rounded
                 elevation="0"
-                :id="item"
                 v-bind="attrs"
                 v-on="on"
+                class="white--text"
+                :id="item"
                 :color="statuses[item.status].color"
+                :loading="item.isLoading"
+                :disabled="item.status === 'accepted'"
               >
                 {{ statuses[item.status].text }}
               </v-btn>
             </template>
             <v-list>
               <v-list-item
-                v-for="(state, index) in items"
-                :key="index"
-                @click="item.status = state.status"
+                v-for="(state, stateIndex) in items"
+                :key="stateIndex"
+                @click="selectedState(index, state.status, item)"
                 :value="item.status"
               >
                 <v-list-item-title>{{ state.text }}</v-list-item-title>
@@ -122,6 +124,7 @@ import ApplicantService from "@/services/ApplicantService";
 import {
   IApplicant,
   IApplicantQueryParams,
+  IIsLoading,
   IStatuses,
   IStatusListItem,
 } from "@/services/ApplicantService/types";
@@ -203,7 +206,6 @@ export default class ApplicationList extends Vue {
     to: 1,
     total: 0,
   };
-
   public statuses: IStatuses = {
     refused: {
       text: "Rechazado",
@@ -262,6 +264,25 @@ export default class ApplicationList extends Vue {
   updateListAfterDelete(data: IApplicant): void {
     let index = this.applicantList.indexOf(data);
     this.applicantList.splice(index, 1);
+  }
+
+  editApplicant(index: number, status: string, data: IApplicant): void {
+    this.applicantList[index].isLoading = true;
+    this.applicantService
+      .update(data.id, { status })
+      .then((response) => {
+        data.status = response.data.status;
+      })
+      .catch()
+      .finally(() => {
+        const newList = [...this.applicantList];
+        newList[index].isLoading = false;
+        this.applicantList = newList;
+      });
+  }
+
+  selectedState(index: number, status: string, data: IApplicant): void {
+    this.editApplicant(index, status, data);
   }
 
   mounted(): void {
