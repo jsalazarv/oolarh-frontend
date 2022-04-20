@@ -30,6 +30,10 @@ export default {
     create: "Registrar",
     showPsychometricTest: "Ver examen",
     showResume: "Ver curriculum",
+    postulate: "Postulado",
+    inProcess: "En proceso",
+    refused: "Rechazado",
+    accepted: "Aceptado",
     dialogs: {
       delete: {
         title: "Eliminar postulante",
