@@ -211,19 +211,19 @@ export default class ApplicationList extends Vue {
   };
   public statuses: IStatuses = {
     postulate: {
-      text: "Postulado",
+      text: this.$t("applications.labels.postulate") as string,
       color: "blue-grey",
     },
     processing: {
-      text: "En proceso",
+      text: this.$t("applications.labels.inProcess") as string,
       color: "orange",
     },
     refused: {
-      text: "Rechazado",
+      text: this.$t("applications.labels.refused") as string,
       color: "error",
     },
     accepted: {
-      text: "Aceptado",
+      text: this.$t("applications.labels.accepted") as string,
       color: "success",
     },
   };
