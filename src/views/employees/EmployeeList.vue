@@ -14,7 +14,15 @@
         class="elevation-0 mt-5"
         hide-default-footer
         :headers="headers"
-      ></v-data-table>
+      >
+        <template v-slot:no-data>
+          <v-col cols="12">
+            <div class="ma-10">
+              <img src="/vertical-imagotype-white-and-grey.svg" alt="" />
+            </div>
+          </v-col>
+        </template>
+      </v-data-table>
     </v-card>
   </div>
 </template>
