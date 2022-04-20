@@ -38,7 +38,7 @@ export interface IUpdateApplicant extends Omit<IApplicant, "resume" | "id"> {
 }
 
 export interface IIsLoading extends IApplicant {
-  isLoading: true;
+  isLoading?: boolean;
 }
 
 export type IApplicantQueryParams = IQueryParams;

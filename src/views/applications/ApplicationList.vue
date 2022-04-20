@@ -136,7 +136,7 @@ import DeleteDialog from "@/views/applications/components/DeleteDialog.vue";
 })
 export default class ApplicationList extends Vue {
   protected applicantService = new ApplicantService();
-  public applicantList: Array<IApplicant> = [];
+  public applicantList: Array<IIsLoading> = [];
   public isLoadingApplicantList = false;
   public openDeleteDialog = false;
   public applicant: IApplicant = {
