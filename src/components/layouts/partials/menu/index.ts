@@ -16,6 +16,12 @@ const appMenu: IModuleMenu = {
       route: "application:list",
     },
     {
+      icon: "mdi-account-group",
+      text: i18n.t("sidebar.items.employees") as string,
+      message: null,
+      route: "employees:list",
+    },
+    {
       icon: "mdi-chair-rolling",
       text: i18n.t("sidebar.items.departments") as string,
       message: null,
