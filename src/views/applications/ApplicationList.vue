@@ -7,6 +7,7 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
+          small
           color="success"
           :to="{ name: 'application:create' }"
           :disabled="isLoadingApplicantList"
@@ -51,13 +52,15 @@
                 elevation="0"
                 v-bind="attrs"
                 v-on="on"
-                class="white--text"
+                class="white--text text-sm-caption"
+                height="24px"
                 :id="item"
                 :color="statuses[item.status].color"
                 :loading="item.isLoading"
                 :disabled="item.status === 'accepted'"
               >
                 {{ statuses[item.status].text }}
+                <v-icon right dark> mdi-triangle-small-down </v-icon>
               </v-btn>
             </template>
             <v-list>
@@ -207,13 +210,17 @@ export default class ApplicationList extends Vue {
     total: 0,
   };
   public statuses: IStatuses = {
-    refused: {
-      text: "Rechazado",
-      color: "error",
+    postulate: {
+      text: "Postulado",
+      color: "blue-grey",
     },
     processing: {
       text: "En proceso",
       color: "orange",
+    },
+    refused: {
+      text: "Rechazado",
+      color: "error",
     },
     accepted: {
       text: "Aceptado",
