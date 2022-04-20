@@ -2,6 +2,7 @@ import BaseService from "@/services/BaseService";
 import {
   IApplicant,
   IApplicantQueryParams,
+  IUpdateApplicant,
 } from "@/services/ApplicantService/types";
 import {
   INoContentResponse,
@@ -23,6 +24,13 @@ export default class ApplicantService extends BaseService {
       },
     };
     return this.client.post(`/applicants`, body, config);
+  }
+
+  update(
+    id: number | null,
+    payload: Partial<IUpdateApplicant>
+  ): IPlainResponse<IApplicant> {
+    return this.client.put(`/applicants/${id}`, payload);
   }
 
   delete(applicant: IApplicant): INoContentResponse {

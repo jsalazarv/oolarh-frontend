@@ -33,4 +33,12 @@ export interface IApplicant {
   status?: string;
 }
 
+export interface IUpdateApplicant extends Omit<IApplicant, "resume" | "id"> {
+  resume?: File;
+}
+
+export interface IIsLoading extends IApplicant {
+  isLoading?: boolean;
+}
+
 export type IApplicantQueryParams = IQueryParams;
