@@ -168,8 +168,8 @@
           </v-row>
           <v-card-actions class="justify-end">
             <v-btn
+              small
               color="success"
-              class="px-8"
               type="submit"
               :disabled="invalid || isCreating"
               :loading="isCreating"
@@ -230,6 +230,7 @@ export default class ApplicationCreate extends Vue {
       .create(this.applicant)
       .then((response) => {
         if (response.data) {
+          this.clear();
           this.$router.push({
             name: "application:list",
           });
@@ -238,7 +239,6 @@ export default class ApplicationCreate extends Vue {
       .catch()
       .finally(() => {
         this.isCreating = false;
-        this.clear();
       });
   }
 }

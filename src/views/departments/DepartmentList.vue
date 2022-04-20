@@ -7,6 +7,7 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
+          small
           color="success"
           :disabled="isLoadingDepartmentList"
           @click="createDialog"
