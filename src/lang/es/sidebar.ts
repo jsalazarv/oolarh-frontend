@@ -3,5 +3,6 @@ export default {
     dashboard: "Inicio",
     departments: "Departamentos",
     applications: "Postulaciones",
+    employees: "Empleados",
   },
 };

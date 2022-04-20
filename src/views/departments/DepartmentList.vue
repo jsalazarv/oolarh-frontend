@@ -25,6 +25,14 @@
         hide-default-footer
         @page-count="pageCount = $event"
       >
+        <template v-slot:no-data>
+          <v-col cols="12">
+            <div class="ma-10">
+              <img src="/vertical-imagotype-white-and-grey.svg" alt="" />
+            </div>
+          </v-col>
+        </template>
+
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             class="mx-1"
