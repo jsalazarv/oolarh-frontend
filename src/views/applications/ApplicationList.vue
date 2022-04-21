@@ -287,6 +287,11 @@ export default class ApplicationList extends Vue {
       .update(data.id, { status })
       .then((response) => {
         data.status = response.data.status;
+        if (data.status === "accepted") {
+          this.$router.push({
+            name: "employees:list",
+          });
+        }
       })
       .catch()
       .finally(() => {
