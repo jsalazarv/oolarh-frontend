@@ -64,7 +64,6 @@
             color="error"
             x-small
             fab
-            disabled
             @click="deleteDialog(item)"
           >
             <v-icon dark>mdi-delete</v-icon>
@@ -77,6 +76,11 @@
         @input="search"
       ></v-pagination>
     </v-card>
+    <DeleteDialog
+      :open.sync="openDeleteDialog"
+      :data="employee"
+      @onDelete="updateListAfterDelete"
+    />
   </div>
 </template>
 
@@ -88,12 +92,16 @@ import {
   IEmployeeQueryParams,
 } from "@/services/EmployeeService/types";
 import { IMeta } from "@/services/types";
+import DeleteDialog from "@/views/employees/components/DeleteDialog.vue";
 
-@Component
+@Component({
+  components: { DeleteDialog },
+})
 export default class EmployeeList extends Vue {
   public employeeService = new EmployeeService();
   public employeeList: Array<IEmployee> = [];
   public isLoadingEmployeeList = false;
+  public openDeleteDialog = false;
   public employee: IEmployee = {
     id: null,
     names: "",
@@ -170,6 +178,16 @@ export default class EmployeeList extends Vue {
       .finally(() => {
         this.isLoadingEmployeeList = false;
       });
+  }
+
+  deleteDialog(item: IEmployee): void {
+    this.openDeleteDialog = true;
+    this.employee = item;
+  }
+
+  updateListAfterDelete(data: IEmployee): void {
+    let index = this.employeeList.indexOf(data);
+    this.employeeList.splice(index, 1);
   }
 
   mounted(): void {
