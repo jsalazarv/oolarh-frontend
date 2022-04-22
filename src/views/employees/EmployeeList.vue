@@ -1,7 +1,13 @@
 <template>
   <div v-layout="'app-layout'" class="pa-4">
     <v-card elevation="0">
-      <v-toolbar flat>
+      <div v-if="!employeeList.length === true">
+        <NoTableData
+          @onRecord="redirectToCreation"
+          :btn-title="$t('employees.create.title')"
+        />
+      </div>
+      <v-toolbar flat v-if="!employeeList.length === false">
         <v-toolbar-title class="subtitle-1 text-uppercase">
           {{ $t("employees.list.title") }}
         </v-toolbar-title>
@@ -19,15 +25,8 @@
         :page.sync="pagination.current_page"
         :items-per-page="pagination.per_page"
         @page-count="pageCount = $event"
+        v-if="!employeeList.length === false"
       >
-        <template v-slot:no-data>
-          <v-col cols="12">
-            <div class="ma-10">
-              <img src="/vertical-imagotype-white-and-grey.svg" alt="" />
-            </div>
-          </v-col>
-        </template>
-
         <template v-slot:[`item.psychometric_test`]="{ item }">
           <a
             class="text-decoration-none"
@@ -71,6 +70,7 @@
         </template>
       </v-data-table>
       <v-pagination
+        v-if="!employeeList.length === false"
         v-model="pagination.current_page"
         :length="pagination.last_page"
         @input="search"
@@ -93,9 +93,10 @@ import {
 } from "@/services/EmployeeService/types";
 import { IMeta } from "@/services/types";
 import DeleteDialog from "@/views/employees/components/DeleteDialog.vue";
+import NoTableData from "@/components/NoTableData/NoTableData.vue";
 
 @Component({
-  components: { DeleteDialog },
+  components: { NoTableData, DeleteDialog },
 })
 export default class EmployeeList extends Vue {
   public employeeService = new EmployeeService();
@@ -160,6 +161,14 @@ export default class EmployeeList extends Vue {
       page: this.pagination.current_page,
       per_page: this.pagination.per_page,
     };
+  }
+
+  redirectToCreation(): void {
+    //TODO: Add route: employees:create
+    /*this.$router.push({
+      name: "",
+    });*/
+    console.log("employees:create");
   }
 
   search(): void {

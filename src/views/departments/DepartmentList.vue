@@ -1,7 +1,13 @@
 <template>
   <div v-layout="'app-layout'" class="pa-4">
     <v-card elevation="0">
-      <v-toolbar flat>
+      <div v-if="!departmentList.length === true">
+        <NoTableData
+          @onRecord="createDialog"
+          :btn-title="$t('departments.create.title')"
+        />
+      </div>
+      <v-toolbar flat v-if="!departmentList.length === false">
         <v-toolbar-title class="subtitle-1 text-uppercase">
           {{ $t("departments.list.title") }}
         </v-toolbar-title>
@@ -9,6 +15,7 @@
         <v-btn
           small
           color="success"
+          v-if="!departmentList.length === false"
           :disabled="isLoadingDepartmentList"
           @click="createDialog"
         >
@@ -16,6 +23,7 @@
         </v-btn>
       </v-toolbar>
       <v-data-table
+        v-if="!departmentList.length === false"
         class="elevation-0 mt-5"
         :headers="headers"
         :items="departmentList"
@@ -25,14 +33,6 @@
         hide-default-footer
         @page-count="pageCount = $event"
       >
-        <template v-slot:no-data>
-          <v-col cols="12">
-            <div class="ma-10">
-              <img src="/vertical-imagotype-white-and-grey.svg" alt="" />
-            </div>
-          </v-col>
-        </template>
-
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             class="mx-1"
@@ -57,6 +57,7 @@
       <v-pagination
         v-model="pagination.current_page"
         :length="pagination.last_page"
+        v-if="!departmentList.length === false"
         @input="search"
       ></v-pagination>
     </v-card>
@@ -88,9 +89,10 @@ import CreateDialog from "@/views/departments/components/CreateDialog.vue";
 import EditDialog from "@/views/departments/components/EditDialog.vue";
 import DeleteDialog from "@/views/departments/components/DeleteDialog.vue";
 import { IMeta } from "@/services/types";
+import NoTableData from "@/components/NoTableData/NoTableData.vue";
 
 @Component({
-  components: { DeleteDialog, EditDialog, CreateDialog },
+  components: { NoTableData, DeleteDialog, EditDialog, CreateDialog },
 })
 export default class DepartmentList extends Vue {
   protected departmentService = new DepartmentService();
