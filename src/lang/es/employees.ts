@@ -19,6 +19,10 @@ export default {
     name: "Nombre",
     first_surname: "Apellido paterno",
     second_surname: "Apellido materno",
+    birthday: "Fecha de nacimiento",
+    gender: "Género",
+    rfc: "RFC",
+    ssn: "Número de seguro social",
     email: "Correo electrónico",
     cellphone: "Celular",
     psychometric_test: "Examen psicométrico",
@@ -37,6 +41,11 @@ export default {
     inProcess: "En proceso",
     refused: "Rechazado",
     accepted: "Aceptado",
+    steps: {
+      generalData: "Datos generales",
+      contactInformation: "Datos de contacto",
+      employmentData: "Datos del empleo",
+    },
     dialogs: {
       delete: {
         title: "Eliminar empleado",
