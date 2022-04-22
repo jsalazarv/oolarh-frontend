@@ -1,7 +1,13 @@
 <template>
   <div v-layout="'app-layout'" class="pa-4">
     <v-card elevation="0">
-      <v-toolbar flat>
+      <div v-if="!applicantList.length === true">
+        <NoTableData
+          @onRecord="redirectToCreation"
+          :btn-title="$t('applications.create.title')"
+        />
+      </div>
+      <v-toolbar flat v-if="!applicantList.length === false">
         <v-toolbar-title class="subtitle-1 text-uppercase">
           {{ $t("applications.list.title") }}
         </v-toolbar-title>
@@ -24,15 +30,8 @@
         :items-per-page="pagination.per_page"
         hide-default-footer
         @page-count="pageCount = $event"
+        v-if="!applicantList.length === false"
       >
-        <template v-slot:no-data>
-          <v-col cols="12">
-            <div class="ma-10">
-              <img src="/vertical-imagotype-white-and-grey.svg" alt="" />
-            </div>
-          </v-col>
-        </template>
-
         <template v-slot:[`item.psychometric_test`]="{ item }">
           <a
             class="text-decoration-none"
@@ -117,6 +116,7 @@
       </v-data-table>
       <v-pagination
         v-model="pagination.current_page"
+        v-if="!applicantList.length === false"
         :length="pagination.last_page"
         @input="search"
       ></v-pagination>
@@ -141,9 +141,10 @@ import {
 } from "@/services/ApplicantService/types";
 import { IMeta } from "@/services/types";
 import DeleteDialog from "@/views/applications/components/DeleteDialog.vue";
+import NoTableData from "@/components/NoTableData/NoTableData.vue";
 
 @Component({
-  components: { DeleteDialog },
+  components: { NoTableData, DeleteDialog },
 })
 export default class ApplicationList extends Vue {
   protected applicantService = new ApplicantService();
@@ -251,6 +252,12 @@ export default class ApplicationList extends Vue {
       page: this.pagination.current_page,
       per_page: this.pagination.per_page,
     };
+  }
+
+  redirectToCreation(): void {
+    this.$router.push({
+      name: "application:create",
+    });
   }
 
   search(): void {

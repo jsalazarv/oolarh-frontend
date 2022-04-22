@@ -9,7 +9,7 @@ export default {
     title: "Editar departamento",
   },
   create: {
-    title: "",
+    title: "Registrar departamento",
   },
   delete: {
     title: "",
