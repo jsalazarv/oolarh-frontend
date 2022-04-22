@@ -28,6 +28,9 @@ export default {
   },
   labels: {
     create: "Registrar",
+    next: "Siguiente",
+    prev: "Regresar",
+    cancel: "Cancelar",
     showPsychometricTest: "Ver examen",
     showResume: "Ver curriculum",
     postulate: "Postulado",
