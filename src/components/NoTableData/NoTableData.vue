@@ -6,7 +6,13 @@
           <img src="/vertical-imagotype-white-and-grey.svg" alt="" />
         </figure>
         <div class="d-flex justify-center mt-10">
-          <v-btn elevation="0" height="50" @click="onRecord">
+          <v-btn
+            class="blue-grey--text"
+            color="baseGrey"
+            elevation="0"
+            height="50"
+            @click="onRecord"
+          >
             {{ btnTitle || $t("dictionary.createRecord") }}
           </v-btn>
         </div>
