@@ -20,6 +20,15 @@ export interface IEmployeeRequest
   rfc: string;
   ssn: string;
   resume?: File | null;
+  phone: string;
+  country: string;
+  state: string;
+  municipality: string;
+  suburb: string;
+  street: string;
+  outdoor_number: string;
+  interior_number: string;
+  postal_code: string;
 }
 
 export type IEmployeeQueryParams = IQueryParams;

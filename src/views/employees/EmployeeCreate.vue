@@ -25,24 +25,46 @@
           </div>
 
           <v-stepper-items class="mt-5" elevation="0">
-            <ValidationObserver ref="form" v-slot="{ invalid }">
-              <GeneralDataForm />
-              <v-divider class="mx-4" inset vertical></v-divider>
-              <div class="d-flex justify-end">
-                <v-btn elevation="0" class="ma-1">
-                  {{ $t("employees.labels.cancel") }}
-                </v-btn>
-                <v-btn
-                  elevation="0"
-                  class="ma-1"
-                  color="primary"
-                  @click="e1 = 2"
-                  :disabled="invalid"
-                >
-                  {{ $t("employees.labels.next") }}
-                </v-btn>
-              </div>
-            </ValidationObserver>
+            <v-stepper-content step="1">
+              <ValidationObserver ref="form" v-slot="{ invalid }">
+                <GeneralDataForm />
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <div class="d-flex justify-end">
+                  <v-btn elevation="0" class="ma-1">
+                    {{ $t("employees.labels.cancel") }}
+                  </v-btn>
+                  <v-btn
+                    elevation="0"
+                    class="ma-1"
+                    color="primary"
+                    @click="e1 = 2"
+                    :disabled="invalid"
+                  >
+                    {{ $t("employees.labels.next") }}
+                  </v-btn>
+                </div>
+              </ValidationObserver>
+            </v-stepper-content>
+            <v-stepper-content step="2">
+              <ValidationObserver ref="form" v-slot="{ invalid }">
+                <ContactDataForm />
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <div class="d-flex justify-end">
+                  <v-btn elevation="0" class="ma-1">
+                    {{ $t("employees.labels.cancel") }}
+                  </v-btn>
+                  <v-btn
+                    elevation="0"
+                    class="ma-1"
+                    color="primary"
+                    @click="e1 = 2"
+                    :disabled="invalid"
+                  >
+                    {{ $t("employees.labels.next") }}
+                  </v-btn>
+                </div>
+              </ValidationObserver>
+            </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
       </v-card-text>
@@ -53,8 +75,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import GeneralDataForm from "@/views/employees/components/partials/GeneralDataForm.vue";
+import ContactDataForm from "@/views/employees/components/partials/ContactDataForm.vue";
 @Component({
-  components: { GeneralDataForm },
+  components: { ContactDataForm, GeneralDataForm },
 })
 export default class EmployeeCreate extends Vue {
   public e1 = 1;

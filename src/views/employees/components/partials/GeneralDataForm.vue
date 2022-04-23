@@ -159,7 +159,7 @@ import { IEmployeeRequest } from "@/services/EmployeeService/types";
 
 @Component
 export default class GeneralDataForm extends Vue {
-  public employee: IEmployeeRequest = {
+  public employee: Partial<IEmployeeRequest> = {
     names: "",
     first_surname: "",
     second_surname: "",
