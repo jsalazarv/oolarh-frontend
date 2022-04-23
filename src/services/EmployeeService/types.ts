@@ -29,6 +29,9 @@ export interface IEmployeeRequest
   outdoor_number: string;
   interior_number: string;
   postal_code: string;
+  branch_office: string;
+  employee_number: number | null;
+  salary: number | null;
 }
 
 export type IEmployeeQueryParams = IQueryParams;

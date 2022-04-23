@@ -57,10 +57,45 @@
                     elevation="0"
                     class="ma-1"
                     color="primary"
-                    @click="e1 = 2"
+                    @click="e1 = 1"
+                  >
+                    {{ $t("employees.labels.prev") }}
+                  </v-btn>
+                  <v-btn
+                    elevation="0"
+                    class="ma-1"
+                    color="primary"
+                    @click="e1 = 3"
                     :disabled="invalid"
                   >
                     {{ $t("employees.labels.next") }}
+                  </v-btn>
+                </div>
+              </ValidationObserver>
+            </v-stepper-content>
+            <v-stepper-content step="3">
+              <ValidationObserver ref="form" v-slot="{ invalid }">
+                <EmploymentDataForm />
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <div class="d-flex justify-end">
+                  <v-btn elevation="0" class="ma-1">
+                    {{ $t("employees.labels.cancel") }}
+                  </v-btn>
+                  <v-btn
+                    elevation="0"
+                    class="ma-1"
+                    color="primary"
+                    @click="e1 = 2"
+                  >
+                    {{ $t("employees.labels.prev") }}
+                  </v-btn>
+                  <v-btn
+                    elevation="0"
+                    class="ma-1"
+                    color="success"
+                    :disabled="invalid"
+                  >
+                    {{ $t("employees.labels.create") }}
                   </v-btn>
                 </div>
               </ValidationObserver>
@@ -76,8 +111,9 @@
 import { Component, Vue } from "vue-property-decorator";
 import GeneralDataForm from "@/views/employees/components/partials/GeneralDataForm.vue";
 import ContactDataForm from "@/views/employees/components/partials/ContactDataForm.vue";
+import EmploymentDataForm from "@/views/employees/components/partials/EmploymentDataForm.vue";
 @Component({
-  components: { ContactDataForm, GeneralDataForm },
+  components: { EmploymentDataForm, ContactDataForm, GeneralDataForm },
 })
 export default class EmployeeCreate extends Vue {
   public e1 = 1;

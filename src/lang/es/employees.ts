@@ -35,8 +35,10 @@ export default {
     outdoor_number: "Número exterior",
     interior_number: "Número interior",
     postal_code: "Código postal",
-    psychometric_test: "Examen psicométrico",
     vacancy: "Vacante",
+    psychometric_test: "Examen psicométrico",
+    employee_number: "Número del empleado",
+    salary: "Salario",
     status: "Estado",
   },
   labels: {
