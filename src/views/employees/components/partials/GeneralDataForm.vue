@@ -79,16 +79,21 @@
           rules="required"
           v-slot="{ errors }"
         >
-          <v-text-field
+          <v-autocomplete
             dense
             outlined
             required
             autocomplete="off"
             name="gender"
             :label="$t('employees.attributes.gender')"
+            :loading="isLoadingGenderList"
+            :disabled="isLoadingGenderList"
             :error-messages="errors"
+            :items="genders"
+            item-text="name"
+            item-value="name"
             v-model="employee.gender"
-          ></v-text-field>
+          ></v-autocomplete>
         </ValidationProvider>
       </v-col>
       <v-col cols="12" md="4">
@@ -155,10 +160,15 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import GenderService from "@/services/GenderService";
 import { IEmployeeRequest } from "@/services/EmployeeService/types";
+import { IGender } from "@/services/GenderService/types";
 
 @Component
 export default class GeneralDataForm extends Vue {
+  protected genderService = new GenderService();
+  public genders: Array<IGender> = [];
+  public isLoadingGenderList = false;
   public employee: Partial<IEmployeeRequest> = {
     names: "",
     first_surname: "",
@@ -169,6 +179,23 @@ export default class GeneralDataForm extends Vue {
     ssn: "",
     resume: null,
   };
+
+  getGenders(): void {
+    this.isLoadingGenderList = true;
+    this.genderService
+      .getAll()
+      .then((response) => {
+        this.genders = response.data;
+      })
+      .catch()
+      .finally(() => {
+        this.isLoadingGenderList = false;
+      });
+  }
+
+  mounted(): void {
+    this.getGenders();
+  }
 }
 </script>
 
