@@ -13,4 +13,25 @@ export interface IEmployee {
   status: string | null;
 }
 
+export interface IEmployeeRequest
+  extends Omit<IEmployee, "id" | "fullName" | "status"> {
+  birthday: string;
+  gender: string;
+  rfc: string;
+  ssn: string;
+  resume?: File | null;
+  phone: string;
+  country: string;
+  state: string;
+  municipality: string;
+  suburb: string;
+  street: string;
+  outdoor_number: string;
+  interior_number: string;
+  postal_code: string;
+  branch_office: string;
+  employee_number: number | null;
+  salary: number | null;
+}
+
 export type IEmployeeQueryParams = IQueryParams;

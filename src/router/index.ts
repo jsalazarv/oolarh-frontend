@@ -35,6 +35,12 @@ const routes: Array<RouteConfig> = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/employees/create",
+    name: "employees:create",
+    component: () => import("@/views/employees/EmployeeCreate.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/departments",
     name: "departments:list",
     component: () => import("@/views/departments/DepartmentList.vue"),
