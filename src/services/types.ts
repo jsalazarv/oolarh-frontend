@@ -39,3 +39,10 @@ export interface IQueryParams extends Record<string, unknown> {
   page?: number;
   per_page?: number;
 }
+
+export interface IHeaders {
+  text: string;
+  value: string;
+  align?: string;
+  sortable: boolean;
+}
