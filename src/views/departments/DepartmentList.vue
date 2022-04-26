@@ -88,7 +88,7 @@ import {
 import CreateDialog from "@/views/departments/components/CreateDialog.vue";
 import EditDialog from "@/views/departments/components/EditDialog.vue";
 import DeleteDialog from "@/views/departments/components/DeleteDialog.vue";
-import { IMeta } from "@/services/types";
+import { IHeaders, IMeta } from "@/services/types";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
 
 @Component({
@@ -108,19 +108,22 @@ export default class DepartmentList extends Vue {
   public params = {
     query: "",
   };
-  public headers = [
-    {
-      text: this.$t("departments.attributes.id"),
-      value: "id",
-      sortable: false,
-    },
-    {
-      text: this.$t("departments.attributes.name"),
-      value: "name",
-      sortable: false,
-    },
-    { text: "", value: "actions", align: "end", sortable: false },
-  ];
+
+  get headers(): Array<IHeaders> {
+    return [
+      {
+        text: this.$t("departments.attributes.id") as string,
+        value: "id",
+        sortable: false,
+      },
+      {
+        text: this.$t("departments.attributes.name") as string,
+        value: "name",
+        sortable: false,
+      },
+      { text: "", value: "actions", align: "end", sortable: false },
+    ];
+  }
 
   public pagination: IMeta = {
     current_page: 1,
