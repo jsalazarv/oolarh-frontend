@@ -19,5 +19,6 @@ export interface ISidebar {
 
 export interface IAppState {
   layout: string;
+  lang: string;
   sidebar: ISidebar;
 }
