@@ -15,7 +15,7 @@
             @click="changeLocal(idiom.flag)"
           >
             <v-list-item-title :value="idiom.flag">
-              {{ idiom.flag }}
+              {{ idiom.flag.toUpperCase() }}
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -42,8 +42,8 @@ export default class Navbar extends Vue {
     },
   ];
 
-  changeLocal(locale: string): void {
-    i18n.locale = this.locale = locale;
+  changeLocal(lang: string): void {
+    this.$store.dispatch("app/changeLanguage", lang);
   }
 }
 </script>

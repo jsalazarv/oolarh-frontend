@@ -8,6 +8,7 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
+        success: "#29B882",
         baseGrey: "#f5f7f9",
       },
     },
