@@ -77,41 +77,16 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { IValidationObserver } from "@/components/types";
 import AuthService from "@/services/AuthService";
+import { IValidationObserver } from "@/components/types";
 
 @Component({})
 export default class SignInForm extends Vue {
-  /*public user = "";
-  public password = "";
-  public showPassword = false;
-  public error = "";
-  public alert = false;
-
-  async login(): Promise<void> {
-    if (await (this.$refs.form as IValidationObserver).validate()) {
-      this.$store
-        .dispatch("user/login", {
-          user: this.user,
-          password: this.password,
-        })
-        .then(() => {
-          this.$router.push({ name: "dashboard" });
-        })
-        .catch(() => {
-          this.error = "Error interno, Favor de verificar";
-          this.alert = true;
-        })
-        .finally(() => {
-          //TODO: Actions
-        });
-    }
-  }*/
   protected authService = new AuthService();
   public isAuthenticating = false;
   public authData = {
-    email: "root@oolaa.com",
-    password: "secret",
+    email: "",
+    password: "",
   };
   public user = [];
   public showPassword = false;
