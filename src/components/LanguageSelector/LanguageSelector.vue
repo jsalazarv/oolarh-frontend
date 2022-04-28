@@ -28,7 +28,7 @@ import { ILanguage } from "@/services/types";
 export default class LanguageSelector extends Vue {
   @Prop({
     type: Array,
-    default: [
+    default: () => [
       {
         flag: "es",
         name: "Español",
