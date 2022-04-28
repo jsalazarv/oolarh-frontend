@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import store from "../store/index";
+import Authenticated from "./middleware/Authenticated";
 
 Vue.use(VueRouter);
 
@@ -9,42 +9,43 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "login",
     component: () => import("@/views/loginOrRegister/LoginOrRegister.vue"),
+    meta: { public: true },
   },
   {
     path: "/dashboard",
     name: "dashboard",
     component: () => import("@/views/dashboard/Dashboard.vue"),
-    meta: { requiresAuth: true },
+    meta: { public: false },
   },
   {
     path: "/applications",
     name: "application:list",
     component: () => import("@/views/applications/ApplicationList.vue"),
-    meta: { requiresAuth: true },
+    meta: { public: false },
   },
   {
     path: "/applications/create",
     name: "application:create",
     component: () => import("@/views/applications/ApplicationCreate.vue"),
-    meta: { requiresAuth: true },
+    meta: { public: false },
   },
   {
     path: "/employees",
     name: "employees:list",
     component: () => import("@/views/employees/EmployeeList.vue"),
-    meta: { requiresAuth: true },
+    meta: { public: false },
   },
   {
     path: "/employees/create",
     name: "employees:create",
     component: () => import("@/views/employees/EmployeeCreate.vue"),
-    meta: { requiresAuth: true },
+    meta: { public: false },
   },
   {
     path: "/departments",
     name: "departments:list",
     component: () => import("@/views/departments/DepartmentList.vue"),
-    meta: { requiresAuth: true },
+    meta: { public: false },
   },
 ];
 
@@ -54,15 +55,7 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  if (
-    to.matched.some((record) => record.meta.requiresAuth) &&
-    store.state.user === null
-  ) {
-    next({ path: "/" });
-  } else {
-    next();
-  }
-});
+const BeforeMiddleware = [Authenticated];
+BeforeMiddleware.forEach((middleware) => router.beforeEach(middleware));
 
 export default router;

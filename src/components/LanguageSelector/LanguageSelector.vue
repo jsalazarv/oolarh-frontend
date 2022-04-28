@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { ILanguage } from "@/services/types";
 
 @Component
 export default class LanguageSelector extends Vue {
@@ -40,7 +41,7 @@ export default class LanguageSelector extends Vue {
       },
     ],
   })
-  languages;
+  public languages?: Array<ILanguage>;
 
   changeLocal(lang: string): void {
     this.$store.dispatch("app/changeLanguage", lang);
