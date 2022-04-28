@@ -1,6 +1,13 @@
 <template>
   <ValidationObserver ref="form" v-slot="{ invalid }">
-    <v-card flat tile class="mx-auto" width="450" color="transparent">
+    <v-card
+      flat
+      tile
+      class="mx-auto"
+      width="450"
+      color="transparent"
+      :loading="isAuthenticating"
+    >
       <div class="d-flex flex-column align-center mb-7">
         <v-img
           class="d-flex justify-center align-center"
@@ -24,13 +31,13 @@
                 autocomplete="off"
                 name="user"
                 label="Usuario"
-                v-model="user"
+                v-model="authData.email"
                 :error-messages="errors"
               ></v-text-field>
             </ValidationProvider>
             <ValidationProvider
               name="password"
-              rules="required|min:8"
+              rules="required|min:6"
               v-slot="{ errors }"
             >
               <v-text-field
@@ -40,7 +47,7 @@
                 autocomplete="off"
                 name="password"
                 label="Password"
-                v-model="password"
+                v-model="authData.password"
                 :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :error-messages="errors"
@@ -58,7 +65,7 @@
           color="primary"
           class="px-10"
           type="submit"
-          :disabled="invalid"
+          :disabled="invalid || isAuthenticating"
           @click="login"
         >
           Entrar
@@ -71,10 +78,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { IValidationObserver } from "@/components/types";
+import AuthService from "@/services/AuthService";
 
 @Component({})
 export default class SignInForm extends Vue {
-  public user = "";
+  /*public user = "";
   public password = "";
   public showPassword = false;
   public error = "";
@@ -96,6 +104,30 @@ export default class SignInForm extends Vue {
         })
         .finally(() => {
           //TODO: Actions
+        });
+    }
+  }*/
+  protected authService = new AuthService();
+  public isAuthenticating = false;
+  public authData = {
+    email: "root@oolaa.com",
+    password: "secret",
+  };
+  public user = [];
+  public showPassword = false;
+
+  async login(): Promise<void> {
+    this.isAuthenticating = true;
+    if (await (this.$refs.form as IValidationObserver).validate()) {
+      this.authService
+        .login(this.authData)
+        .then((response) => {
+          this.$store.dispatch("auth/authenticate", response);
+          this.$router.push({ name: "dashboard" });
+        })
+        .catch()
+        .finally(() => {
+          this.isAuthenticating = false;
         });
     }
   }

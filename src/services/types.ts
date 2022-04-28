@@ -46,3 +46,9 @@ export interface IHeaders {
   align?: string;
   sortable: boolean;
 }
+
+export interface ILanguage {
+  flag: string;
+  name: string;
+  img: string;
+}
