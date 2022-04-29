@@ -13,12 +13,7 @@ export interface IModuleMenu {
   defaultRoute: string;
 }
 
-export interface ISidebar {
-  menu: IModuleMenu;
-}
-
 export interface IAppState {
   layout: string;
   lang: string;
-  sidebar: ISidebar;
 }

@@ -49,6 +49,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { IModuleMenu } from "@/store/app/types";
+import appMenu from "@/components/layouts/partials/menu";
 
 @Component({})
 export default class Sidebar extends Vue {
@@ -56,7 +57,7 @@ export default class Sidebar extends Vue {
   public drawer = true;
 
   get menu(): IModuleMenu {
-    return this.$store.state.app.sidebar.menu;
+    return appMenu();
   }
 }
 </script>

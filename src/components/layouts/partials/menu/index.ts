@@ -1,7 +1,7 @@
 import { IModuleMenu } from "@/store/app/types";
 import i18n from "@/lang";
 
-const appMenu: IModuleMenu = {
+const appMenu: () => IModuleMenu = () => ({
   children: [
     {
       icon: "mdi-view-dashboard",
@@ -29,6 +29,6 @@ const appMenu: IModuleMenu = {
     },
   ],
   defaultRoute: "dashboard",
-};
+});
 
 export default appMenu;
