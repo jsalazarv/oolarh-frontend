@@ -109,6 +109,15 @@ export default class DepartmentList extends Vue {
     query: "",
   };
 
+  public pagination: IMeta = {
+    current_page: 1,
+    from: 1,
+    last_page: 1,
+    per_page: 10,
+    to: 1,
+    total: 0,
+  };
+
   get headers(): Array<IHeaders> {
     return [
       {
@@ -124,15 +133,6 @@ export default class DepartmentList extends Vue {
       { text: "", value: "actions", align: "end", sortable: false },
     ];
   }
-
-  public pagination: IMeta = {
-    current_page: 1,
-    from: 1,
-    last_page: 1,
-    per_page: 10,
-    to: 1,
-    total: 0,
-  };
 
   get filters(): IDepartmentQueryParams {
     return {
