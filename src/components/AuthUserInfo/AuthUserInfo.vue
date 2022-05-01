@@ -22,7 +22,7 @@
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item>
+        <v-list-item @click="logout">
           <v-list-item-icon>
             <v-icon>mdi-logout</v-icon>
           </v-list-item-icon>
@@ -57,10 +57,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import AuthService from "@/services/AuthService";
 import { ILanguage } from "@/services/types";
 
 @Component
 export default class AuthUserInfo extends Vue {
+  protected authService = new AuthService();
+
   @Prop({
     type: Array,
     default: () => [
@@ -84,6 +87,17 @@ export default class AuthUserInfo extends Vue {
 
   changeLocal(lang: string): void {
     this.$store.dispatch("app/changeLanguage", lang);
+  }
+
+  logout(): void {
+    this.authService
+      .logout()
+      .then(() => {
+        this.$store.dispatch("auth/resetAccess");
+        this.$router.push({ name: "login" });
+      })
+      .catch()
+      .finally();
   }
 }
 </script>

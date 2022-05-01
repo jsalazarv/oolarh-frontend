@@ -7,3 +7,7 @@ export interface ILoginResponse {
   access_token: string;
   token_type: string;
 }
+
+export interface ILogoutResponse {
+  message: string;
+}
