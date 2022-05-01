@@ -80,10 +80,7 @@ export default class AuthUserInfo extends Vue {
     ],
   })
   public languages?: Array<ILanguage>;
-
-  get currentLang(): string {
-    return this.$store.state.app.lang;
-  }
+  public currentLang = this.$store.state.app.lang;
 
   changeLocal(lang: string): void {
     this.$store.dispatch("app/changeLanguage", lang);

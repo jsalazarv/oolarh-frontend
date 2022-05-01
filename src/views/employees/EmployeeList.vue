@@ -91,7 +91,7 @@ import {
   IEmployee,
   IEmployeeQueryParams,
 } from "@/services/EmployeeService/types";
-import { IMeta } from "@/services/types";
+import { IHeaders, IMeta } from "@/services/types";
 import DeleteDialog from "@/views/employees/components/DeleteDialog.vue";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
 
@@ -118,34 +118,6 @@ export default class EmployeeList extends Vue {
   public params = {
     query: "",
   };
-  public headers = [
-    {
-      text: this.$t("employees.attributes.id"),
-      value: "id",
-      sortable: false,
-    },
-    {
-      text: this.$t("employees.attributes.name"),
-      value: "fullName",
-      sortable: false,
-    },
-    {
-      text: this.$t("employees.attributes.email"),
-      value: "email",
-      sortable: false,
-    },
-    {
-      text: this.$t("employees.attributes.cellphone"),
-      value: "cellphone",
-      sortable: false,
-    },
-    {
-      text: this.$t("employees.attributes.psychometric_test"),
-      value: "psychometric_test",
-      sortable: false,
-    },
-    { text: "", value: "actions", align: "end", sortable: false },
-  ];
   public pagination: IMeta = {
     current_page: 1,
     from: 1,
@@ -154,6 +126,37 @@ export default class EmployeeList extends Vue {
     to: 1,
     total: 0,
   };
+
+  get headers(): Array<IHeaders> {
+    return [
+      {
+        text: this.$t("employees.attributes.id") as string,
+        value: "id",
+        sortable: false,
+      },
+      {
+        text: this.$t("employees.attributes.name") as string,
+        value: "fullName",
+        sortable: false,
+      },
+      {
+        text: this.$t("employees.attributes.email") as string,
+        value: "email",
+        sortable: false,
+      },
+      {
+        text: this.$t("employees.attributes.cellphone") as string,
+        value: "cellphone",
+        sortable: false,
+      },
+      {
+        text: this.$t("employees.attributes.psychometric_test") as string,
+        value: "psychometric_test",
+        sortable: false,
+      },
+      { text: "", value: "actions", align: "end", sortable: false },
+    ];
+  }
 
   get filters(): IEmployeeQueryParams {
     return {

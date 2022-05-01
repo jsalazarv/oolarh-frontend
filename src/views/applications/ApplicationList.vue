@@ -139,7 +139,7 @@ import {
   IStatuses,
   IStatusListItem,
 } from "@/services/ApplicantService/types";
-import { IMeta } from "@/services/types";
+import { IHeaders, IMeta } from "@/services/types";
 import DeleteDialog from "@/views/applications/components/DeleteDialog.vue";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
 
@@ -172,44 +172,6 @@ export default class ApplicationList extends Vue {
   public params = {
     query: "",
   };
-  public headers = [
-    {
-      text: this.$t("applications.attributes.id"),
-      value: "id",
-      sortable: false,
-    },
-    {
-      text: this.$t("applications.attributes.name"),
-      value: "fullName",
-      sortable: false,
-    },
-    {
-      text: this.$t("applications.attributes.email"),
-      value: "email",
-      sortable: false,
-    },
-    {
-      text: this.$t("applications.attributes.cellphone"),
-      value: "cellphone",
-      sortable: false,
-    },
-    {
-      text: this.$t("applications.attributes.psychometric_test"),
-      value: "psychometric_test",
-      sortable: false,
-    },
-    {
-      text: this.$t("applications.attributes.resume"),
-      value: "resume",
-      sortable: false,
-    },
-    {
-      text: this.$t("applications.attributes.status"),
-      value: "status",
-      sortable: false,
-    },
-    { text: "", value: "actions", align: "end", sortable: false },
-  ];
   public pagination: IMeta = {
     current_page: 1,
     from: 1,
@@ -236,6 +198,47 @@ export default class ApplicationList extends Vue {
       color: "success",
     },
   };
+
+  get headers(): Array<IHeaders> {
+    return [
+      {
+        text: this.$t("applications.attributes.id") as string,
+        value: "id",
+        sortable: false,
+      },
+      {
+        text: this.$t("applications.attributes.name") as string,
+        value: "fullName",
+        sortable: false,
+      },
+      {
+        text: this.$t("applications.attributes.email") as string,
+        value: "email",
+        sortable: false,
+      },
+      {
+        text: this.$t("applications.attributes.cellphone") as string,
+        value: "cellphone",
+        sortable: false,
+      },
+      {
+        text: this.$t("applications.attributes.psychometric_test") as string,
+        value: "psychometric_test",
+        sortable: false,
+      },
+      {
+        text: this.$t("applications.attributes.resume") as string,
+        value: "resume",
+        sortable: false,
+      },
+      {
+        text: this.$t("applications.attributes.status") as string,
+        value: "status",
+        sortable: false,
+      },
+      { text: "", value: "actions", align: "end", sortable: false },
+    ];
+  }
 
   get items(): Array<IStatusListItem> {
     let statuses: Array<IStatusListItem> = [];
