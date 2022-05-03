@@ -1,4 +1,5 @@
 import { IQueryParams } from "@/services/types";
+import { ICity, ICountry, IState } from "@/services/LocationService/types";
 
 export interface IEmployee {
   id: number | null;
@@ -21,9 +22,9 @@ export interface IEmployeeRequest
   ssn: string;
   resume?: File | null;
   phone: string;
-  country: string;
-  state: string;
-  municipality: string;
+  country: Partial<ICountry>;
+  state: Partial<IState>;
+  city: Partial<ICity>;
   suburb: string;
   street: string;
   outdoor_number: string;

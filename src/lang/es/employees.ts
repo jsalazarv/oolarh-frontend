@@ -29,7 +29,7 @@ export default {
     cellphone: "Celular",
     country: "País",
     state: "Estado",
-    municipality: "Municipio",
+    city: "Ciudad",
     suburb: "Colonia",
     street: "Calle",
     outdoor_number: "Número exterior",

@@ -61,16 +61,22 @@
           rules="required"
           v-slot="{ errors }"
         >
-          <v-text-field
+          <v-autocomplete
             dense
             outlined
             required
             autocomplete="nope"
-            name="country"
+            name="countries"
+            item-text="name"
+            item-value="iso2"
+            :items="countries"
+            :disabled="isLoadingCountries"
+            :loading="isLoadingCountries"
             :label="$t('employees.attributes.country')"
             :error-messages="errors"
-            v-model="employee.country"
-          ></v-text-field>
+            v-model="employee.country.iso2"
+            @change="getStates"
+          ></v-autocomplete>
         </ValidationProvider>
       </v-col>
       <v-col cols="12" md="4">
@@ -79,34 +85,46 @@
           rules="required"
           v-slot="{ errors }"
         >
-          <v-text-field
+          <v-autocomplete
             dense
             outlined
             required
             autocomplete="nope"
             name="state"
+            item-text="name"
+            item-value="iso2"
+            :items="states"
+            :disabled="isLoadingStates || !employee.country"
+            :loading="isLoadingStates"
             :label="$t('employees.attributes.state')"
             :error-messages="errors"
-            v-model="employee.state"
-          ></v-text-field>
+            v-model="employee.state.iso2"
+            @change="getCities"
+          ></v-autocomplete>
         </ValidationProvider>
       </v-col>
       <v-col cols="12" md="4">
         <ValidationProvider
-          :name="$t('employees.attributes.municipality')"
+          :name="$t('employees.attributes.city')"
           rules="required"
           v-slot="{ errors }"
         >
-          <v-text-field
+          <v-autocomplete
             dense
             outlined
             required
             autocomplete="nope"
-            name="municipality"
-            :label="$t('employees.attributes.municipality')"
+            name="city"
+            item-text="name"
+            item-value="iso2"
+            :items="cities"
+            :disabled="isLoadingCities || !employee.state"
+            :loading="isLoadingCities"
+            :label="$t('employees.attributes.city')"
             :error-messages="errors"
-            v-model="employee.municipality"
-          ></v-text-field>
+            v-model="employee.city.name"
+            @change="getCities"
+          ></v-autocomplete>
         </ValidationProvider>
       </v-col>
       <v-col cols="12" md="4">
@@ -205,22 +223,83 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import LocationService from "@/services/LocationService";
 import { IEmployeeRequest } from "@/services/EmployeeService/types";
+import { ICity, ICountry, IState } from "@/services/LocationService/types";
 
 @Component
 export default class ContactDataForm extends Vue {
+  protected locationService = new LocationService();
+  public isLoadingCountries = false;
+  public isLoadingStates = false;
+  public isLoadingCities = false;
+  public countries: Array<ICountry> = [];
+  public states: Array<IState> = [];
+  public cities: Array<ICity> = [];
   public employee: Partial<IEmployeeRequest> = {
     email: "",
     phone: "",
-    country: "",
-    state: "",
-    municipality: "",
+    country: {
+      iso2: "",
+    },
+    state: {
+      iso2: "",
+    },
+    city: {
+      name: "",
+    },
     suburb: "",
     street: "",
     outdoor_number: "",
     interior_number: "",
     postal_code: "",
   };
+
+  getCountries(): void {
+    this.isLoadingCountries = true;
+    this.locationService
+      .getCountries()
+      .then((response) => {
+        this.countries = response.data;
+      })
+      .catch()
+      .finally(() => {
+        this.isLoadingCountries = false;
+      });
+  }
+
+  getStates(): void {
+    this.isLoadingStates = true;
+    this.locationService
+      .getStates(this.employee.country?.iso2 as Partial<ICountry>)
+      .then((response) => {
+        this.states = response.data;
+      })
+      .catch()
+      .finally(() => {
+        this.isLoadingStates = false;
+      });
+  }
+
+  getCities(): void {
+    this.isLoadingCities = true;
+    this.locationService
+      .getCities(
+        this.employee.country?.iso2 as Partial<ICountry>,
+        this.employee.state?.iso2 as Partial<IState>
+      )
+      .then((response) => {
+        this.cities = response.data;
+      })
+      .catch()
+      .finally(() => {
+        this.isLoadingCities = false;
+      });
+  }
+
+  mounted(): void {
+    this.getCountries();
+  }
 }
 </script>
 
