@@ -170,13 +170,13 @@ export default class GeneralDataForm extends Vue {
   public genders: Array<IGender> = [];
   public isLoadingGenderList = false;
   public employee: Partial<IEmployeeRequest> = {
-    names: "",
-    first_surname: "",
-    second_surname: "",
-    birthday: "",
-    gender: "",
-    rfc: "",
-    ssn: "",
+    names: "JUAN",
+    first_surname: "SALAZAR",
+    second_surname: "VAZQUEZ",
+    birthday: "08/03/94",
+    gender: "Masculino",
+    rfc: "QWERTYUIOP",
+    ssn: "1234567890",
     resume: null,
   };
 
