@@ -162,6 +162,7 @@
                   :label="$t('applications.attributes.vacancy')"
                   :error-messages="errors"
                   v-model="applicant.vacancy"
+                  @click="vacanciesDialog"
                 ></v-text-field>
               </ValidationProvider>
             </v-col>
@@ -181,6 +182,7 @@
         </v-card-text>
       </v-card>
     </ValidationObserver>
+    <VacancyListDialog :open.sync="openVacanciesDialog" />
   </div>
 </template>
 
@@ -189,6 +191,7 @@ import { Component, Vue } from "vue-property-decorator";
 import ApplicantService from "@/services/ApplicantService";
 import { IApplicant } from "@/services/ApplicantService/types";
 import { IValidationObserver } from "@/components/types";
+import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
 
 const initialApplicantData: IApplicant = {
   id: null,
@@ -202,9 +205,12 @@ const initialApplicantData: IApplicant = {
   resume: null,
 };
 
-@Component
+@Component({
+  components: { VacancyListDialog },
+})
 export default class ApplicationCreate extends Vue {
   protected applicantService = new ApplicantService();
+  public openVacanciesDialog = false;
   public isCreating = false;
   public resume = null;
   public applicant: IApplicant = {
@@ -222,6 +228,11 @@ export default class ApplicationCreate extends Vue {
   clear(): void {
     this.applicant = { ...initialApplicantData };
     (this.$refs.form as IValidationObserver).reset();
+  }
+
+  vacanciesDialog(): void {
+    console.log("OPEN VACANCIES DIALOG");
+    this.openVacanciesDialog = true;
   }
 
   createApplicant(): void {
