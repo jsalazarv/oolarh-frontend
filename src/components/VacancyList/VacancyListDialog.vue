@@ -5,13 +5,22 @@
         <v-card-title>
           {{ $t("vacancies.list.title") }}
           <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            :label="$t('vacancies.labels.search')"
-            single-line
-            hide-details
-          ></v-text-field>
+          <div style="width: 300px">
+            <v-text-field
+              solo
+              dense
+              rounded
+              clearable
+              flat
+              filled
+              single-line
+              hide-details
+              outlined
+              append-icon="mdi-magnify"
+              :label="$t('vacancies.labels.search')"
+              v-model="search"
+            ></v-text-field>
+          </div>
         </v-card-title>
         <v-data-table
           :headers="headers"
@@ -25,23 +34,20 @@
 
 <script lang="ts">
 import { Component, PropSync, Vue } from "vue-property-decorator";
+import VacancyService from "@/services/VacancyService";
 import { IHeaders } from "@/services/types";
+import { IVacancy } from "@/services/VacancyService/types";
 
 @Component
 export default class VacancyListDialog extends Vue {
+  protected vacancyService = new VacancyService();
+  public search = "";
+  public vacancyList: Array<IVacancy> = [];
   @PropSync("open")
   public isDialogOpen!: boolean;
 
-  public search = "";
-  public vacancyList = [];
-
   get headers(): Array<IHeaders> {
     return [
-      {
-        text: this.$t("vacancies.attributes.id") as string,
-        value: "id",
-        sortable: false,
-      },
       {
         text: this.$t("vacancies.attributes.name") as string,
         value: "name",
@@ -64,7 +70,7 @@ export default class VacancyListDialog extends Vue {
       },
       {
         text: this.$t("vacancies.attributes.salary") as string,
-        value: "description",
+        value: "salary",
         sortable: false,
       },
     ];
@@ -72,6 +78,20 @@ export default class VacancyListDialog extends Vue {
 
   closeDialog(): void {
     this.isDialogOpen = false;
+  }
+
+  getVacancyList(): void {
+    this.vacancyService
+      .getAll()
+      .then((response) => {
+        this.vacancyList = response.data;
+      })
+      .catch()
+      .finally();
+  }
+
+  mounted(): void {
+    this.getVacancyList();
   }
 }
 </script>

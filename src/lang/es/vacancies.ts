@@ -16,7 +16,7 @@ export default {
   },
   attributes: {
     id: "Id",
-    name: "Nombre",
+    name: "Puesto",
     description: "Descripción",
     department: "Departamento",
     branchOffice: "Sucursal",
