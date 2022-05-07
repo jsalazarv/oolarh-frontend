@@ -180,9 +180,13 @@
             </v-btn>
           </v-card-actions>
         </v-card-text>
+        {{ applicant.vacancy }}
       </v-card>
     </ValidationObserver>
-    <VacancyListDialog :open.sync="openVacanciesDialog" />
+    <VacancyListDialog
+      :open.sync="openVacanciesDialog"
+      @onSelect="selectedVacancy"
+    />
   </div>
 </template>
 
@@ -192,6 +196,7 @@ import ApplicantService from "@/services/ApplicantService";
 import { IApplicant } from "@/services/ApplicantService/types";
 import { IValidationObserver } from "@/components/types";
 import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
+import { IVacancy } from "@/services/VacancyService/types";
 
 const initialApplicantData: IApplicant = {
   id: null,
@@ -213,6 +218,7 @@ export default class ApplicationCreate extends Vue {
   public openVacanciesDialog = false;
   public isCreating = false;
   public resume = null;
+  public vacancy = {};
   public applicant: IApplicant = {
     id: null,
     names: "",
@@ -231,8 +237,12 @@ export default class ApplicationCreate extends Vue {
   }
 
   vacanciesDialog(): void {
-    console.log("OPEN VACANCIES DIALOG");
     this.openVacanciesDialog = true;
+  }
+
+  selectedVacancy(vacancy: IVacancy): void {
+    this.applicant.vacancy = vacancy.id;
+    this.vacancy = vacancy;
   }
 
   createApplicant(): void {

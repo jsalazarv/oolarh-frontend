@@ -25,6 +25,13 @@ export default {
   labels: {
     create: "Registrar",
     search: "Buscar",
-    dialogs: {},
+    dialogs: {
+      selectVacancy: {
+        actions: {
+          cancel: "Cancelar",
+          confirm: "Confirmar",
+        },
+      },
+    },
   },
 };
