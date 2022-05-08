@@ -59,6 +59,10 @@
         </template>
       </v-data-table>
     </v-card>
+    <CreateDialog
+      :open.sync="openCreateDialog"
+      @onCreate="updateListAfterCreate"
+    />
   </div>
 </template>
 
@@ -68,14 +72,16 @@ import JobService from "@/services/JobService";
 import { IJob, IJobQueryParams } from "@/services/JobService/types";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
 import { IHeaders, IMeta } from "@/services/types";
+import CreateDialog from "@/views/jobs/components/CreateDialog.vue";
 
 @Component({
-  components: { NoTableData },
+  components: { CreateDialog, NoTableData },
 })
 export default class JobList extends Vue {
   protected jobService = new JobService();
   public jobList: Array<IJob> = [];
   public isLoadingJobList = false;
+  public openCreateDialog = false;
   public params = {
     query: "",
   };
@@ -130,6 +136,22 @@ export default class JobList extends Vue {
       })
       .catch()
       .finally();
+  }
+
+  createDialog(): void {
+    this.openCreateDialog = true;
+  }
+
+  editDialog(item: IJob): void {
+    console.log("EDIT JOB", item);
+  }
+
+  deleteDialog(item: IJob): void {
+    console.log("DELETE JOB", item);
+  }
+
+  updateListAfterCreate(data: IJob): void {
+    this.jobList.push(data);
   }
 
   mounted(): void {

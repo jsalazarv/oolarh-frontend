@@ -4,5 +4,6 @@ export default {
     departments: "Departamentos",
     applications: "Postulaciones",
     employees: "Empleados",
+    jobs: "Puestos",
   },
 };
