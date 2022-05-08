@@ -52,7 +52,6 @@
             x-small
             fab
             @click="deleteDialog(item)"
-            disabled
           >
             <v-icon dark>mdi-delete</v-icon>
           </v-btn>
@@ -62,6 +61,11 @@
     <CreateDialog
       :open.sync="openCreateDialog"
       @onCreate="updateListAfterCreate"
+    />
+    <DeleteDialog
+      :open.sync="openDeleteDialog"
+      :data="job"
+      @onDelete="updateListAfterDelete"
     />
   </div>
 </template>
@@ -73,15 +77,22 @@ import { IJob, IJobQueryParams } from "@/services/JobService/types";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
 import { IHeaders, IMeta } from "@/services/types";
 import CreateDialog from "@/views/jobs/components/CreateDialog.vue";
+import DeleteDialog from "@/views/jobs/components/DeleteDialog.vue";
 
 @Component({
-  components: { CreateDialog, NoTableData },
+  components: { DeleteDialog, CreateDialog, NoTableData },
 })
 export default class JobList extends Vue {
   protected jobService = new JobService();
   public jobList: Array<IJob> = [];
   public isLoadingJobList = false;
   public openCreateDialog = false;
+  public openDeleteDialog = false;
+  public job: IJob = {
+    id: null,
+    name: "",
+    description: "",
+  };
   public params = {
     query: "",
   };
@@ -147,11 +158,17 @@ export default class JobList extends Vue {
   }
 
   deleteDialog(item: IJob): void {
-    console.log("DELETE JOB", item);
+    this.openDeleteDialog = true;
+    this.job = item;
   }
 
   updateListAfterCreate(data: IJob): void {
     this.jobList.push(data);
+  }
+
+  updateListAfterDelete(data: IJob): void {
+    let index = this.jobList.indexOf(data);
+    this.jobList.splice(index, 1);
   }
 
   mounted(): void {
