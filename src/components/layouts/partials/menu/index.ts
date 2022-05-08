@@ -27,6 +27,12 @@ const appMenu: () => IModuleMenu = () => ({
       message: null,
       route: "departments:list",
     },
+    {
+      icon: "mdi-briefcase",
+      text: i18n.t("sidebar.items.jobs") as string,
+      message: null,
+      route: "jobs:list",
+    },
   ],
   defaultRoute: "dashboard",
 });

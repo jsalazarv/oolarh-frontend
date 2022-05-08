@@ -47,6 +47,12 @@ const routes: Array<RouteConfig> = [
     component: () => import("@/views/departments/DepartmentList.vue"),
     meta: { public: false },
   },
+  {
+    path: "/jobs",
+    name: "jobs:list",
+    component: () => import("@/views/jobs/JobList.vue"),
+    meta: { public: false },
+  },
 ];
 
 const router = new VueRouter({
