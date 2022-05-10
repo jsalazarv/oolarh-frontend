@@ -42,7 +42,6 @@
             x-small
             fab
             @click="editDialog(item)"
-            disabled
           >
             <v-icon dark>mdi-account-edit</v-icon>
           </v-btn>
@@ -62,6 +61,11 @@
       :open.sync="openCreateDialog"
       @onCreate="updateListAfterCreate"
     />
+    <EditDialog
+      :open.sync="openEditDialog"
+      :data="job"
+      @onEdit="updateListAfterEdit"
+    />
     <DeleteDialog
       :open.sync="openDeleteDialog"
       :data="job"
@@ -73,20 +77,22 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import JobService from "@/services/JobService";
-import { IJob, IJobQueryParams } from "@/services/JobService/types";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
-import { IHeaders, IMeta } from "@/services/types";
 import CreateDialog from "@/views/jobs/components/CreateDialog.vue";
 import DeleteDialog from "@/views/jobs/components/DeleteDialog.vue";
+import EditDialog from "@/views/jobs/components/EditDialog.vue";
+import { IJob, IJobQueryParams } from "@/services/JobService/types";
+import { IHeaders, IMeta } from "@/services/types";
 
 @Component({
-  components: { DeleteDialog, CreateDialog, NoTableData },
+  components: { EditDialog, DeleteDialog, CreateDialog, NoTableData },
 })
 export default class JobList extends Vue {
   protected jobService = new JobService();
   public jobList: Array<IJob> = [];
   public isLoadingJobList = false;
   public openCreateDialog = false;
+  public openEditDialog = false;
   public openDeleteDialog = false;
   public job: IJob = {
     id: null,
@@ -154,7 +160,8 @@ export default class JobList extends Vue {
   }
 
   editDialog(item: IJob): void {
-    console.log("EDIT JOB", item);
+    this.openEditDialog = true;
+    this.job = { ...item };
   }
 
   deleteDialog(item: IJob): void {
@@ -164,6 +171,11 @@ export default class JobList extends Vue {
 
   updateListAfterCreate(data: IJob): void {
     this.jobList.push(data);
+  }
+
+  updateListAfterEdit(data: IJob): void {
+    let index = this.jobList.findIndex((element) => element.id === data.id);
+    this.jobList.splice(index, 1, data);
   }
 
   updateListAfterDelete(data: IJob): void {
