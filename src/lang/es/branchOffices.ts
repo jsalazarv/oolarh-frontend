@@ -31,6 +31,18 @@ export default {
   },
   labels: {
     create: "Registrar",
-    dialogs: {},
+    dialogs: {
+      delete: {
+        title: "Eliminar postulante",
+        labels: {
+          areYouSureYouWantToDelete: "Estas seguro de eliminar a",
+          fromTheListOfBranchOffices: "de la lista de sucursales",
+        },
+        actions: {
+          dismiss: "Cancelar",
+          delete: "Eliminar",
+        },
+      },
+    },
   },
 };

@@ -1,5 +1,5 @@
 import BaseService from "@/services/BaseService";
-import { IPaginatedResponse } from "@/services/types";
+import { INoContentResponse, IPaginatedResponse } from "@/services/types";
 import {
   IBranchOffices,
   IBranchOfficesQueryParams,
@@ -10,5 +10,9 @@ export default class BranchOfficesService extends BaseService {
     query: IBranchOfficesQueryParams
   ): IPaginatedResponse<Array<IBranchOffices>> {
     return this.client.get("/branch-offices", query);
+  }
+
+  delete(branchOffices: IBranchOffices): INoContentResponse {
+    return this.client.delete<void>(`/branch-offices/${branchOffices.id}`);
   }
 }
