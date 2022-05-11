@@ -56,6 +56,12 @@
           </v-btn>
         </template>
       </v-data-table>
+      <v-pagination
+        v-model="pagination.current_page"
+        v-if="!jobList.length === false"
+        :length="pagination.last_page"
+        @input="search"
+      ></v-pagination>
     </v-card>
     <CreateDialog
       :open.sync="openCreateDialog"
