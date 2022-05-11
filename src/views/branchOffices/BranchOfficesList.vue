@@ -55,7 +55,6 @@
             color="error"
             x-small
             fab
-            disabled
             @click="deleteDialog(item)"
           >
             <v-icon dark>mdi-delete</v-icon>
@@ -69,6 +68,11 @@
         @input="search"
       ></v-pagination>
     </v-card>
+    <DeleteDialog
+      :open.sync="openDeleteDialog"
+      :data="branchOffices"
+      @onDelete="updateListAfterDelete"
+    />
   </div>
 </template>
 
@@ -79,14 +83,37 @@ import NoTableData from "@/components/NoTableData/NoTableData.vue";
 import { IBranchOffices } from "@/services/BranchOfficesService/types";
 import { IHeaders, IMeta } from "@/services/types";
 import { IApplicantQueryParams } from "@/services/ApplicantService/types";
+import DeleteDialog from "@/views/branchOffices/components/DeleteDialog.vue";
 
 @Component({
-  components: { NoTableData },
+  components: { DeleteDialog, NoTableData },
 })
 export default class BranchOfficesList extends Vue {
   protected branchOfficeService = new BranchOfficesService();
   public branchOfficesList: Array<IBranchOffices> = [];
   public isLoadingBranchOfficesList = false;
+  public openDeleteDialog = false;
+  public branchOffices: IBranchOffices = {
+    id: null,
+    name: "",
+    contact: {
+      id: null,
+      email: "",
+      phone: "",
+      cellphone: "",
+    },
+    address: {
+      id: null,
+      country: "",
+      state: "",
+      municipality: "",
+      suburb: "",
+      street: "",
+      outdoor_number: "",
+      interior_number: "",
+      postal_code: null,
+    },
+  };
   public params = {
     query: "",
   };
@@ -163,6 +190,16 @@ export default class BranchOfficesList extends Vue {
       .finally(() => {
         this.isLoadingBranchOfficesList = false;
       });
+  }
+
+  deleteDialog(item: IBranchOffices): void {
+    this.openDeleteDialog = true;
+    this.branchOffices = item;
+  }
+
+  updateListAfterDelete(data: IBranchOffices): void {
+    let index = this.branchOfficesList.indexOf(data);
+    this.branchOfficesList.splice(index, 1);
   }
 
   mounted(): void {
