@@ -48,6 +48,12 @@ const routes: Array<RouteConfig> = [
     meta: { public: false },
   },
   {
+    path: "/branch-offices/create",
+    name: "branchOffices:create",
+    component: () => import("@/views/branchOffices/BranchOfficesCreate.vue"),
+    meta: { public: false },
+  },
+  {
     path: "/departments",
     name: "departments:list",
     component: () => import("@/views/departments/DepartmentList.vue"),

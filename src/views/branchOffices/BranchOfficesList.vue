@@ -2,7 +2,10 @@
   <div v-layout="'app-layout'" class="pa-4">
     <v-card elevation="0">
       <div v-if="!branchOfficesList.length === true">
-        <NoTableData :btn-title="$t('branchOffices.create.title')" />
+        <NoTableData
+          @onRecord="redirectToCreation"
+          :btn-title="$t('branchOffices.create.title')"
+        />
       </div>
       <v-toolbar flat v-if="!branchOfficesList.length === false">
         <v-toolbar-title class="subtitle-1 text-uppercase">
@@ -13,6 +16,7 @@
           small
           color="success"
           v-if="!branchOfficesList.length === false"
+          :to="{ name: 'branchOffices:create' }"
           :disabled="isLoadingBranchOfficesList"
         >
           {{ $t("departments.labels.create") }}
@@ -173,6 +177,12 @@ export default class BranchOfficesList extends Vue {
       page: this.pagination.current_page,
       per_page: this.pagination.per_page,
     };
+  }
+
+  redirectToCreation(): void {
+    this.$router.push({
+      name: "branchOffices:create",
+    });
   }
 
   search(): void {
