@@ -123,7 +123,6 @@
             :label="$t('employees.attributes.city')"
             :error-messages="errors"
             v-model="employee.city.name"
-            @change="getCities"
           ></v-autocomplete>
         </ValidationProvider>
       </v-col>

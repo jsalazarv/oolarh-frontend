@@ -26,4 +26,19 @@ export interface IBranchOffices {
   address: IAddress;
 }
 
+export interface IBranchOfficesRequest {
+  name: string;
+  email: string;
+  phone: string;
+  cellphone: string;
+  country: string;
+  state: string;
+  municipality: string;
+  suburb: string;
+  street: string;
+  outdoor_number: string;
+  interior_number: string;
+  postal_code: number | null;
+}
+
 export type IBranchOfficesQueryParams = IQueryParams;
