@@ -32,6 +32,9 @@ export default {
   labels: {
     create: "Registrar",
     edit: "Editar",
+    branchInformation: "Información de la sucursal",
+    contactInformation: "Información de contacto",
+    locationInformation: "Información de ubicación",
     dialogs: {
       delete: {
         title: "Eliminar postulante",
