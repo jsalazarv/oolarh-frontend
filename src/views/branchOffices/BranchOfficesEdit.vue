@@ -11,7 +11,9 @@
         <v-card-text>
           <v-btn small text disabled color="primary" class="ml-2">
             <v-icon>mdi-domain</v-icon>
-            <span class="ml-3">Información de la sucursal</span>
+            <span class="ml-3">
+              {{ $t("branchOffices.labels.branchInformation") }}
+            </span>
           </v-btn>
           <v-row class="rounded mb-2 mx-0" style="border: 1px solid lightgrey">
             <v-col cols="12" md="4">
@@ -37,7 +39,9 @@
           </v-row>
           <v-btn small text disabled color="primary" class="ml-2">
             <v-icon>mdi-card-account-phone</v-icon>
-            <span class="ml-3">Información de contacto</span>
+            <span class="ml-3">
+              {{ $t("branchOffices.labels.contactInformation") }}
+            </span>
           </v-btn>
           <v-row class="rounded mb-2 mx-0" style="border: 1px solid lightgrey">
             <v-col cols="12" md="4">
@@ -103,7 +107,9 @@
           </v-row>
           <v-btn small text disabled color="primary" class="ml-2">
             <v-icon>mdi-office-building-marker</v-icon>
-            <span class="ml-3">Información de ubicación</span>
+            <span class="ml-3">
+              {{ $t("branchOffices.labels.locationInformation") }}
+            </span>
           </v-btn>
           <v-row class="rounded mb-2 mx-0" style="border: 1px solid lightgrey">
             <v-col cols="12" md="3">

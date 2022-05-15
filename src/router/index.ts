@@ -60,6 +60,12 @@ const routes: Array<RouteConfig> = [
     meta: { public: false },
   },
   {
+    path: "/branch-offices/:id/show",
+    name: "branchOffices:show",
+    component: () => import("@/views/branchOffices/BranchOfficesShow.vue"),
+    meta: { public: false },
+  },
+  {
     path: "/departments",
     name: "departments:list",
     component: () => import("@/views/departments/DepartmentList.vue"),

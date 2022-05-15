@@ -51,8 +51,10 @@
             color="primary"
             x-small
             fab
-            disabled
-            @click="showDialog(item)"
+            :to="{
+              name: 'branchOffices:show',
+              params: { id: item.id },
+            }"
           >
             <v-icon dark>mdi-account-eye</v-icon>
           </v-btn>
