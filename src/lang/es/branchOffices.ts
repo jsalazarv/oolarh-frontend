@@ -31,6 +31,7 @@ export default {
   },
   labels: {
     create: "Registrar",
+    edit: "Editar",
     dialogs: {
       delete: {
         title: "Eliminar postulante",

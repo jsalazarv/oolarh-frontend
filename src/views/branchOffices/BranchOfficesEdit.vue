@@ -4,7 +4,7 @@
       <v-card class="pa-4" elevation="0">
         <v-toolbar flat>
           <v-toolbar-title class="subtitle-1 text-uppercase">
-            {{ $t("branchOffices.create.title") }}
+            {{ $t("branchOffices.edit.title") }}
           </v-toolbar-title>
         </v-toolbar>
 
@@ -26,8 +26,9 @@
                   required
                   autocomplete="off"
                   name="name"
-                  :disabled="isCreating"
+                  :disabled="isEditing"
                   :label="$t('branchOffices.attributes.name')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.name"
                 ></v-text-field>
@@ -51,8 +52,9 @@
                   required
                   autocomplete="off"
                   name="email"
-                  :disabled="isCreating"
+                  :disabled="isEditing || isLoadingBranchOfficesData"
                   :label="$t('branchOffices.attributes.email')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.email"
                 ></v-text-field>
@@ -70,8 +72,9 @@
                   required
                   autocomplete="off"
                   name="phone"
-                  :disabled="isCreating"
+                  :disabled="isEditing || isLoadingBranchOfficesData"
                   :label="$t('branchOffices.attributes.phone')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.phone"
                 ></v-text-field>
@@ -89,8 +92,9 @@
                   required
                   autocomplete="off"
                   name="cellphone"
-                  :disabled="isCreating"
+                  :disabled="isEditing || isLoadingBranchOfficesData"
                   :label="$t('branchOffices.attributes.cellphone')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.cellphone"
                 ></v-text-field>
@@ -117,12 +121,16 @@
                   item-text="name"
                   item-value="iso2"
                   :items="countries"
-                  :disabled="isLoadingCountries || isCreating"
-                  :loading="isLoadingCountries"
+                  :disabled="
+                    isLoadingCountries ||
+                    isLoadingBranchOfficesData ||
+                    isEditing
+                  "
+                  :loading="isLoadingCountries || isLoadingBranchOfficesData"
                   :label="$t('branchOffices.attributes.country')"
                   :error-messages="errors"
                   v-model="branchOffices.country"
-                  @change="getStates"
+                  @change="getStates(branchOffices.country)"
                 ></v-autocomplete>
               </ValidationProvider>
             </v-col>
@@ -142,13 +150,18 @@
                   item-value="iso2"
                   :items="states"
                   :disabled="
-                    isLoadingStates || !branchOffices.country || isCreating
+                    isLoadingStates ||
+                    !branchOffices.country ||
+                    isLoadingBranchOfficesData ||
+                    isEditing
                   "
-                  :loading="isLoadingStates"
+                  :loading="isLoadingStates || isLoadingBranchOfficesData"
                   :label="$t('branchOffices.attributes.state')"
                   :error-messages="errors"
                   v-model="branchOffices.state"
-                  @change="getCities"
+                  @change="
+                    getCities(branchOffices.country, branchOffices.state)
+                  "
                 ></v-autocomplete>
               </ValidationProvider>
             </v-col>
@@ -168,9 +181,12 @@
                   item-value="iso2"
                   :items="cities"
                   :disabled="
-                    isLoadingCities || !branchOffices.state || isCreating
+                    isLoadingCities ||
+                    !branchOffices.state ||
+                    isLoadingBranchOfficesData ||
+                    isEditing
                   "
-                  :loading="isLoadingCities"
+                  :loading="isLoadingCities || isLoadingBranchOfficesData"
                   :label="$t('branchOffices.attributes.municipality')"
                   :error-messages="errors"
                   v-model="branchOffices.municipality"
@@ -189,8 +205,9 @@
                   required
                   autocomplete="off"
                   name="suburb"
-                  :disabled="isCreating"
+                  :disabled="isLoadingBranchOfficesData || isEditing"
                   :label="$t('branchOffices.attributes.suburb')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.suburb"
                 ></v-text-field>
@@ -208,8 +225,9 @@
                   required
                   autocomplete="nope"
                   name="street"
-                  :disabled="isCreating"
+                  :disabled="isLoadingBranchOfficesData || isEditing"
                   :label="$t('branchOffices.attributes.street')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.street"
                 ></v-text-field>
@@ -227,8 +245,9 @@
                   required
                   autocomplete="nope"
                   name="outdoor_number"
-                  :disabled="isCreating"
+                  :disabled="isLoadingBranchOfficesData || isEditing"
                   :label="$t('branchOffices.attributes.outdoor_number')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.outdoor_number"
                 ></v-text-field>
@@ -246,8 +265,9 @@
                   required
                   autocomplete="nope"
                   name="interior_number"
-                  :disabled="isCreating"
+                  :disabled="isLoadingBranchOfficesData || isEditing"
                   :label="$t('branchOffices.attributes.interior_number')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.interior_number"
                 ></v-text-field>
@@ -265,8 +285,9 @@
                   required
                   autocomplete="nope"
                   name="postal_code"
-                  :disabled="isCreating"
+                  :disabled="isLoadingBranchOfficesData || isEditing"
                   :label="$t('branchOffices.attributes.postal_code')"
+                  :loading="isLoadingBranchOfficesData"
                   :error-messages="errors"
                   v-model="branchOffices.postal_code"
                 ></v-text-field>
@@ -280,11 +301,11 @@
             small
             color="success"
             type="submit"
-            :disabled="invalid || isCreating"
-            :loading="isCreating"
-            @click="createBranchOffices"
+            :disabled="invalid || isLoadingBranchOfficesData || isEditing"
+            :loading="isLoadingBranchOfficesData || isEditing"
+            @click="editBranchOffices"
           >
-            {{ $t("branchOffices.labels.create") }}
+            {{ $t("branchOffices.labels.edit") }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -295,34 +316,19 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { IBranchOfficesRequest } from "@/services/BranchOfficesService/types";
-import { ICity, ICountry, IState } from "@/services/LocationService/types";
 import LocationService from "@/services/LocationService";
 import BranchOfficesService from "@/services/BranchOfficesService";
-import { IValidationObserver } from "@/components/types";
-
-const initialBranchOfficesData: IBranchOfficesRequest = {
-  name: "",
-  email: "",
-  phone: "",
-  cellphone: "",
-  country: "",
-  state: "",
-  municipality: "",
-  suburb: "",
-  street: "",
-  outdoor_number: "",
-  interior_number: "",
-  postal_code: null,
-};
+import { ICity, ICountry, IState } from "@/services/LocationService/types";
 
 @Component
-export default class BranchOfficesCreate extends Vue {
+export default class BranchOfficesEdit extends Vue {
   protected locationService = new LocationService();
   protected branchOfficesService = new BranchOfficesService();
   public isLoadingCountries = false;
   public isLoadingStates = false;
   public isLoadingCities = false;
-  public isCreating = false;
+  public isLoadingBranchOfficesData = false;
+  public isEditing = false;
   public branchOffices: IBranchOfficesRequest = {
     name: "",
     email: "",
@@ -354,10 +360,10 @@ export default class BranchOfficesCreate extends Vue {
       });
   }
 
-  getStates(): void {
+  getStates(country: string): void {
     this.isLoadingStates = true;
     this.locationService
-      .getStates(this.branchOffices.country as Partial<ICountry>)
+      .getStates(country as Partial<ICountry>)
       .then((response) => {
         this.states = response.data;
       })
@@ -367,13 +373,10 @@ export default class BranchOfficesCreate extends Vue {
       });
   }
 
-  getCities(): void {
+  getCities(country: string, state: string): void {
     this.isLoadingCities = true;
     this.locationService
-      .getCities(
-        this.branchOffices.country as Partial<ICountry>,
-        this.branchOffices.state as Partial<IState>
-      )
+      .getCities(country as Partial<ICountry>, state as Partial<IState>)
       .then((response) => {
         this.cities = response.data;
       })
@@ -383,29 +386,51 @@ export default class BranchOfficesCreate extends Vue {
       });
   }
 
-  clear(): void {
-    this.branchOffices = { ...initialBranchOfficesData };
-    (this.$refs.form as IValidationObserver).reset();
-  }
-
-  createBranchOffices(): void {
-    this.isCreating = true;
+  getBranchOfficesById(): void {
+    this.isLoadingBranchOfficesData = true;
     this.branchOfficesService
-      .create(this.branchOffices)
+      .findById(this.$route.params.id)
       .then((response) => {
-        if (response.data) {
-          this.clear();
-          this.$router.push({
-            name: "branchOffices:list",
-          });
-        }
+        this.branchOffices = {
+          name: response.data.name,
+          email: response.data.contact.email,
+          phone: response.data.contact.phone,
+          cellphone: response.data.contact.cellphone,
+          country: response.data.address.country,
+          state: response.data.address.state,
+          municipality: response.data.address.municipality,
+          suburb: response.data.address.suburb,
+          street: response.data.address.street,
+          outdoor_number: response.data.address.outdoor_number,
+          interior_number: response.data.address.interior_number,
+          postal_code: response.data.address.postal_code,
+        };
+        this.getStates(response.data.address.country);
+        this.getCities(
+          response.data.address.country,
+          response.data.address.state
+        );
       })
       .catch()
-      .finally();
+      .finally(() => {
+        this.isLoadingBranchOfficesData = false;
+      });
+  }
+
+  editBranchOffices(): void {
+    this.isEditing = true;
+    this.branchOfficesService
+      .update(parseInt(this.$route.params.id), this.branchOffices)
+      .then()
+      .catch()
+      .finally(() => {
+        this.isEditing = false;
+      });
   }
 
   mounted(): void {
     this.getCountries();
+    this.getBranchOfficesById();
   }
 }
 </script>
