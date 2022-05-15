@@ -9,7 +9,6 @@ import {
   IBranchOfficesQueryParams,
   IBranchOfficesRequest,
 } from "@/services/BranchOfficesService/types";
-import { serialize } from "object-to-formdata";
 
 export default class BranchOfficesService extends BaseService {
   getAll(
@@ -18,19 +17,22 @@ export default class BranchOfficesService extends BaseService {
     return this.client.get("/branch-offices", query);
   }
 
-  create(
-    branchOffices: IBranchOfficesRequest
-  ): IPlainResponse<IBranchOfficesRequest> {
-    const body = serialize(branchOffices, { indices: true });
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-    return this.client.post(`/branch-offices`, body, config);
+  create(data: IBranchOfficesRequest): IPlainResponse<IBranchOfficesRequest> {
+    return this.client.post(`/branch-offices`, data);
   }
 
-  delete(branchOffices: IBranchOffices): INoContentResponse {
-    return this.client.delete<void>(`/branch-offices/${branchOffices.id}`);
+  findById(id: string, params = {}): IPlainResponse<IBranchOffices> {
+    return this.client.get(`/branch-offices/${id}/`, params);
+  }
+
+  update(
+    id: number,
+    data: IBranchOfficesRequest
+  ): IPlainResponse<IBranchOffices> {
+    return this.client.put(`/branch-offices/${id}`, data);
+  }
+
+  delete(id: number): INoContentResponse {
+    return this.client.delete<void>(`/branch-offices/${id}`);
   }
 }

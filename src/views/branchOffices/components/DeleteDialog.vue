@@ -68,7 +68,7 @@ export default class DeleteDialog extends Vue {
   deleteBranchOffices(data: IBranchOffices): void {
     this.isDeleting = true;
     this.branchOfficesService
-      .delete(data)
+      .delete(data.id as number)
       .then(() => {
         this.onDelete(data);
       })

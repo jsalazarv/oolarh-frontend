@@ -39,8 +39,10 @@
             color="primary"
             x-small
             fab
-            disabled
-            @click="editDialog(item)"
+            :to="{
+              name: 'branchOffices:edit',
+              params: { id: item.id },
+            }"
           >
             <v-icon dark>mdi-account-edit</v-icon>
           </v-btn>
