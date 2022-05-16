@@ -44,6 +44,7 @@ export interface IHeaders {
   text: string;
   value: string;
   align?: string;
+  width?: string;
   sortable: boolean;
 }
 

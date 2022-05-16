@@ -41,6 +41,13 @@ export default {
           edit: "Editar",
         },
       },
+      show: {
+        title: "Información de la vacante",
+        actions: {
+          dismiss: "Cancelar",
+          edit: "Editar",
+        },
+      },
       delete: {
         title: "Eliminar vacante",
         labels: {
