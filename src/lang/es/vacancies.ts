@@ -19,11 +19,21 @@ export default {
     name: "Nombre",
     description: "Descripción",
     salary: "Salario",
+    branch_office: "Sucursal",
+    department: "Departamento",
+    job: "Puesto",
   },
   labels: {
     create: "Registrar",
     edit: "Editar",
     dialogs: {
+      create: {
+        title: "Registrar vacante",
+        actions: {
+          dismiss: "Cancelar",
+          create: "Registrar",
+        },
+      },
       delete: {
         title: "Eliminar vacante",
         labels: {

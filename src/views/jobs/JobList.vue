@@ -152,13 +152,16 @@ export default class JobList extends Vue {
   }
 
   getJobList(filters = {}): void {
+    this.isLoadingJobList = true;
     this.jobService
       .getAll(filters)
       .then((response) => {
         this.jobList = response.data;
       })
       .catch()
-      .finally();
+      .finally(() => {
+        this.isLoadingJobList = false;
+      });
   }
 
   createDialog(): void {

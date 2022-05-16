@@ -13,8 +13,8 @@
           small
           color="success"
           v-if="!vacancyList.length === false"
-          :to="{ name: 'vacancies:create' }"
           :disabled="isLoadingVacancyList"
+          @click="createDialog"
         >
           {{ $t("departments.labels.create") }}
         </v-btn>
@@ -56,6 +56,10 @@
         @input="search"
       ></v-pagination>
     </v-card>
+    <CreateDialog
+      :open.sync="openCreateDialog"
+      @onCreate="updateListAfterCreate"
+    />
     <DeleteDialog
       :open.sync="openDeleteDialog"
       :data="vacancies"
@@ -74,14 +78,16 @@ import {
 } from "@/services/VacancyService/types";
 import { IHeaders, IMeta } from "@/services/types";
 import DeleteDialog from "@/views/vacancies/components/DeleteDialog.vue";
+import CreateDialog from "@/views/vacancies/components/CreateDialog.vue";
 
 @Component({
-  components: { DeleteDialog, NoTableData },
+  components: { CreateDialog, DeleteDialog, NoTableData },
 })
 export default class VacancyList extends Vue {
   protected vacancyService = new VacancyService();
   public vacancyList: Array<IVacancy> = [];
   public isLoadingVacancyList = false;
+  public openCreateDialog = false;
   public openDeleteDialog = false;
   public vacancies: IVacancy = {
     id: null,
@@ -159,9 +165,17 @@ export default class VacancyList extends Vue {
       });
   }
 
+  createDialog(): void {
+    this.openCreateDialog = true;
+  }
+
   deleteDialog(item: IVacancy): void {
     this.openDeleteDialog = true;
     this.vacancies = item;
+  }
+
+  updateListAfterCreate(data: IVacancy): void {
+    this.vacancyList.push(data);
   }
 
   updateListAfterDelete(data: IVacancy): void {
