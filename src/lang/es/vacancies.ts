@@ -34,6 +34,13 @@ export default {
           create: "Registrar",
         },
       },
+      edit: {
+        title: "Editar vacante",
+        actions: {
+          dismiss: "Cancelar",
+          edit: "Editar",
+        },
+      },
       delete: {
         title: "Eliminar vacante",
         labels: {

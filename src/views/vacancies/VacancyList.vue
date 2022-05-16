@@ -32,7 +32,13 @@
         @page-count="pageCount = $event"
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn class="mx-1" color="primary" x-small fab disabled>
+          <v-btn
+            class="mx-1"
+            color="primary"
+            x-small
+            fab
+            @click="editDialog(item)"
+          >
             <v-icon dark>mdi-account-edit</v-icon>
           </v-btn>
           <v-btn class="mx-1" color="primary" x-small fab disabled>
@@ -60,6 +66,11 @@
       :open.sync="openCreateDialog"
       @onCreate="updateListAfterCreate"
     />
+    <EditDialog
+      :open.sync="openEditDialog"
+      :data="vacancies"
+      @onEdit="updateListAfterEdit"
+    />
     <DeleteDialog
       :open.sync="openDeleteDialog"
       :data="vacancies"
@@ -79,23 +90,48 @@ import {
 import { IHeaders, IMeta } from "@/services/types";
 import DeleteDialog from "@/views/vacancies/components/DeleteDialog.vue";
 import CreateDialog from "@/views/vacancies/components/CreateDialog.vue";
+import EditDialog from "@/views/vacancies/components/EditDialog.vue";
 
 @Component({
-  components: { CreateDialog, DeleteDialog, NoTableData },
+  components: { EditDialog, CreateDialog, DeleteDialog, NoTableData },
 })
 export default class VacancyList extends Vue {
   protected vacancyService = new VacancyService();
   public vacancyList: Array<IVacancy> = [];
   public isLoadingVacancyList = false;
   public openCreateDialog = false;
+  public openEditDialog = false;
   public openDeleteDialog = false;
   public vacancies: IVacancy = {
     id: null,
     name: "",
     description: "",
     salary: "",
-    branch_office: null,
-    department: null,
+    branch_office: {
+      id: null,
+      name: "",
+      contact: {
+        id: null,
+        email: "",
+        phone: "",
+        cellphone: "",
+      },
+      address: {
+        id: null,
+        country: "",
+        state: "",
+        municipality: "",
+        suburb: "",
+        street: "",
+        outdoor_number: "",
+        interior_number: "",
+        postal_code: null,
+      },
+    },
+    department: {
+      id: null,
+      name: "",
+    },
     job: {
       id: null,
       name: "",
@@ -169,6 +205,11 @@ export default class VacancyList extends Vue {
     this.openCreateDialog = true;
   }
 
+  editDialog(item: IVacancy): void {
+    this.openEditDialog = true;
+    this.vacancies = { ...item };
+  }
+
   deleteDialog(item: IVacancy): void {
     this.openDeleteDialog = true;
     this.vacancies = item;
@@ -176,6 +217,11 @@ export default class VacancyList extends Vue {
 
   updateListAfterCreate(data: IVacancy): void {
     this.vacancyList.push(data);
+  }
+
+  updateListAfterEdit(data: IVacancy): void {
+    let index = this.vacancyList.findIndex((element) => element.id === data.id);
+    this.vacancyList.splice(index, 1, data);
   }
 
   updateListAfterDelete(data: IVacancy): void {
