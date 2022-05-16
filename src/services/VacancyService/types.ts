@@ -11,4 +11,14 @@ export interface IVacancy {
   job: IJob;
 }
 
+export interface IVacancyRequest {
+  id: number | null;
+  name: string;
+  description: string;
+  salary: string;
+  branch_office_id: number | null;
+  department_id: number | null;
+  job_id: number | null;
+}
+
 export type IVacanciesQueryParams = IQueryParams;
