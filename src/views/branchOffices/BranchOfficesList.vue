@@ -88,9 +88,11 @@
 import { Component, Vue } from "vue-property-decorator";
 import BranchOfficesService from "@/services/BranchOfficesService";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
-import { IBranchOffices } from "@/services/BranchOfficesService/types";
+import {
+  IBranchOffices,
+  IBranchOfficesQueryParams,
+} from "@/services/BranchOfficesService/types";
 import { IHeaders, IMeta } from "@/services/types";
-import { IApplicantQueryParams } from "@/services/ApplicantService/types";
 import DeleteDialog from "@/views/branchOffices/components/DeleteDialog.vue";
 
 @Component({
@@ -175,7 +177,7 @@ export default class BranchOfficesList extends Vue {
     ];
   }
 
-  get filters(): IApplicantQueryParams {
+  get filters(): IBranchOfficesQueryParams {
     return {
       ...this.params,
       page: this.pagination.current_page,

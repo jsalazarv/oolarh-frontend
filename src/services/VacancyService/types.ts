@@ -1,4 +1,5 @@
 import { IJob } from "@/services/JobService/types";
+import { IQueryParams } from "@/services/types";
 
 export interface IVacancy {
   id: number | null;
@@ -9,3 +10,5 @@ export interface IVacancy {
   department: number | null;
   job: IJob;
 }
+
+export type IVacanciesQueryParams = IQueryParams;

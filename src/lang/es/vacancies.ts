@@ -14,7 +14,12 @@ export default {
   delete: {
     title: "",
   },
-  attributes: {},
+  attributes: {
+    id: "Id",
+    name: "Nombre",
+    description: "Descripción",
+    salary: "Salario",
+  },
   labels: {
     create: "Registrar",
     edit: "Editar",
