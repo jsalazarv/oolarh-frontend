@@ -41,7 +41,13 @@
           >
             <v-icon dark>mdi-account-edit</v-icon>
           </v-btn>
-          <v-btn class="mx-1" color="primary" x-small fab disabled>
+          <v-btn
+            class="mx-1"
+            color="primary"
+            x-small
+            fab
+            @click="showDialog(item)"
+          >
             <v-icon dark>mdi-account-eye</v-icon>
           </v-btn>
           <v-btn
@@ -71,6 +77,7 @@
       :data="vacancies"
       @onEdit="updateListAfterEdit"
     />
+    <ShowDialog :open.sync="openShowDialog" :data="vacancies" />
     <DeleteDialog
       :open.sync="openDeleteDialog"
       :data="vacancies"
@@ -91,9 +98,16 @@ import { IHeaders, IMeta } from "@/services/types";
 import DeleteDialog from "@/views/vacancies/components/DeleteDialog.vue";
 import CreateDialog from "@/views/vacancies/components/CreateDialog.vue";
 import EditDialog from "@/views/vacancies/components/EditDialog.vue";
+import ShowDialog from "@/views/vacancies/components/ShowDialog.vue";
 
 @Component({
-  components: { EditDialog, CreateDialog, DeleteDialog, NoTableData },
+  components: {
+    ShowDialog,
+    EditDialog,
+    CreateDialog,
+    DeleteDialog,
+    NoTableData,
+  },
 })
 export default class VacancyList extends Vue {
   protected vacancyService = new VacancyService();
@@ -101,6 +115,7 @@ export default class VacancyList extends Vue {
   public isLoadingVacancyList = false;
   public openCreateDialog = false;
   public openEditDialog = false;
+  public openShowDialog = false;
   public openDeleteDialog = false;
   public vacancies: IVacancy = {
     id: null,
@@ -165,6 +180,7 @@ export default class VacancyList extends Vue {
       {
         text: this.$t("vacancies.attributes.description") as string,
         value: "description",
+        width: "50%",
         sortable: false,
       },
       {
@@ -207,6 +223,11 @@ export default class VacancyList extends Vue {
 
   editDialog(item: IVacancy): void {
     this.openEditDialog = true;
+    this.vacancies = { ...item };
+  }
+
+  showDialog(item: IVacancy): void {
+    this.openShowDialog = true;
     this.vacancies = { ...item };
   }
 
