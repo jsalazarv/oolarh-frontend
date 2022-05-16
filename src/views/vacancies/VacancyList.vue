@@ -43,7 +43,6 @@
             color="error"
             x-small
             fab
-            disabled
             @click="deleteDialog(item)"
           >
             <v-icon dark>mdi-delete</v-icon>
@@ -57,6 +56,11 @@
         @input="search"
       ></v-pagination>
     </v-card>
+    <DeleteDialog
+      :open.sync="openDeleteDialog"
+      :data="vacancies"
+      @onDelete="updateListAfterDelete"
+    />
   </div>
 </template>
 
@@ -69,14 +73,16 @@ import {
   IVacancy,
 } from "@/services/VacancyService/types";
 import { IHeaders, IMeta } from "@/services/types";
+import DeleteDialog from "@/views/vacancies/components/DeleteDialog.vue";
 
 @Component({
-  components: { NoTableData },
+  components: { DeleteDialog, NoTableData },
 })
 export default class VacancyList extends Vue {
   protected vacancyService = new VacancyService();
   public vacancyList: Array<IVacancy> = [];
   public isLoadingVacancyList = false;
+  public openDeleteDialog = false;
   public vacancies: IVacancy = {
     id: null,
     name: "",
@@ -151,6 +157,16 @@ export default class VacancyList extends Vue {
       .finally(() => {
         this.isLoadingVacancyList = false;
       });
+  }
+
+  deleteDialog(item: IVacancy): void {
+    this.openDeleteDialog = true;
+    this.vacancies = item;
+  }
+
+  updateListAfterDelete(data: IVacancy): void {
+    let index = this.vacancyList.indexOf(data);
+    this.vacancyList.splice(index, 1);
   }
 
   mounted(): void {
