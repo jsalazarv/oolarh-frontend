@@ -22,10 +22,28 @@ const appMenu: () => IModuleMenu = () => ({
       route: "employees:list",
     },
     {
+      icon: "mdi-file-account",
+      text: i18n.t("sidebar.items.vacancies") as string,
+      message: null,
+      route: "vacancies:list",
+    },
+    {
+      icon: "mdi-domain",
+      text: i18n.t("sidebar.items.branchOffices") as string,
+      message: null,
+      route: "branchOffices:list",
+    },
+    {
       icon: "mdi-chair-rolling",
       text: i18n.t("sidebar.items.departments") as string,
       message: null,
       route: "departments:list",
+    },
+    {
+      icon: "mdi-briefcase",
+      text: i18n.t("sidebar.items.jobs") as string,
+      message: null,
+      route: "jobs:list",
     },
   ],
   defaultRoute: "dashboard",

@@ -1,8 +1,11 @@
 export default {
   items: {
     dashboard: "Inicio",
-    departments: "Departamentos",
     applications: "Postulaciones",
     employees: "Empleados",
+    vacancies: "Vacantes",
+    branchOffices: "Sucursales",
+    departments: "Departamentos",
+    jobs: "Puestos",
   },
 };

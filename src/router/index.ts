@@ -1,52 +1,26 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
+import auth from "@/router/auth";
+import dashboard from "@/router/dashboard";
+import applications from "@/router/applications";
+import employees from "@/router/employees";
+import vacancies from "@/router/vacancies";
+import branchOffices from "@/router/branchOffices";
+import departments from "@/router/departments";
+import jobs from "@/router/jobs";
 import Authenticated from "./middleware/Authenticated";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  {
-    path: "/",
-    name: "login",
-    component: () => import("@/views/loginOrRegister/LoginOrRegister.vue"),
-    meta: { public: true },
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: () => import("@/views/dashboard/Dashboard.vue"),
-    meta: { public: false },
-  },
-  {
-    path: "/applications",
-    name: "application:list",
-    component: () => import("@/views/applications/ApplicationList.vue"),
-    meta: { public: false },
-  },
-  {
-    path: "/applications/create",
-    name: "application:create",
-    component: () => import("@/views/applications/ApplicationCreate.vue"),
-    meta: { public: false },
-  },
-  {
-    path: "/employees",
-    name: "employees:list",
-    component: () => import("@/views/employees/EmployeeList.vue"),
-    meta: { public: false },
-  },
-  {
-    path: "/employees/create",
-    name: "employees:create",
-    component: () => import("@/views/employees/EmployeeCreate.vue"),
-    meta: { public: false },
-  },
-  {
-    path: "/departments",
-    name: "departments:list",
-    component: () => import("@/views/departments/DepartmentList.vue"),
-    meta: { public: false },
-  },
+  ...auth,
+  ...dashboard,
+  ...applications,
+  ...employees,
+  ...vacancies,
+  ...branchOffices,
+  ...departments,
+  ...jobs,
 ];
 
 const router = new VueRouter({

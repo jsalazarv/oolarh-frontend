@@ -95,7 +95,7 @@ export default class VacancyListDialog extends Vue {
         sortable: false,
       },
       {
-        text: this.$t("vacancies.attributes.branchOffice") as string,
+        text: this.$t("vacancies.attributes.branch_office") as string,
         value: "branch_office.name",
         sortable: false,
       },

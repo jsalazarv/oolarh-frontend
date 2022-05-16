@@ -1,9 +1,11 @@
 import dictionary from "./dictionary";
 import sidebar from "./sidebar";
-import departments from "./departments";
 import applications from "./applications";
 import employees from "./employees";
-import vacancies from "./vacancies";
+import vacancies from "@/lang/es/vacancies";
+import branchOffices from "@/lang/es/branchOffices";
+import departments from "./departments";
+import jobs from "@/lang/es/jobs";
 
 export default {
   dictionary,
@@ -11,5 +13,7 @@ export default {
   applications,
   employees,
   vacancies,
+  branchOffices,
   departments,
+  jobs,
 };
