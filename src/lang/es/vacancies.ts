@@ -26,6 +26,7 @@ export default {
   labels: {
     create: "Registrar",
     edit: "Editar",
+    search: "Buscar",
     dialogs: {
       create: {
         title: "Registrar vacante",
@@ -57,6 +58,12 @@ export default {
         actions: {
           dismiss: "Cancelar",
           delete: "Eliminar",
+        },
+      },
+      selectVacancy: {
+        actions: {
+          cancel: "Cancelar",
+          confirm: "Confirmar",
         },
       },
     },

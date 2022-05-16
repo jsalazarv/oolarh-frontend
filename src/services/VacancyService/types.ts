@@ -1,5 +1,5 @@
-import { IJob } from "@/services/JobService/types";
 import { IQueryParams } from "@/services/types";
+import { IJob } from "@/services/JobService/types";
 import { IBranchOffices } from "@/services/BranchOfficesService/types";
 import { IDepartment } from "@/services/DepartmentService/types";
 
