@@ -31,6 +31,11 @@
         hide-default-footer
         @page-count="pageCount = $event"
       >
+        <template v-slot:[`item.description`]="{ item }">
+          <div class="text-truncate" style="max-width: 250px">
+            {{ item.description }}
+          </div>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             class="mx-1"
@@ -180,7 +185,6 @@ export default class VacancyList extends Vue {
       {
         text: this.$t("vacancies.attributes.description") as string,
         value: "description",
-        width: "50%",
         sortable: false,
       },
       {
