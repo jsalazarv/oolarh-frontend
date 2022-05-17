@@ -34,6 +34,7 @@ export default {
     inProcess: "En proceso",
     refused: "Rechazado",
     accepted: "Aceptado",
+    selectVacancy: "Seleccionar vacante",
     dialogs: {
       delete: {
         title: "Eliminar postulante",
