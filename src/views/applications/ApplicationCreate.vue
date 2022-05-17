@@ -2,13 +2,13 @@
   <div v-layout="'app-layout'" class="pa-4">
     <v-row>
       <v-col cols="12" md="4">
-        <v-card class="pa-4" elevation="0" v-if="!applicant.vacancy">
+        <v-card class="pa-4" elevation="0" v-if="!applicant.vacancy_id">
           <NoTableData
             :btn-title="$t('applications.labels.selectVacancy')"
             @onRecord="vacanciesDialog"
           />
         </v-card>
-        <v-card class="pa-4" elevation="0" v-if="applicant.vacancy">
+        <v-card class="pa-4" elevation="0" v-if="applicant.vacancy_id">
           <v-card-actions>
             <div class="ml-2 my-4 text-subtitle-1 text-uppercase">
               {{ vacancy.name }}
@@ -215,7 +215,7 @@
                     <input
                       type="hidden"
                       name="vacancy"
-                      v-model="applicant.vacancy"
+                      v-model="applicant.vacancy_id"
                       :error-messages="errors"
                     />
                   </ValidationProvider>
@@ -248,16 +248,16 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import ApplicantService from "@/services/ApplicantService";
-import { IApplicant } from "@/services/ApplicantService/types";
+import { IApplicantRequest } from "@/services/ApplicantService/types";
 import { IValidationObserver } from "@/components/types";
 import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
 import { IVacancy } from "@/services/VacancyService/types";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
 
-const initialApplicantData: IApplicant = {
+const initialApplicantData: IApplicantRequest = {
   id: null,
   names: "",
-  vacancy: null,
+  vacancy_id: null,
   first_surname: "",
   second_surname: "",
   email: "",
@@ -275,10 +275,10 @@ export default class ApplicationCreate extends Vue {
   public isCreating = false;
   public resume = null;
   public vacancy = {};
-  public applicant: IApplicant = {
+  public applicant: IApplicantRequest = {
     id: null,
     names: "",
-    vacancy: null,
+    vacancy_id: null,
     first_surname: "",
     second_surname: "",
     email: "",
@@ -297,7 +297,8 @@ export default class ApplicationCreate extends Vue {
   }
 
   selectedVacancy(vacancy: IVacancy): void {
-    this.applicant.vacancy = vacancy.id;
+    console.log(vacancy);
+    this.applicant.vacancy_id = vacancy.id;
     this.vacancy = vacancy;
   }
 

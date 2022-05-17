@@ -85,11 +85,10 @@
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             class="mx-1"
-            color="success"
+            color="primary"
             x-small
             fab
-            disabled
-            @click="editDialog(item)"
+            :to="{ name: 'application:edit', params: { id: item.id } }"
           >
             <v-icon dark>mdi-account-edit</v-icon>
           </v-btn>
@@ -155,7 +154,42 @@ export default class ApplicationList extends Vue {
     id: null,
     names: "",
     fullName: "",
-    vacancy: null,
+    vacancy: {
+      id: null,
+      name: "",
+      description: "",
+      salary: "",
+      branch_office: {
+        id: null,
+        name: "",
+        contact: {
+          id: null,
+          email: "",
+          phone: "",
+          cellphone: "",
+        },
+        address: {
+          id: null,
+          country: "",
+          state: "",
+          municipality: "",
+          suburb: "",
+          street: "",
+          outdoor_number: "",
+          interior_number: "",
+          postal_code: null,
+        },
+      },
+      department: {
+        id: null,
+        name: "",
+      },
+      job: {
+        id: null,
+        name: "",
+        description: "",
+      },
+    },
     first_surname: "",
     second_surname: "",
     email: "",
