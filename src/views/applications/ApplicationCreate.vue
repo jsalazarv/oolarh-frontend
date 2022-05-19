@@ -297,7 +297,6 @@ export default class ApplicationCreate extends Vue {
   }
 
   selectedVacancy(vacancy: IVacancy): void {
-    console.log(vacancy);
     this.applicant.vacancy_id = vacancy.id;
     this.vacancy = vacancy;
   }

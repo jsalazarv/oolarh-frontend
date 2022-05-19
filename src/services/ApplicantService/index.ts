@@ -35,7 +35,14 @@ export default class ApplicantService extends BaseService {
     id: number | null,
     payload: Partial<IUpdateApplicant>
   ): IPlainResponse<IApplicant> {
-    return this.client.put(`/applicants/${id}`, payload);
+    const body = serialize({ ...payload, _method: "PUT" }, { indices: true });
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    return this.client.post(`/applicants/${id}`, body, config);
   }
 
   delete(applicant: IApplicantRequest): INoContentResponse {

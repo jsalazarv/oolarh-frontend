@@ -13,7 +13,7 @@ export interface IStatusListItem {
 
 export type IStatuses = Record<string, IStatus>;
 
-interface IResume {
+export interface IResume {
   id: number | null;
   url: string;
   path: string;
@@ -50,7 +50,7 @@ export interface IApplicantRequest {
 
 export interface IUpdateApplicant
   extends Omit<IApplicantRequest, "resume" | "id"> {
-  resume?: File;
+  resume?: File | null;
 }
 
 export interface IIsLoading extends IApplicant {

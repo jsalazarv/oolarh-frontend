@@ -176,6 +176,12 @@
                     ></v-text-field>
                   </ValidationProvider>
                 </v-col>
+                <v-col cols="12" md="4">
+                  <CustomFileInput
+                    :file-name="applicant.resume.file_name"
+                    @onFileChanged="updateFileValue"
+                  />
+                </v-col>
               </v-row>
             </v-card-text>
             <v-card-actions class="justify-end">
@@ -185,6 +191,7 @@
                 type="submit"
                 :disabled="invalid || isEditing"
                 :loading="isEditing"
+                @click="update"
               >
                 {{ $t("applications.labels.edit") }}
               </v-btn>
@@ -199,9 +206,15 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import ApplicantService from "@/services/ApplicantService";
-import { IApplicant } from "@/services/ApplicantService/types";
+import {
+  IApplicant,
+  IUpdateApplicant,
+} from "@/services/ApplicantService/types";
+import CustomFileInput from "@/views/applications/components/CustomFileInput.vue";
 
-@Component
+@Component({
+  components: { CustomFileInput },
+})
 export default class ApplicationEdit extends Vue {
   protected applicantService = new ApplicantService();
   public isEditing = false;
@@ -260,6 +273,8 @@ export default class ApplicationEdit extends Vue {
     status: "",
   };
 
+  public updatedResume: File | null = null;
+
   getApplicantById(): void {
     this.isLoadingVacancyData = true;
     this.applicantService
@@ -271,6 +286,31 @@ export default class ApplicationEdit extends Vue {
       .finally(() => {
         this.isLoadingVacancyData = false;
       });
+  }
+
+  updateFileValue(data: File): void {
+    this.updatedResume = data;
+  }
+
+  update(): void {
+    const data: IUpdateApplicant = {
+      names: this.applicant.names,
+      vacancy_id: this.applicant.vacancy.id,
+      first_surname: this.applicant.first_surname,
+      second_surname: this.applicant.second_surname,
+      email: this.applicant.email,
+      cellphone: this.applicant.cellphone,
+      psychometric_test: this.applicant.psychometric_test,
+      resume: this.updatedResume,
+      status: this.applicant.status,
+    };
+    this.applicantService
+      .update(parseInt(this.$route.params.id), data)
+      .then((response) => {
+        console.log("Response", response);
+      })
+      .catch()
+      .finally();
   }
 
   mounted(): void {
