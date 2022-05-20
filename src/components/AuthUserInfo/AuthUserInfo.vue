@@ -26,7 +26,9 @@
           <v-list-item-icon>
             <v-icon>mdi-logout</v-icon>
           </v-list-item-icon>
-          <v-list-item-title> Logout </v-list-item-title>
+          <v-list-item-title>
+            {{ $t("dictionary.logout") }}
+          </v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item>
