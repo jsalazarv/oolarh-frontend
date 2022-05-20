@@ -47,7 +47,10 @@
 <script lang="ts">
 import { Component, Prop, PropSync, Vue } from "vue-property-decorator";
 import ApplicantService from "@/services/ApplicantService";
-import { IApplicant } from "@/services/ApplicantService/types";
+import {
+  IApplicant,
+  IApplicantRequest,
+} from "@/services/ApplicantService/types";
 
 @Component
 export default class DeleteDialog extends Vue {
@@ -62,13 +65,13 @@ export default class DeleteDialog extends Vue {
     this.isDialogOpen = false;
   }
 
-  onDelete(data: IApplicant): void {
+  onDelete(data: IApplicantRequest): void {
     this.isDeleting = false;
     this.closeDialog();
     this.$emit("onDelete", data);
   }
 
-  deleteApplicant(data: IApplicant): void {
+  deleteApplicant(data: IApplicantRequest): void {
     this.isDeleting = true;
     this.applicantService
       .delete(data)

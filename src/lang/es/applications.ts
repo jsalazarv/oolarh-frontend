@@ -28,6 +28,7 @@ export default {
   },
   labels: {
     create: "Registrar",
+    edit: "Editar",
     showPsychometricTest: "Ver examen",
     showResume: "Ver curriculum",
     postulate: "Postulado",

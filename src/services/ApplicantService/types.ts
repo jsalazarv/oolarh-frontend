@@ -1,4 +1,5 @@
 import { IQueryParams } from "@/services/types";
+import { IVacancy } from "@/services/VacancyService/types";
 
 export interface IStatus {
   text: string;
@@ -12,7 +13,7 @@ export interface IStatusListItem {
 
 export type IStatuses = Record<string, IStatus>;
 
-interface IResume {
+export interface IResume {
   id: number | null;
   url: string;
   path: string;
@@ -23,7 +24,7 @@ export interface IApplicant {
   id: number | null;
   names: string;
   fullName?: string;
-  vacancy: number | null;
+  vacancy: IVacancy;
   first_surname: string;
   second_surname: string;
   email: string;
@@ -33,8 +34,23 @@ export interface IApplicant {
   status?: string;
 }
 
-export interface IUpdateApplicant extends Omit<IApplicant, "resume" | "id"> {
-  resume?: File;
+export interface IApplicantRequest {
+  id: number | null;
+  names: string;
+  fullName?: string;
+  vacancy_id: number | null;
+  first_surname: string;
+  second_surname: string;
+  email: string;
+  cellphone: string;
+  psychometric_test: string;
+  resume: IResume | null;
+  status?: string;
+}
+
+export interface IUpdateApplicant
+  extends Omit<IApplicantRequest, "resume" | "id"> {
+  resume?: File | null;
 }
 
 export interface IIsLoading extends IApplicant {

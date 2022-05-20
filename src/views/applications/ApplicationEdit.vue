@@ -2,38 +2,32 @@
   <div v-layout="'app-layout'" class="pa-4">
     <v-row>
       <v-col cols="12" md="4">
-        <v-card class="pa-4" elevation="0" v-if="!applicant.vacancy_id">
-          <NoTableData
-            :btn-title="$t('applications.labels.selectVacancy')"
-            @onRecord="vacanciesDialog"
-          />
-        </v-card>
-        <v-card class="pa-4" elevation="0" v-if="applicant.vacancy_id">
+        <v-card class="pa-4" elevation="0" :loading="isLoadingVacancyData">
           <v-card-actions>
             <div class="ml-2 my-4 text-subtitle-1 text-uppercase">
-              {{ vacancy.name }}
+              {{ applicant.vacancy.name }}
             </div>
             <v-spacer></v-spacer>
             <v-chip class="ma-2" color="error" label text-color="white">
               <v-icon left> mdi-cash </v-icon>
-              {{ vacancy.salary }}
+              {{ applicant.vacancy.salary }}
             </v-chip>
           </v-card-actions>
           <v-card-text>
             <div class="text-justify">
-              {{ vacancy.description }}
+              {{ applicant.vacancy.description }}
             </div>
           </v-card-text>
           <div>
             <v-divider class="mx-4"></v-divider>
             <small class="grey--text ms-4">
               {{ $t("vacancies.attributes.department") }}:
-              {{ vacancy.department.name }}
+              {{ applicant.vacancy.department.name }}
             </small>
             <v-divider class="mx-4"></v-divider>
             <small class="grey--text ms-4">
               {{ $t("vacancies.attributes.branch_office") }}:
-              {{ vacancy.branch_office.name }}
+              {{ applicant.vacancy.branch_office.name }}
             </small>
             <v-divider class="mx-4"></v-divider>
           </div>
@@ -43,13 +37,13 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   fab
-                  dark
                   small
                   color="primary"
                   class="mx-2"
+                  :loading="isLoadingVacancyData"
+                  :disabled="isEditing"
                   v-bind="attrs"
                   v-on="on"
-                  @click="vacanciesDialog"
                 >
                   <v-icon dark> mdi-target </v-icon>
                 </v-btn>
@@ -64,7 +58,7 @@
           <v-card class="pa-4" elevation="0">
             <v-toolbar flat>
               <v-toolbar-title class="subtitle-1 text-uppercase">
-                {{ $t("applications.create.title") }}
+                {{ $t("applications.edit.title") }}
               </v-toolbar-title>
             </v-toolbar>
             <v-card-text>
@@ -81,7 +75,8 @@
                       required
                       autocomplete="off"
                       name="name"
-                      :disabled="isCreating"
+                      :loading="isLoadingVacancyData"
+                      :disabled="isEditing"
                       :label="$t('applications.attributes.name')"
                       :error-messages="errors"
                       v-model="applicant.names"
@@ -100,7 +95,8 @@
                       required
                       autocomplete="off"
                       name="first_surname"
-                      :disabled="isCreating"
+                      :loading="isLoadingVacancyData"
+                      :disabled="isEditing"
                       :label="$t('applications.attributes.first_surname')"
                       :error-messages="errors"
                       v-model="applicant.first_surname"
@@ -119,7 +115,8 @@
                       required
                       autocomplete="off"
                       name="second_surname"
-                      :disabled="isCreating"
+                      :loading="isLoadingVacancyData"
+                      :disabled="isEditing"
                       :label="$t('applications.attributes.second_surname')"
                       :error-messages="errors"
                       v-model="applicant.second_surname"
@@ -138,7 +135,8 @@
                       required
                       autocomplete="off"
                       name="email"
-                      :disabled="isCreating"
+                      :loading="isLoadingVacancyData"
+                      :disabled="isEditing"
                       :label="$t('applications.attributes.email')"
                       :error-messages="errors"
                       v-model="applicant.email"
@@ -157,7 +155,8 @@
                       required
                       autocomplete="off"
                       name="cellphone"
-                      :disabled="isCreating"
+                      :loading="isLoadingVacancyData"
+                      :disabled="isEditing"
                       :label="$t('applications.attributes.cellphone')"
                       :error-messages="errors"
                       v-model="applicant.cellphone"
@@ -176,7 +175,8 @@
                       required
                       autocomplete="off"
                       name="psychometric_test"
-                      :disabled="isCreating"
+                      :loading="isLoadingVacancyData"
+                      :disabled="isEditing"
                       :label="$t('applications.attributes.psychometric_test')"
                       :error-messages="errors"
                       v-model="applicant.psychometric_test"
@@ -184,139 +184,152 @@
                   </ValidationProvider>
                 </v-col>
                 <v-col cols="12" md="4">
-                  <ValidationProvider
-                    :name="$t('applications.attributes.resume')"
-                    rules="required"
-                    v-slot="{ errors }"
-                  >
-                    <v-file-input
-                      outlined
-                      dense
-                      required
-                      autocomplete="off"
-                      name="resume"
-                      accept=".pdf"
-                      prepend-icon=""
-                      prepend-inner-icon="mdi-file-account"
-                      :disabled="isCreating"
-                      :label="$t('applications.attributes.resume')"
-                      :error-messages="errors"
-                      :value="applicant.resume"
-                      v-model="applicant.resume"
-                    ></v-file-input>
-                  </ValidationProvider>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <ValidationProvider
-                    :name="$t('applications.attributes.vacancy')"
-                    rules="required"
-                    v-slot="{ errors }"
-                  >
-                    <input
-                      type="hidden"
-                      name="vacancy"
-                      v-model="applicant.vacancy_id"
-                      :error-messages="errors"
-                    />
-                  </ValidationProvider>
+                  <CustomFileInput
+                    :file-name="applicant.resume.file_name"
+                    :is-loading="isLoadingVacancyData"
+                    :is-disabled="isEditing"
+                    @onFileChanged="updateFileValue"
+                  />
                 </v-col>
               </v-row>
-              <v-card-actions class="justify-end">
-                <v-btn
-                  small
-                  color="success"
-                  type="submit"
-                  :disabled="invalid || isCreating"
-                  :loading="isCreating"
-                  @click="createApplicant"
-                >
-                  {{ $t("applications.labels.create") }}
-                </v-btn>
-              </v-card-actions>
             </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn
+                small
+                color="success"
+                type="submit"
+                :disabled="invalid || isEditing"
+                :loading="isEditing"
+                @click="update"
+              >
+                {{ $t("applications.labels.edit") }}
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </ValidationObserver>
       </v-col>
     </v-row>
-    <VacancyListDialog
-      :open.sync="openVacanciesDialog"
-      @onSelect="selectedVacancy"
-    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import ApplicantService from "@/services/ApplicantService";
-import { IApplicantRequest } from "@/services/ApplicantService/types";
-import { IValidationObserver } from "@/components/types";
-import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
-import { IVacancy } from "@/services/VacancyService/types";
-import NoTableData from "@/components/NoTableData/NoTableData.vue";
-
-const initialApplicantData: IApplicantRequest = {
-  id: null,
-  names: "",
-  vacancy_id: null,
-  first_surname: "",
-  second_surname: "",
-  email: "",
-  cellphone: "",
-  psychometric_test: "",
-  resume: null,
-};
+import {
+  IApplicant,
+  IUpdateApplicant,
+} from "@/services/ApplicantService/types";
+import CustomFileInput from "@/views/applications/components/CustomFileInput.vue";
 
 @Component({
-  components: { NoTableData, VacancyListDialog },
+  components: { CustomFileInput },
 })
-export default class ApplicationCreate extends Vue {
+export default class ApplicationEdit extends Vue {
   protected applicantService = new ApplicantService();
-  public openVacanciesDialog = false;
-  public isCreating = false;
-  public resume = null;
-  public vacancy = {};
-  public applicant: IApplicantRequest = {
+  public isEditing = false;
+  public isLoadingVacancyData = false;
+  public applicant: IApplicant = {
     id: null,
     names: "",
-    vacancy_id: null,
+    fullName: "",
+    vacancy: {
+      id: null,
+      name: "",
+      description: "",
+      salary: "",
+      branch_office: {
+        id: null,
+        name: "",
+        contact: {
+          id: null,
+          email: "",
+          phone: "",
+          cellphone: "",
+        },
+        address: {
+          id: null,
+          country: "",
+          state: "",
+          municipality: "",
+          suburb: "",
+          street: "",
+          outdoor_number: "",
+          interior_number: "",
+          postal_code: null,
+        },
+      },
+      department: {
+        id: null,
+        name: "",
+      },
+      job: {
+        id: null,
+        name: "",
+        description: "",
+      },
+    },
     first_surname: "",
     second_surname: "",
     email: "",
     cellphone: "",
     psychometric_test: "",
-    resume: null,
+    resume: {
+      id: null,
+      url: "",
+      path: "",
+      file_name: "",
+    },
+    status: "",
   };
 
-  clear(): void {
-    this.applicant = { ...initialApplicantData };
-    (this.$refs.form as IValidationObserver).reset();
-  }
+  public updatedResume: File | null = null;
 
-  vacanciesDialog(): void {
-    this.openVacanciesDialog = true;
-  }
-
-  selectedVacancy(vacancy: IVacancy): void {
-    this.applicant.vacancy_id = vacancy.id;
-    this.vacancy = vacancy;
-  }
-
-  createApplicant(): void {
-    this.isCreating = true;
+  getApplicantById(): void {
+    this.isLoadingVacancyData = true;
     this.applicantService
-      .create(this.applicant)
+      .findById(this.$route.params.id)
       .then((response) => {
-        if (response.data) {
-          this.clear();
-          this.$router.push({
-            name: "application:list",
-          });
-        }
+        this.applicant = response.data;
       })
       .catch()
       .finally(() => {
-        this.isCreating = false;
+        this.isLoadingVacancyData = false;
       });
+  }
+
+  updateFileValue(data: File): void {
+    this.updatedResume = data;
+  }
+
+  update(): void {
+    const data: IUpdateApplicant = {
+      names: this.applicant.names,
+      vacancy_id: this.applicant.vacancy.id,
+      first_surname: this.applicant.first_surname,
+      second_surname: this.applicant.second_surname,
+      email: this.applicant.email,
+      cellphone: this.applicant.cellphone,
+      psychometric_test: this.applicant.psychometric_test,
+      resume: this.updatedResume,
+      status: this.applicant.status,
+    };
+
+    if (!(data.resume instanceof File)) delete data.resume;
+
+    this.isEditing = true;
+    this.applicantService
+      .update(parseInt(this.$route.params.id), data)
+      .then(() => {
+        //TODO: response handling
+      })
+      .catch()
+      .finally(() => {
+        this.isEditing = false;
+      });
+  }
+
+  mounted(): void {
+    this.getApplicantById();
   }
 }
 </script>
