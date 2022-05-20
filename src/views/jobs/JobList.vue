@@ -35,6 +35,11 @@
         hide-default-footer
         @page-count="pageCount = $event"
       >
+        <template v-slot:[`item.description`]="{ item }">
+          <div class="text-truncate" style="max-width: 350px">
+            {{ item.description }}
+          </div>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             class="mx-1"
