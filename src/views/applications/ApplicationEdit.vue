@@ -37,10 +37,11 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   fab
-                  dark
                   small
                   color="primary"
                   class="mx-2"
+                  :loading="isLoadingVacancyData"
+                  :disabled="isEditing"
                   v-bind="attrs"
                   v-on="on"
                 >
@@ -74,6 +75,7 @@
                       required
                       autocomplete="off"
                       name="name"
+                      :loading="isLoadingVacancyData"
                       :disabled="isEditing"
                       :label="$t('applications.attributes.name')"
                       :error-messages="errors"
@@ -93,6 +95,7 @@
                       required
                       autocomplete="off"
                       name="first_surname"
+                      :loading="isLoadingVacancyData"
                       :disabled="isEditing"
                       :label="$t('applications.attributes.first_surname')"
                       :error-messages="errors"
@@ -112,6 +115,7 @@
                       required
                       autocomplete="off"
                       name="second_surname"
+                      :loading="isLoadingVacancyData"
                       :disabled="isEditing"
                       :label="$t('applications.attributes.second_surname')"
                       :error-messages="errors"
@@ -131,6 +135,7 @@
                       required
                       autocomplete="off"
                       name="email"
+                      :loading="isLoadingVacancyData"
                       :disabled="isEditing"
                       :label="$t('applications.attributes.email')"
                       :error-messages="errors"
@@ -150,6 +155,7 @@
                       required
                       autocomplete="off"
                       name="cellphone"
+                      :loading="isLoadingVacancyData"
                       :disabled="isEditing"
                       :label="$t('applications.attributes.cellphone')"
                       :error-messages="errors"
@@ -169,6 +175,7 @@
                       required
                       autocomplete="off"
                       name="psychometric_test"
+                      :loading="isLoadingVacancyData"
                       :disabled="isEditing"
                       :label="$t('applications.attributes.psychometric_test')"
                       :error-messages="errors"
@@ -179,6 +186,8 @@
                 <v-col cols="12" md="4">
                   <CustomFileInput
                     :file-name="applicant.resume.file_name"
+                    :is-loading="isLoadingVacancyData"
+                    :is-disabled="isEditing"
                     @onFileChanged="updateFileValue"
                   />
                 </v-col>
@@ -304,13 +313,19 @@ export default class ApplicationEdit extends Vue {
       resume: this.updatedResume,
       status: this.applicant.status,
     };
+
+    if (!(data.resume instanceof File)) delete data.resume;
+
+    this.isEditing = true;
     this.applicantService
       .update(parseInt(this.$route.params.id), data)
-      .then((response) => {
-        console.log("Response", response);
+      .then(() => {
+        //TODO: response handling
       })
       .catch()
-      .finally();
+      .finally(() => {
+        this.isEditing = false;
+      });
   }
 
   mounted(): void {

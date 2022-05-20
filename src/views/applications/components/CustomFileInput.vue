@@ -11,6 +11,8 @@
       prepend-inner-icon="mdi-file-account"
       name="psychometric_test"
       :label="$t('applications.attributes.resume')"
+      :loading="loading"
+      :disabled="disabled"
       v-model="displayFileName"
       @click="onInputClick"
     ></v-text-field>
@@ -31,6 +33,12 @@ import { Component, PropSync, Vue } from "vue-property-decorator";
 export default class CustomFileInput extends Vue {
   @PropSync("fileName", { type: String, default: "" })
   currentFileName!: string;
+
+  @PropSync("isDisabled", { type: Boolean, default: false })
+  disabled!: false;
+
+  @PropSync("isLoading", { type: Boolean, default: false })
+  loading!: false;
 
   public selectedFile: File | null = null;
   public isSelecting = false;
