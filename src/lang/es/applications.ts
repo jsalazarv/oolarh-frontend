@@ -37,6 +37,13 @@ export default {
     accepted: "Aceptado",
     selectVacancy: "Seleccionar vacante",
     dialogs: {
+      show: {
+        title: "Información del postulante",
+        labels: {},
+        actions: {
+          close: "Cerrar",
+        },
+      },
       delete: {
         title: "Eliminar postulante",
         labels: {

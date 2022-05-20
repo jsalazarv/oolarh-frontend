@@ -97,8 +97,7 @@
             color="primary"
             x-small
             fab
-            disabled
-            @click="editDialog(item)"
+            @click="showDialog(item)"
           >
             <v-icon dark>mdi-account-eye</v-icon>
           </v-btn>
@@ -120,6 +119,7 @@
         @input="search"
       ></v-pagination>
     </v-card>
+    <ShowDialog :open.sync="openShowDialog" :data="applicant" />
     <DeleteDialog
       :open.sync="openDeleteDialog"
       :data="applicant"
@@ -141,14 +141,16 @@ import {
 import { IHeaders, IMeta } from "@/services/types";
 import DeleteDialog from "@/views/applications/components/DeleteDialog.vue";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
+import ShowDialog from "@/views/applications/components/ShowDialog.vue";
 
 @Component({
-  components: { NoTableData, DeleteDialog },
+  components: { ShowDialog, NoTableData, DeleteDialog },
 })
 export default class ApplicationList extends Vue {
   protected applicantService = new ApplicantService();
   public applicantList: Array<IIsLoading> = [];
   public isLoadingApplicantList = false;
+  public openShowDialog = false;
   public openDeleteDialog = false;
   public applicant: IApplicant = {
     id: null,
@@ -313,6 +315,11 @@ export default class ApplicationList extends Vue {
       .finally(() => {
         this.isLoadingApplicantList = false;
       });
+  }
+
+  showDialog(item: IApplicant): void {
+    this.openShowDialog = true;
+    this.applicant = item;
   }
 
   deleteDialog(item: IApplicant): void {
