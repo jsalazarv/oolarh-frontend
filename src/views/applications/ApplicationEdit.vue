@@ -44,6 +44,7 @@
                   :disabled="isEditing"
                   v-bind="attrs"
                   v-on="on"
+                  @click="vacanciesDialog"
                 >
                   <v-icon dark> mdi-target </v-icon>
                 </v-btn>
@@ -209,6 +210,10 @@
         </ValidationObserver>
       </v-col>
     </v-row>
+    <VacancyListDialog
+      :open.sync="openVacanciesDialog"
+      @onSelect="selectedVacancy"
+    />
   </div>
 </template>
 
@@ -220,12 +225,15 @@ import {
   IUpdateApplicant,
 } from "@/services/ApplicantService/types";
 import CustomFileInput from "@/views/applications/components/CustomFileInput.vue";
+import { IVacancy } from "@/services/VacancyService/types";
+import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
 
 @Component({
-  components: { CustomFileInput },
+  components: { VacancyListDialog, CustomFileInput },
 })
 export default class ApplicationEdit extends Vue {
   protected applicantService = new ApplicantService();
+  public openVacanciesDialog = false;
   public isEditing = false;
   public isLoadingVacancyData = false;
   public applicant: IApplicant = {
@@ -283,6 +291,7 @@ export default class ApplicationEdit extends Vue {
   };
 
   public updatedResume: File | null = null;
+  public updatedVacancy: number | null = null;
 
   getApplicantById(): void {
     this.isLoadingVacancyData = true;
@@ -297,6 +306,15 @@ export default class ApplicationEdit extends Vue {
       });
   }
 
+  vacanciesDialog(): void {
+    this.openVacanciesDialog = true;
+  }
+
+  selectedVacancy(vacancy: IVacancy): void {
+    this.updatedVacancy = vacancy.id;
+    this.applicant.vacancy = vacancy;
+  }
+
   updateFileValue(data: File): void {
     this.updatedResume = data;
   }
@@ -304,7 +322,7 @@ export default class ApplicationEdit extends Vue {
   update(): void {
     const data: IUpdateApplicant = {
       names: this.applicant.names,
-      vacancy_id: this.applicant.vacancy.id,
+      vacancy_id: this.updatedVacancy,
       first_surname: this.applicant.first_surname,
       second_surname: this.applicant.second_surname,
       email: this.applicant.email,
