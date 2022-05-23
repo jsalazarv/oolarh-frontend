@@ -87,6 +87,7 @@ export default class VacancyListDialog extends Vue {
       {
         text: this.$t("vacancies.attributes.description") as string,
         value: "description",
+        width: "500px",
         sortable: false,
       },
       {
