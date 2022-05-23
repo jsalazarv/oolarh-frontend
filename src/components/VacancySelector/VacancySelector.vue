@@ -1,7 +1,7 @@
 <template>
-  <v-card class="pa-4" elevation="0">
-    <v-card-actions>
-      <div class="ml-2 my-4 text-subtitle-1 text-uppercase">
+  <v-card elevation="0">
+    <v-card-actions class="py-0">
+      <div class="ml-2 text-subtitle-1 text-uppercase">
         {{ vacancy.name }}
       </div>
       <v-spacer></v-spacer>

@@ -2,12 +2,14 @@
   <div v-layout="'app-layout'" class="pa-4">
     <v-row>
       <v-col cols="12" md="4">
-        <VacancySelector
-          :data="applicant.vacancy"
-          :is-loading="isLoadingVacancyData"
-          :is-disabled="isEditing"
-          @onRecord="vacanciesDialog"
-        />
+        <v-card class="py-8 px-4" elevation="0">
+          <VacancySelector
+            :data="applicant.vacancy"
+            :is-loading="isLoadingVacancyData"
+            :is-disabled="isEditing"
+            @onRecord="vacanciesDialog"
+          />
+        </v-card>
       </v-col>
       <v-col cols="12" md="8">
         <ValidationObserver ref="form" v-slot="{ invalid }">

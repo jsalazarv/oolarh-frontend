@@ -8,13 +8,13 @@
             @onRecord="vacanciesDialog"
           />
         </v-card>
-        <div v-if="applicant.vacancy_id">
+        <v-card v-if="applicant.vacancy_id" class="py-8 px-4" elevation="0">
           <VacancySelector
             :data="vacancy"
             :is-disabled="isCreating"
             @onRecord="vacanciesDialog"
           />
-        </div>
+        </v-card>
       </v-col>
       <v-col cols="12" md="8">
         <ValidationObserver ref="form" v-slot="{ invalid }">

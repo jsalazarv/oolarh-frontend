@@ -42,36 +42,7 @@
           </v-col>
           <v-divider class="mx-4" inset vertical />
           <v-col cols="12" md="7">
-            <v-card elevation="0">
-              <v-card-actions class="py-0">
-                <div class="ml-2 text-subtitle-1 text-uppercase">
-                  {{ data.vacancy.name }}
-                </div>
-                <v-spacer></v-spacer>
-                <v-chip class="mx-2" color="error" label text-color="white">
-                  <v-icon left> mdi-cash </v-icon>
-                  {{ data.vacancy.salary }}
-                </v-chip>
-              </v-card-actions>
-              <v-card-text>
-                <div class="text-justify">
-                  {{ data.vacancy.description }}
-                </div>
-              </v-card-text>
-              <div>
-                <v-divider class="mx-4"></v-divider>
-                <small class="grey--text ms-4">
-                  {{ $t("vacancies.attributes.department") }}:
-                  {{ data.vacancy.department.name }}
-                </small>
-                <v-divider class="mx-4"></v-divider>
-                <small class="grey--text ms-4">
-                  {{ $t("vacancies.attributes.branch_office") }}:
-                  {{ data.vacancy.branch_office.name }}
-                </small>
-                <v-divider class="mx-4"></v-divider>
-              </div>
-            </v-card>
+            <VacancySelector :data="data.vacancy" :is-it-selectable="false" />
           </v-col>
         </v-row>
       </v-card-text>
@@ -89,8 +60,10 @@
 import { Component, Prop, PropSync, Vue } from "vue-property-decorator";
 import ApplicantService from "@/services/ApplicantService";
 import { IApplicant } from "@/services/ApplicantService/types";
-
-@Component
+import VacancySelector from "@/components/VacancySelector/VacancySelector.vue";
+@Component({
+  components: { VacancySelector },
+})
 export default class ShowDialog extends Vue {
   protected applicantService = new ApplicantService();
   @PropSync("open")

@@ -1,11 +1,13 @@
 <template>
   <v-dialog v-model="isDialogOpen" max-width="450" transition="fab-transition">
-    <VacancySelector
-      :data="data"
-      :is-loading="isLoading"
-      :is-disabled="isLoading"
-      :is-it-selectable="false"
-    />
+    <v-card class="py-8 px-2">
+      <VacancySelector
+        :data="data"
+        :is-loading="isLoading"
+        :is-disabled="isLoading"
+        :is-it-selectable="false"
+      />
+    </v-card>
   </v-dialog>
 </template>
 
