@@ -12,7 +12,12 @@
           {{ $t("employees.list.title") }}
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn small color="success" disabled>
+        <v-btn
+          small
+          color="success"
+          :to="{ name: 'employees:create' }"
+          :disabled="isLoadingEmployeeList"
+        >
           {{ $t("employees.labels.create") }}
         </v-btn>
       </v-toolbar>
