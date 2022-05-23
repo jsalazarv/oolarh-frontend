@@ -8,56 +8,13 @@
             @onRecord="vacanciesDialog"
           />
         </v-card>
-        <v-card class="pa-4" elevation="0" v-if="applicant.vacancy_id">
-          <v-card-actions>
-            <div class="ml-2 my-4 text-subtitle-1 text-uppercase">
-              {{ vacancy.name }}
-            </div>
-            <v-spacer></v-spacer>
-            <v-chip class="ma-2" color="error" label text-color="white">
-              <v-icon left> mdi-cash </v-icon>
-              {{ vacancy.salary }}
-            </v-chip>
-          </v-card-actions>
-          <v-card-text>
-            <div class="text-justify">
-              {{ vacancy.description }}
-            </div>
-          </v-card-text>
-          <div>
-            <v-divider class="mx-4"></v-divider>
-            <small class="grey--text ms-4">
-              {{ $t("vacancies.attributes.department") }}:
-              {{ vacancy.department.name }}
-            </small>
-            <v-divider class="mx-4"></v-divider>
-            <small class="grey--text ms-4">
-              {{ $t("vacancies.attributes.branch_office") }}:
-              {{ vacancy.branch_office.name }}
-            </small>
-            <v-divider class="mx-4"></v-divider>
-          </div>
-          <v-card-actions class="mt-6">
-            <v-spacer class="mx-4"></v-spacer>
-            <v-tooltip left>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  fab
-                  dark
-                  small
-                  color="primary"
-                  class="mx-2"
-                  v-bind="attrs"
-                  v-on="on"
-                  @click="vacanciesDialog"
-                >
-                  <v-icon dark> mdi-target </v-icon>
-                </v-btn>
-              </template>
-              <span>{{ $t("applications.labels.selectVacancy") }}</span>
-            </v-tooltip>
-          </v-card-actions>
-        </v-card>
+        <div v-if="applicant.vacancy_id">
+          <VacancySelector
+            :data="vacancy"
+            :is-disabled="isCreating"
+            @onRecord="vacanciesDialog"
+          />
+        </div>
       </v-col>
       <v-col cols="12" md="8">
         <ValidationObserver ref="form" v-slot="{ invalid }">
@@ -253,6 +210,7 @@ import { IValidationObserver } from "@/components/types";
 import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
 import { IVacancy } from "@/services/VacancyService/types";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
+import VacancySelector from "@/components/VacancySelector/VacancySelector.vue";
 
 const initialApplicantData: IApplicantRequest = {
   id: null,
@@ -267,7 +225,7 @@ const initialApplicantData: IApplicantRequest = {
 };
 
 @Component({
-  components: { NoTableData, VacancyListDialog },
+  components: { VacancySelector, NoTableData, VacancyListDialog },
 })
 export default class ApplicationCreate extends Vue {
   protected applicantService = new ApplicantService();
