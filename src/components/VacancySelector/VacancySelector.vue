@@ -28,7 +28,7 @@
       </small>
       <v-divider class="mx-4"></v-divider>
     </div>
-    <v-card-actions class="mt-6">
+    <v-card-actions class="mt-6" v-if="selectable">
       <v-spacer class="mx-4"></v-spacer>
       <v-tooltip left>
         <template v-slot:activator="{ on, attrs }">
@@ -66,6 +66,9 @@ export default class VacancySelector extends Vue {
 
   @PropSync("isLoading", { type: Boolean, default: false })
   loading!: false;
+
+  @PropSync("isItSelectable", { type: Boolean, default: true })
+  selectable!: true;
 
   onRecord(): void {
     this.$emit("onRecord");
