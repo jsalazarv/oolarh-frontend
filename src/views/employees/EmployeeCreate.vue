@@ -5,25 +5,27 @@
         <v-toolbar-title class="subtitle-1 text-uppercase">
           {{ $t("employees.create.title") }}
         </v-toolbar-title>
-      </v-toolbar>
-      <v-card-text>
-        <v-stepper v-model="e1" alt-labels elevation="0">
-          <div class="d-flex justify-center">
+        <v-spacer />
+        <div class="d-flex align-end justify-end">
+          <v-stepper elevation="0" v-model="e1" max-height="100">
             <v-stepper-header class="without-shadow stepper-header-width">
-              <v-stepper-step :complete="e1 > 1" step="1">
+              <v-stepper-step :complete="e1 > 1" step="1" class="pa-2">
                 {{ $t("employees.labels.steps.generalData") }}
               </v-stepper-step>
               <v-divider></v-divider>
-              <v-stepper-step :complete="e1 > 2" step="2">
+              <v-stepper-step :complete="e1 > 2" step="2" class="pa-2">
                 {{ $t("employees.labels.steps.contactInformation") }}
               </v-stepper-step>
               <v-divider></v-divider>
-              <v-stepper-step :complete="e1 > 3" step="3">
+              <v-stepper-step :complete="e1 > 3" step="3" class="pa-2">
                 {{ $t("employees.labels.steps.employmentData") }}
               </v-stepper-step>
             </v-stepper-header>
-          </div>
-
+          </v-stepper>
+        </div>
+      </v-toolbar>
+      <v-card-text>
+        <v-stepper v-model="e1" alt-labels elevation="0">
           <v-stepper-items class="mt-5" elevation="0">
             <v-stepper-content step="1">
               <ValidationObserver ref="form" v-slot="{ invalid }">
@@ -116,7 +118,7 @@ import EmploymentDataForm from "@/views/employees/components/partials/Employment
   components: { EmploymentDataForm, ContactDataForm, GeneralDataForm },
 })
 export default class EmployeeCreate extends Vue {
-  public e1 = 1;
+  public e1 = 3;
 }
 </script>
 
