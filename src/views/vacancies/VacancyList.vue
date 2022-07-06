@@ -2,7 +2,10 @@
   <div v-layout="'app-layout'" class="pa-4">
     <v-card elevation="0">
       <div v-if="!vacancyList.length === true">
-        <NoTableData :btn-title="$t('vacancies.create.title')" />
+        <NoTableData
+          @onRecord="createDialog"
+          :btn-title="$t('vacancies.create.title')"
+        />
       </div>
       <v-toolbar flat v-if="!vacancyList.length === false">
         <v-toolbar-title class="subtitle-1 text-uppercase">

@@ -146,12 +146,12 @@ export default class EmployeeList extends Vue {
       },
       {
         text: this.$t("employees.attributes.email") as string,
-        value: "email",
+        value: "contact.email",
         sortable: false,
       },
       {
         text: this.$t("employees.attributes.cellphone") as string,
-        value: "cellphone",
+        value: "contact.cellphone",
         sortable: false,
       },
       {
