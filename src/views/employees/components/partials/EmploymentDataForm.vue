@@ -114,10 +114,10 @@ export default class EmploymentDataForm extends Vue {
   };
   public vacancy = {};
   public employee: Partial<IEmployeeRequest> = {
-    vacancy: null,
+    vacancy_id: null,
     psychometric_test: "",
-    employee_number: null,
-    salary: null,
+    ///employee_number: null,
+    salary: "",
   };
 
   vacanciesDialog(): void {
@@ -126,6 +126,7 @@ export default class EmploymentDataForm extends Vue {
 
   selectedVacancy(vacancy: IVacancy): void {
     this.applicant.vacancy_id = vacancy.id;
+    this.employee.vacancy_id = vacancy.id;
     this.vacancy = vacancy;
   }
 

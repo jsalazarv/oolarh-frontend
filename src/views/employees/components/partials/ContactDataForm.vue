@@ -127,7 +127,7 @@
                 :loading="isLoadingCities"
                 :label="$t('employees.attributes.city')"
                 :error-messages="errors"
-                v-model="employee.city"
+                v-model="employee.municipality"
               ></v-autocomplete>
             </ValidationProvider>
           </v-col>
@@ -263,7 +263,7 @@ export default class ContactDataForm extends Vue {
     phone: "5549281837",
     country: "",
     state: "",
-    city: "",
+    municipality: "",
     suburb: "Bosques de la colmena",
     street: "Avenida de las flores",
     outdoor_number: "15",

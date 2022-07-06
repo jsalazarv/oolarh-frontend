@@ -41,7 +41,10 @@
             <ContactDataForm @submit="submitContactDataForm" @back="prev" />
           </v-stepper-content>
           <v-stepper-content step="3" class="pa-0">
-            <EmploymentDataForm @submit="createEmployee" @back="prev" />
+            <EmploymentDataForm
+              @submit="submitEmploymentDataForm"
+              @back="prev"
+            />
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -54,6 +57,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import EmployeeService from "@/services/EmployeeService";
 import GeneralDataForm from "@/views/employees/components/partials/GeneralDataForm.vue";
 import ContactDataForm from "@/views/employees/components/partials/ContactDataForm.vue";
 import EmploymentDataForm from "@/views/employees/components/partials/EmploymentDataForm.vue";
@@ -67,8 +71,33 @@ import { IEmployeeRequest } from "@/services/EmployeeService/types";
   },
 })
 export default class EmployeeCreate extends Vue {
+  protected employeeService = new EmployeeService();
   public currentStep = 1;
-  employeeData = {};
+  public isCreating = false;
+  employeeData: IEmployeeRequest = {
+    names: "",
+    vacancy_id: null,
+    first_surname: "",
+    second_surname: "",
+    email: "",
+    cellphone: "",
+    psychometric_test: "",
+    birthday: "",
+    gender: "",
+    rfc: "",
+    ssn: "",
+    resume: null,
+    phone: "",
+    country: "",
+    state: "",
+    municipality: "",
+    suburb: "",
+    street: "",
+    outdoor_number: "",
+    interior_number: "",
+    postal_code: "",
+    salary: "",
+  };
 
   next(): void {
     const nextStep = this.currentStep + 1;
@@ -87,7 +116,7 @@ export default class EmployeeCreate extends Vue {
   }
 
   submitGeneralDataForm(data: Partial<IEmployeeRequest>): void {
-    this.employeeData = { ...data };
+    this.employeeData = { ...this.employeeData, ...data };
     this.next();
   }
 
@@ -96,9 +125,13 @@ export default class EmployeeCreate extends Vue {
     this.next();
   }
 
-  createEmployee(data: Partial<IEmployeeRequest>): void {
+  submitEmploymentDataForm(data: Partial<IEmployeeRequest>): void {
     this.employeeData = { ...this.employeeData, ...data };
-    console.log("CREAR EMPLEADO");
+    this.createEmployee();
+  }
+
+  createEmployee(): void {
+    this.employeeService.create(this.employeeData).then();
   }
 }
 </script>
