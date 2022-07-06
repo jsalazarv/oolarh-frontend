@@ -22,9 +22,9 @@ export interface IEmployeeRequest
   ssn: string;
   resume?: File | null;
   phone: string;
-  country: Partial<ICountry>;
-  state: Partial<IState>;
-  city: Partial<ICity>;
+  country: string;
+  state: string;
+  city: string;
   suburb: string;
   street: string;
   outdoor_number: string;

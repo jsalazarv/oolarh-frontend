@@ -1,72 +1,90 @@
 <template>
-  <v-container fluid class="pa-0">
-    <v-row>
-      <v-col cols="12" md="4">
-        <v-card class="pa-4" elevation="0" v-if="!applicant.vacancy_id">
-          <NoTableData
-            :btn-title="$t('applications.labels.selectVacancy')"
-            @onRecord="vacanciesDialog"
-          />
-        </v-card>
-        <v-card v-if="applicant.vacancy_id" class="py-8 px-4" elevation="0">
-          <VacancySelector
-            :data="vacancy"
-            :is-disabled="isCreating"
-            @onRecord="vacanciesDialog"
-          />
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="8">
-        <v-card class="px-4 py-2" elevation="0">
-          <v-toolbar-title class="subtitle-1 text-uppercase mb-10">
-            {{ $t("employees.create.title") }}
-          </v-toolbar-title>
-          <v-row>
-            <v-col cols="12" md="4">
-              <ValidationProvider
-                :name="$t('employees.attributes.psychometric_test')"
-                rules="required"
-                v-slot="{ errors }"
+  <ValidationObserver ref="form" v-slot="{ invalid }">
+    <v-container fluid class="pa-0">
+      <v-row>
+        <v-col cols="12" md="4">
+          <v-card class="pa-4" elevation="0" v-if="!applicant.vacancy_id">
+            <NoTableData
+              :btn-title="$t('applications.labels.selectVacancy')"
+              @onRecord="vacanciesDialog"
+            />
+          </v-card>
+          <v-card v-if="applicant.vacancy_id" class="py-8 px-4" elevation="0">
+            <VacancySelector
+              :data="vacancy"
+              :is-disabled="isCreating"
+              @onRecord="vacanciesDialog"
+            />
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="8">
+          <v-card class="px-4 py-2" elevation="0">
+            <v-toolbar-title class="subtitle-1 text-uppercase mb-10">
+              {{ $t("employees.create.title") }}
+            </v-toolbar-title>
+            <v-row>
+              <v-col cols="12" md="4">
+                <ValidationProvider
+                  :name="$t('employees.attributes.psychometric_test')"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    dense
+                    outlined
+                    required
+                    autocomplete="nope"
+                    name="psychometric_test"
+                    :label="$t('employees.attributes.psychometric_test')"
+                    :error-messages="errors"
+                    v-model="employee.psychometric_test"
+                  ></v-text-field>
+                </ValidationProvider>
+              </v-col>
+              <v-col cols="12" md="4">
+                <ValidationProvider
+                  :name="$t('employees.attributes.salary')"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    dense
+                    outlined
+                    required
+                    autocomplete="nope"
+                    name="salary"
+                    :label="$t('employees.attributes.salary')"
+                    :error-messages="errors"
+                    v-model="employee.salary"
+                  ></v-text-field>
+                </ValidationProvider>
+              </v-col>
+            </v-row>
+
+            <v-card-actions class="white">
+              <v-spacer />
+              <v-btn depressed small color="primary" @click.prevent="goBack">
+                <v-icon dark> mdi-chevron-left </v-icon>
+              </v-btn>
+              <v-btn
+                depressed
+                small
+                color="success"
+                @click.prevent="submit"
+                :disabled="invalid"
               >
-                <v-text-field
-                  dense
-                  outlined
-                  required
-                  autocomplete="nope"
-                  name="psychometric_test"
-                  :label="$t('employees.attributes.psychometric_test')"
-                  :error-messages="errors"
-                  v-model="employee.psychometric_test"
-                ></v-text-field>
-              </ValidationProvider>
-            </v-col>
-            <v-col cols="12" md="4">
-              <ValidationProvider
-                :name="$t('employees.attributes.salary')"
-                rules="required"
-                v-slot="{ errors }"
-              >
-                <v-text-field
-                  dense
-                  outlined
-                  required
-                  autocomplete="nope"
-                  name="salary"
-                  :label="$t('employees.attributes.salary')"
-                  :error-messages="errors"
-                  v-model="employee.salary"
-                ></v-text-field>
-              </ValidationProvider>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-    <VacancyListDialog
-      :open.sync="openVacanciesDialog"
-      @onSelect="selectedVacancy"
-    />
-  </v-container>
+                Registrar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+      <VacancyListDialog
+        :open.sync="openVacanciesDialog"
+        @onSelect="selectedVacancy"
+      />
+    </v-container>
+  </ValidationObserver>
 </template>
 
 <script lang="ts">
@@ -109,6 +127,14 @@ export default class EmploymentDataForm extends Vue {
   selectedVacancy(vacancy: IVacancy): void {
     this.applicant.vacancy_id = vacancy.id;
     this.vacancy = vacancy;
+  }
+
+  submit(): void {
+    this.$emit("submit", { ...this.employee });
+  }
+
+  goBack(): void {
+    this.$emit("back");
   }
 }
 </script>

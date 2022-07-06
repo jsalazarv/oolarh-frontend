@@ -7,14 +7,11 @@ export default class LocationService extends BaseService {
     return this.client.get("/locations/countries");
   }
 
-  getStates(country: Partial<ICountry>): IPlainResponse<Array<IState>> {
+  getStates(country: string): IPlainResponse<Array<IState>> {
     return this.client.get(`/locations/countries/${country}/states`);
   }
 
-  getCities(
-    country: Partial<ICountry>,
-    state: Partial<IState>
-  ): IPlainResponse<Array<ICity>> {
+  getCities(country: string, state: string): IPlainResponse<Array<ICity>> {
     return this.client.get(
       `/locations/countries/${country}/states/${state}/cities`
     );

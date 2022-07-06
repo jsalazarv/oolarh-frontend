@@ -369,7 +369,7 @@ export default class BranchOfficesEdit extends Vue {
   getStates(country: string): void {
     this.isLoadingStates = true;
     this.locationService
-      .getStates(country as Partial<ICountry>)
+      .getStates(country as string)
       .then((response) => {
         this.states = response.data;
       })
@@ -382,7 +382,7 @@ export default class BranchOfficesEdit extends Vue {
   getCities(country: string, state: string): void {
     this.isLoadingCities = true;
     this.locationService
-      .getCities(country as Partial<ICountry>, state as Partial<IState>)
+      .getCities(country as string, state as string)
       .then((response) => {
         this.cities = response.data;
       })
