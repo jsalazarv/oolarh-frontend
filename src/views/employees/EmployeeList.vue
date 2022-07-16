@@ -112,7 +112,7 @@ export default class EmployeeList extends Vue {
     id: null,
     names: "",
     fullName: "",
-    vacancy: null,
+    vacancy_id: null,
     first_surname: "",
     second_surname: "",
     email: "",

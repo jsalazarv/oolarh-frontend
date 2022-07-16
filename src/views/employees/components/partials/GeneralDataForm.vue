@@ -162,6 +162,9 @@
         </v-row>
         <v-card-actions class="white">
           <v-spacer />
+          <v-btn depressed small color="primary" @click="cancel">
+            Cancelar
+          </v-btn>
           <v-btn
             depressed
             small
@@ -178,10 +181,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, PropSync, Vue, Watch } from "vue-property-decorator";
 import GenderService from "@/services/GenderService";
 import { IEmployeeRequest } from "@/services/EmployeeService/types";
 import { IGender } from "@/services/GenderService/types";
+
+const initEmployeeData = {
+  names: "",
+  first_surname: "",
+  second_surname: "",
+  birthday: "",
+  gender: "",
+  rfc: "",
+  ssn: "",
+  resume: null,
+};
 
 @Component
 export default class GeneralDataForm extends Vue {
@@ -199,6 +213,9 @@ export default class GeneralDataForm extends Vue {
     resume: null,
   };
 
+  @PropSync("clenUp", { default: false })
+  public clearable!: boolean;
+
   submit(): void {
     this.$emit("submit", { ...this.employee });
   }
@@ -214,6 +231,19 @@ export default class GeneralDataForm extends Vue {
       .finally(() => {
         this.isLoadingGenderList = false;
       });
+  }
+
+  @Watch("clearable")
+  clear(): void {
+    this.cancel();
+    this.$emit("clear", { ...this.employee });
+  }
+
+  cancel(): void {
+    this.$emit("clear", { ...this.employee });
+    if (this.clearable) {
+      this.employee = initEmployeeData;
+    }
   }
 
   mounted(): void {

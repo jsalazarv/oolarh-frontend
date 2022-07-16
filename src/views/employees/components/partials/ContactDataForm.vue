@@ -127,7 +127,7 @@
                 :loading="isLoadingCities"
                 :label="$t('employees.attributes.city')"
                 :error-messages="errors"
-                v-model="employee.city"
+                v-model="employee.municipality"
               ></v-autocomplete>
             </ValidationProvider>
           </v-col>
@@ -224,6 +224,9 @@
         </v-row>
         <v-card-actions class="white">
           <v-spacer />
+          <v-btn depressed small color="primary" @click="cancel">
+            Cancelar
+          </v-btn>
           <v-btn depressed small color="primary" @click.prevent="goBack">
             <v-icon dark> mdi-chevron-left </v-icon>
           </v-btn>
@@ -243,10 +246,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, PropSync, Vue, Watch } from "vue-property-decorator";
 import LocationService from "@/services/LocationService";
 import { IEmployeeRequest } from "@/services/EmployeeService/types";
 import { ICity, ICountry, IState } from "@/services/LocationService/types";
+
+const initEmployeeData = {
+  email: "",
+  cellphone: "",
+  phone: "",
+  country: "",
+  state: "",
+  municipality: "",
+  suburb: "",
+  street: "",
+  outdoor_number: "",
+  interior_number: "",
+  postal_code: "",
+};
 
 @Component
 export default class ContactDataForm extends Vue {
@@ -263,7 +280,7 @@ export default class ContactDataForm extends Vue {
     phone: "5549281837",
     country: "",
     state: "",
-    city: "",
+    municipality: "",
     suburb: "Bosques de la colmena",
     street: "Avenida de las flores",
     outdoor_number: "15",
@@ -271,12 +288,28 @@ export default class ContactDataForm extends Vue {
     postal_code: "54476",
   };
 
+  @PropSync("clenUp", { default: false })
+  public clearable!: boolean;
+
   submit(): void {
     this.$emit("submit", { ...this.employee });
   }
 
   goBack(): void {
     this.$emit("back");
+  }
+
+  cancel(): void {
+    this.$emit("clear", { ...this.employee });
+    if (this.clearable) {
+      this.employee = initEmployeeData;
+    }
+  }
+
+  @Watch("clearable")
+  clear(): void {
+    this.cancel();
+    this.$emit("clear", { ...this.employee });
   }
 
   getCountries(): void {

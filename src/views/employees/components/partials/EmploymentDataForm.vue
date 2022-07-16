@@ -63,6 +63,9 @@
 
             <v-card-actions class="white">
               <v-spacer />
+              <v-btn depressed small color="primary" @click="cancel">
+                Cancelar
+              </v-btn>
               <v-btn depressed small color="primary" @click.prevent="goBack">
                 <v-icon dark> mdi-chevron-left </v-icon>
               </v-btn>
@@ -88,13 +91,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, PropSync, Vue, Watch } from "vue-property-decorator";
 import { IEmployeeRequest } from "@/services/EmployeeService/types";
 import { IApplicantRequest } from "@/services/ApplicantService/types";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
 import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
 import { IVacancy } from "@/services/VacancyService/types";
 import VacancySelector from "@/components/VacancySelector/VacancySelector.vue";
+
+const initEmployeeData = {
+  id: null,
+  names: "",
+  vacancy_id: null,
+  first_surname: "",
+  second_surname: "",
+  email: "",
+  cellphone: "",
+  psychometric_test: "",
+  resume: null,
+};
+
 @Component({
   components: { VacancySelector, VacancyListDialog, NoTableData },
 })
@@ -114,11 +130,13 @@ export default class EmploymentDataForm extends Vue {
   };
   public vacancy = {};
   public employee: Partial<IEmployeeRequest> = {
-    vacancy: null,
+    vacancy_id: null,
     psychometric_test: "",
-    employee_number: null,
-    salary: null,
+    salary: "",
   };
+
+  @PropSync("clenUp", { default: false })
+  public clearable!: boolean;
 
   vacanciesDialog(): void {
     this.openVacanciesDialog = true;
@@ -126,6 +144,7 @@ export default class EmploymentDataForm extends Vue {
 
   selectedVacancy(vacancy: IVacancy): void {
     this.applicant.vacancy_id = vacancy.id;
+    this.employee.vacancy_id = vacancy.id;
     this.vacancy = vacancy;
   }
 
@@ -135,6 +154,19 @@ export default class EmploymentDataForm extends Vue {
 
   goBack(): void {
     this.$emit("back");
+  }
+
+  cancel(): void {
+    this.$emit("clear", { ...this.employee });
+    if (this.clearable) {
+      this.employee = initEmployeeData;
+    }
+  }
+
+  @Watch("clearable")
+  clear(): void {
+    this.cancel();
+    this.$emit("clear", { ...this.employee });
   }
 }
 </script>
