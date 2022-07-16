@@ -55,14 +55,12 @@
               @back="prev"
               @clear="cancel"
               :clen-up.sync="clearable"
+              :is-creating="isCreating"
             />
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
     </v-card>
-    <pre>
-      {{ employeeData }}
-    </pre>
   </div>
 </template>
 
@@ -174,7 +172,21 @@ export default class EmployeeCreate extends Vue {
   }
 
   createEmployee(): void {
-    this.employeeService.create(this.employeeData).then();
+    this.isCreating = true;
+    this.employeeService
+      .create(this.employeeData)
+      .then((response) => {
+        if (response) {
+          this.cancel();
+          this.$router.push({
+            name: "employees:list",
+          });
+        }
+      })
+      .catch()
+      .finally(() => {
+        this.isCreating = false;
+      });
   }
 }
 </script>
