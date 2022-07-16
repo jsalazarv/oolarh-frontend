@@ -10,11 +10,7 @@
             />
           </v-card>
           <v-card v-if="applicant.vacancy_id" class="py-8 px-4" elevation="0">
-            <VacancySelector
-              :data="vacancy"
-              :is-disabled="isCreating"
-              @onRecord="vacanciesDialog"
-            />
+            <VacancySelector :data="vacancy" @onRecord="vacanciesDialog" />
           </v-card>
         </v-col>
         <v-col cols="12" md="8">
@@ -74,7 +70,8 @@
                 small
                 color="success"
                 @click.prevent="submit"
-                :disabled="invalid"
+                :disabled="invalid || creating"
+                :loading="creating"
               >
                 Registrar
               </v-btn>
@@ -116,7 +113,6 @@ const initEmployeeData = {
 })
 export default class EmploymentDataForm extends Vue {
   public openVacanciesDialog = false;
-  public isCreating = false;
   public applicant: IApplicantRequest = {
     id: null,
     names: "",
@@ -134,6 +130,9 @@ export default class EmploymentDataForm extends Vue {
     psychometric_test: "",
     salary: "",
   };
+
+  @PropSync("isCreating", { default: false })
+  public creating!: boolean;
 
   @PropSync("clenUp", { default: false })
   public clearable!: boolean;
