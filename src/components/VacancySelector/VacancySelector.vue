@@ -19,12 +19,16 @@
       <v-divider class="mx-4"></v-divider>
       <small class="grey--text ms-4">
         {{ $t("vacancies.attributes.department") }}:
-        {{ vacancy.department.name }}
+        <span v-if="vacancy.department">
+          {{ vacancy.department.name }}
+        </span>
       </small>
       <v-divider class="mx-4"></v-divider>
       <small class="grey--text ms-4">
         {{ $t("vacancies.attributes.branch_office") }}:
-        {{ vacancy.branch_office.name }}
+        <span v-if="vacancy.branch_office">
+          {{ vacancy.branch_office.name }}
+        </span>
       </small>
       <v-divider class="mx-4"></v-divider>
     </div>
