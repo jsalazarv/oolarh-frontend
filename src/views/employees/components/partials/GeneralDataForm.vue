@@ -185,6 +185,7 @@ import { Component, PropSync, Vue, Watch } from "vue-property-decorator";
 import GenderService from "@/services/GenderService";
 import { IEmployeeRequest } from "@/services/EmployeeService/types";
 import { IGender } from "@/services/GenderService/types";
+import CustomFileInput from "@/views/applications/components/CustomFileInput.vue";
 
 const initEmployeeData = {
   names: "",
@@ -196,22 +197,16 @@ const initEmployeeData = {
   ssn: "",
   resume: null,
 };
-
-@Component
+@Component({
+  components: { CustomFileInput },
+})
 export default class GeneralDataForm extends Vue {
   protected genderService = new GenderService();
   public genders: Array<IGender> = [];
   public isLoadingGenderList = false;
-  public employee: Partial<IEmployeeRequest> = {
-    names: "Juan",
-    first_surname: "Salazar",
-    second_surname: "Vazquez",
-    birthday: "08/03/94",
-    gender: "Masculino",
-    rfc: "SAVJ94080394BJ3",
-    ssn: "121212",
-    resume: null,
-  };
+
+  @PropSync("data", { type: Object, default: {} })
+  employee?: Partial<IEmployeeRequest>;
 
   @PropSync("clenUp", { default: false })
   public clearable!: boolean;
