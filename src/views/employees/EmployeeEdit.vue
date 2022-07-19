@@ -7,7 +7,7 @@
             :data="vacancy"
             :is-loading="isLoadingVacancyData"
             :is-disabled="isEditing"
-            @onRecord="vacanciesDialog"
+            @update:data="updateVacancy"
           />
         </v-card>
       </v-col>
@@ -61,7 +61,7 @@
                 <GeneralDataForm
                   @submit="submitGeneralDataForm"
                   @clear="cancel"
-                  :clen-up.sync="clearable"
+                  :clearable="clearable"
                   :data="generalData"
                 />
               </v-stepper-content>
@@ -80,12 +80,7 @@
           </v-stepper>
         </v-card>
       </v-col>
-      <pre>{{ employeeData }}</pre>
     </v-row>
-    <VacancyListDialog
-      :open.sync="openVacanciesDialog"
-      @onSelect="selectedVacancy"
-    />
   </div>
 </template>
 
@@ -95,35 +90,14 @@ import EmployeeService from "@/services/EmployeeService";
 import GeneralDataForm from "@/views/employees/components/partials/GeneralDataForm.vue";
 import VacancySelector from "@/components/VacancySelector/VacancySelector.vue";
 import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
-import { IEmployeeRequest } from "@/services/EmployeeService/types";
+import {
+  IContact,
+  IEmployeeRequest,
+  IEmployeeResponse,
+} from "@/services/EmployeeService/types";
 import { IVacancy } from "@/services/VacancyService/types";
 import ContactDataForm from "@/views/employees/components/partials/ContactDataForm.vue";
 import EmploymentDataForm from "@/views/employees/components/partials/EmploymentDataForm.vue";
-
-const initialEmployeeData = {
-  names: "",
-  vacancy_id: null,
-  first_surname: "",
-  second_surname: "",
-  email: "",
-  cellphone: "",
-  psychometric_test: "",
-  birthday: "",
-  gender: "",
-  rfc: "",
-  ssn: "",
-  resume: null,
-  phone: "",
-  country: "",
-  state: "",
-  municipality: "",
-  suburb: "",
-  street: "",
-  outdoor_number: "",
-  interior_number: "",
-  postal_code: "",
-  salary: "",
-};
 
 @Component({
   components: {
@@ -136,11 +110,11 @@ const initialEmployeeData = {
 })
 export default class EmployeeEdit extends Vue {
   protected employeeService = new EmployeeService();
-  public openVacanciesDialog = false;
   public isEditing = false;
   public isLoadingVacancyData = false;
   public currentStep = 1;
-  public clearable = false;
+  public clearable = true;
+  employee: IEmployeeResponse | Record<string, unknown> = {};
   employeeData: IEmployeeRequest = {
     names: "",
     vacancy_id: null,
@@ -166,20 +140,20 @@ export default class EmployeeEdit extends Vue {
     salary: "",
   };
 
-  public vacancy = {};
-  public generalData = {};
+  public vacancy: any = {};
+  public generalData: any = {};
 
   getEmployeeData(): void {
     this.isLoadingVacancyData = true;
     this.employeeService
       .findById(this.$route.params.id)
       .then((response) => {
-        const { resume, contact, address, vacancy, ...rest } = response.data;
+        const { contact, address, vacancy, ...generalData } = response.data;
 
-        this.employeeData.vacancy_id = vacancy.id;
-        this.generalData = rest;
-        vacancy && this.selectedVacancy(vacancy);
-        rest && this.selectedGeneralData(rest);
+        this.employee = response.data;
+
+        vacancy && this.updateVacancy(vacancy);
+        generalData && this.updateGeneralData(generalData);
       })
       .catch()
       .finally(() => {
@@ -187,25 +161,11 @@ export default class EmployeeEdit extends Vue {
       });
   }
 
-  vacanciesDialog(): void {
-    this.openVacanciesDialog = true;
-  }
-
-  selectedVacancy(vacancy: IVacancy): void {
-    this.employeeData.vacancy_id = vacancy.id;
+  updateVacancy(vacancy: IVacancy): void {
     this.vacancy = vacancy;
   }
 
-  selectedGeneralData(generalData: any): void {
-    this.employeeData.names = generalData.names;
-    this.employeeData.first_surname = generalData.first_surname;
-    this.employeeData.second_surname = generalData.second_surname;
-    this.employeeData.birthday = generalData.birthday;
-    this.employeeData.gender = generalData.gender;
-    this.employeeData.rfc = generalData.rfc;
-    this.employeeData.ssn = generalData.ssn;
-    this.employeeData.resume = generalData.resume.name;
-
+  updateGeneralData(generalData: any): void {
     this.generalData = generalData;
   }
 
@@ -226,18 +186,20 @@ export default class EmployeeEdit extends Vue {
   }
 
   cancel(): void {
-    this.employeeData = initialEmployeeData;
-    this.clearable = true;
+    const { resume, contact, address, vacancy, ...rest } = this.employee;
+
+    vacancy && this.updateVacancy(vacancy as IVacancy);
+    rest && this.updateGeneralData(rest);
     this.prev();
   }
 
-  submitGeneralDataForm(data: Partial<IEmployeeRequest>): void {
-    this.employeeData = { ...this.employeeData, ...data };
+  submitGeneralDataForm(data: any): void {
+    this.updateGeneralData(data);
     this.next();
   }
 
-  submitContactDataForm(data: Partial<IEmployeeRequest>): void {
-    this.employeeData = { ...this.employeeData, ...data };
+  submitContactDataForm(contact: IContact): void {
+    //this.updateContactData(contact);
     this.next();
   }
 
