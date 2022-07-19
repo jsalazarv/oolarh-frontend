@@ -181,7 +181,7 @@
 </template>
 
 <script lang="ts">
-import { Component, PropSync, Vue, Watch } from "vue-property-decorator";
+import { Component, Emit, Prop, PropSync, Vue } from "vue-property-decorator";
 import GenderService from "@/services/GenderService";
 import { IEmployeeRequest } from "@/services/EmployeeService/types";
 import { IGender } from "@/services/GenderService/types";
@@ -208,12 +208,8 @@ export default class GeneralDataForm extends Vue {
   @PropSync("data", { type: Object, default: {} })
   employee?: Partial<IEmployeeRequest>;
 
-  @PropSync("clenUp", { default: false })
+  @Prop({ default: true })
   public clearable!: boolean;
-
-  submit(): void {
-    this.$emit("submit", { ...this.employee });
-  }
 
   getGenders(): void {
     this.isLoadingGenderList = true;
@@ -228,16 +224,20 @@ export default class GeneralDataForm extends Vue {
       });
   }
 
-  @Watch("clearable")
-  clear(): void {
-    this.cancel();
-    this.$emit("clear", { ...this.employee });
+  @Emit("submit")
+  submit(): Partial<IEmployeeRequest> {
+    return this.employee as Partial<IEmployeeRequest>;
+  }
+
+  @Emit("clear")
+  clear(): Partial<IEmployeeRequest> {
+    this.employee = initEmployeeData;
+    return this.employee;
   }
 
   cancel(): void {
-    this.$emit("clear", { ...this.employee });
     if (this.clearable) {
-      this.employee = initEmployeeData;
+      this.clear();
     }
   }
 

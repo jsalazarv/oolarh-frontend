@@ -71,33 +71,33 @@
 
 <script lang="ts">
 import { Component, PropSync, Vue } from "vue-property-decorator";
-import { IVacancy } from "@/services/VacancyService/types";
 import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
+import { IVacancy } from "@/services/VacancyService/types";
+
 @Component({
   components: { NoTableData, VacancyListDialog },
 })
 export default class VacancySelector extends Vue {
   public isVacancyDialogOpen = false;
 
-  @PropSync("data", { type: Object, default: {} })
+  @PropSync("data", { default: {} })
   vacancy?: IVacancy;
 
-  @PropSync("isDisabled", { type: Boolean, default: false })
-  disabled!: false;
+  @PropSync("isDisabled", { default: false })
+  disabled!: boolean;
 
-  @PropSync("isLoading", { type: Boolean, default: false })
-  loading!: false;
+  @PropSync("isLoading", { default: false })
+  loading!: boolean;
 
-  @PropSync("isItSelectable", { type: Boolean, default: true })
-  selectable!: true;
+  @PropSync("isItSelectable", { default: true })
+  selectable!: boolean;
 
   openVacancyList(): void {
     this.isVacancyDialogOpen = true;
   }
 
   onSelectedVacancy(vacancy: IVacancy): void {
-    console.log(vacancy);
     this.vacancy = vacancy;
   }
 }
