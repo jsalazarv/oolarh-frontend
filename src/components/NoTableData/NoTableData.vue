@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class NoTableData extends Vue {
@@ -32,8 +32,9 @@ export default class NoTableData extends Vue {
   })
   public btnTitle?: string;
 
+  @Emit("onRecord")
   onRecord(): void {
-    this.$emit("onRecord");
+    // This is or only for triggering click events
   }
 }
 </script>

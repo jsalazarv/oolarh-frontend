@@ -7,7 +7,7 @@
             :data="applicant.vacancy"
             :is-loading="isLoadingVacancyData"
             :is-disabled="isEditing"
-            @onRecord="vacanciesDialog"
+            @update:data="selectedVacancy"
           />
         </v-card>
       </v-col>
@@ -167,10 +167,6 @@
         </ValidationObserver>
       </v-col>
     </v-row>
-    <VacancyListDialog
-      :open.sync="openVacanciesDialog"
-      @onSelect="selectedVacancy"
-    />
   </div>
 </template>
 
@@ -191,7 +187,6 @@ import VacancySelector from "@/components/VacancySelector/VacancySelector.vue";
 })
 export default class ApplicationEdit extends Vue {
   protected applicantService = new ApplicantService();
-  public openVacanciesDialog = false;
   public isEditing = false;
   public isLoadingVacancyData = false;
   public applicant: IApplicant = {
@@ -262,10 +257,6 @@ export default class ApplicationEdit extends Vue {
       .finally(() => {
         this.isLoadingVacancyData = false;
       });
-  }
-
-  vacanciesDialog(): void {
-    this.openVacanciesDialog = true;
   }
 
   selectedVacancy(vacancy: IVacancy): void {

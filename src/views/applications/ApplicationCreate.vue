@@ -2,17 +2,11 @@
   <div v-layout="'app-layout'" class="pa-4">
     <v-row>
       <v-col cols="12" md="4">
-        <v-card class="pa-4" elevation="0" v-if="!applicant.vacancy_id">
-          <NoTableData
-            :btn-title="$t('applications.labels.selectVacancy')"
-            @onRecord="vacanciesDialog"
-          />
-        </v-card>
-        <v-card v-if="applicant.vacancy_id" class="py-8 px-4" elevation="0">
+        <v-card class="py-8 px-4" elevation="0">
           <VacancySelector
             :data="vacancy"
             :is-disabled="isCreating"
-            @onRecord="vacanciesDialog"
+            @update:data="selectedVacancy"
           />
         </v-card>
       </v-col>
@@ -195,10 +189,6 @@
         </ValidationObserver>
       </v-col>
     </v-row>
-    <VacancyListDialog
-      :open.sync="openVacanciesDialog"
-      @onSelect="selectedVacancy"
-    />
   </div>
 </template>
 
@@ -229,7 +219,6 @@ const initialApplicantData: IApplicantRequest = {
 })
 export default class ApplicationCreate extends Vue {
   protected applicantService = new ApplicantService();
-  public openVacanciesDialog = false;
   public isCreating = false;
   public resume = null;
   public vacancy = {};
@@ -248,10 +237,6 @@ export default class ApplicationCreate extends Vue {
   clear(): void {
     this.applicant = { ...initialApplicantData };
     (this.$refs.form as IValidationObserver).reset();
-  }
-
-  vacanciesDialog(): void {
-    this.openVacanciesDialog = true;
   }
 
   selectedVacancy(vacancy: IVacancy): void {
