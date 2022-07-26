@@ -15,7 +15,7 @@
         <v-btn
           small
           color="success"
-          :to="{ name: 'employees:create' }"
+          @click="redirectToCreation"
           :disabled="isLoadingEmployeeList"
         >
           {{ $t("employees.labels.create") }}
@@ -45,11 +45,10 @@
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             class="mx-1"
-            color="success"
+            color="primary"
             x-small
             fab
-            disabled
-            @click="editDialog(item)"
+            :to="{ name: 'employees:edit', params: { id: item.id } }"
           >
             <v-icon dark>mdi-account-edit</v-icon>
           </v-btn>
@@ -172,11 +171,9 @@ export default class EmployeeList extends Vue {
   }
 
   redirectToCreation(): void {
-    //TODO: Add route: employees:create
-    /*this.$router.push({
-      name: "",
-    });*/
-    console.log("employees:create");
+    this.$router.push({
+      name: "employees:create",
+    });
   }
 
   search(): void {

@@ -11,4 +11,10 @@ export default [
     component: () => import("@/views/employees/EmployeeCreate.vue"),
     meta: { public: false },
   },
+  {
+    path: "/employees/:id/edit",
+    name: "employees:edit",
+    component: () => import("@/views/employees/EmployeeEdit.vue"),
+    meta: { public: false },
+  },
 ];
