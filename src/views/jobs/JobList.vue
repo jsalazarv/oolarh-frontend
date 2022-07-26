@@ -14,6 +14,16 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn
+          x-small
+          fab
+          color="primary"
+          class="mr-2"
+          :disabled="isLoadingJobList"
+          @click="responseDialog"
+        >
+          <v-icon dark>mdi-code-json</v-icon>
+        </v-btn>
+        <v-btn
           small
           color="success"
           v-if="!jobList.length === false"
@@ -82,6 +92,7 @@
       :data="job"
       @onDelete="updateListAfterDelete"
     />
+    <ResponseDialog :open.sync="openResponseDialog" :response.sync="code" />
   </div>
 </template>
 
@@ -94,9 +105,16 @@ import DeleteDialog from "@/views/jobs/components/DeleteDialog.vue";
 import EditDialog from "@/views/jobs/components/EditDialog.vue";
 import { IJob, IJobQueryParams } from "@/services/JobService/types";
 import { IHeaders, IMeta } from "@/services/types";
+import ResponseDialog from "@/views/jobs/components/ResponseDialog.vue";
 
 @Component({
-  components: { EditDialog, DeleteDialog, CreateDialog, NoTableData },
+  components: {
+    ResponseDialog,
+    EditDialog,
+    DeleteDialog,
+    CreateDialog,
+    NoTableData,
+  },
 })
 export default class JobList extends Vue {
   protected jobService = new JobService();
@@ -105,11 +123,14 @@ export default class JobList extends Vue {
   public openCreateDialog = false;
   public openEditDialog = false;
   public openDeleteDialog = false;
+  public openResponseDialog = false;
   public job: IJob = {
     id: null,
     name: "",
     description: "",
   };
+  public code: Array<IJob> = [];
+
   public params = {
     query: "",
   };
@@ -181,6 +202,11 @@ export default class JobList extends Vue {
   deleteDialog(item: IJob): void {
     this.openDeleteDialog = true;
     this.job = item;
+  }
+
+  responseDialog(): void {
+    this.code = this.jobList;
+    this.openResponseDialog = true;
   }
 
   updateListAfterCreate(data: IJob): void {
