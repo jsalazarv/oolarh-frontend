@@ -46,6 +46,9 @@ export default {
           delete: "Delete",
         },
       },
+      response: {
+        title: "",
+      },
     },
   },
 };
