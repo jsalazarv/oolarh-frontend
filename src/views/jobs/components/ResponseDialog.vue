@@ -8,13 +8,17 @@
     <v-card>
       <v-card-title class="subtitle-1 text-uppercase font-weight-regular mb-7">
         {{ $t("jobs.labels.response") }}
+        <v-spacer></v-spacer>
+        <v-btn small :copy="textCode" @click="copyCode">
+          <v-icon dark>mdi-clipboard-text-multiple</v-icon>
+        </v-btn>
+        <v-btn small class="mx-2"><v-icon dark>mdi-download</v-icon></v-btn>
+        <v-btn small @click="changeFormat">{{ inverseFormat }}</v-btn>
       </v-card-title>
       <v-card-text class="py-0">
         <prism :plugins="['line-numbers']" :code="textCode"></prism>
       </v-card-text>
-      <v-card-actions>
-        <v-btn @click="changeFormat">{{ inverseFormat }}</v-btn>
-      </v-card-actions>
+      <v-card-actions> </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -59,7 +63,13 @@ export default class ResponseDialog extends Vue {
       return JSON.stringify(this.code, null, "\t");
     }
 
-    return js2xmlparser.parse("text", this.code);
+    return js2xmlparser.parse("jobs", { job: this.code }, {});
+  }
+
+  copyCode(): void {
+    const codeCopy = this.textCode;
+
+    navigator.clipboard.writeText(codeCopy);
   }
 
   closeDialog(): void {
