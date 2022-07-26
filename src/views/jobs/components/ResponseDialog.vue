@@ -12,7 +12,15 @@
         <v-btn small :copy="textCode" @click="copyCode">
           <v-icon dark>mdi-clipboard-text-multiple</v-icon>
         </v-btn>
-        <v-btn small class="mx-2"><v-icon dark>mdi-download</v-icon></v-btn>
+        <v-btn
+          small
+          class="mx-2"
+          v-download-data="textCode"
+          v-download-data:type="format"
+          v-download-data:filename="'job-list'"
+        >
+          <v-icon dark>mdi-download</v-icon>
+        </v-btn>
         <v-btn small @click="changeFormat">{{ inverseFormat }}</v-btn>
       </v-card-title>
       <v-card-text class="py-0">

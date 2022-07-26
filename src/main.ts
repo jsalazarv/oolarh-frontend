@@ -6,6 +6,9 @@ import vuetify from "./plugins/vuetify";
 import i18n from "@/lang";
 import "./directives";
 import "/src/plugins/veevalidate";
+import DownloadData from "v-download";
+
+Vue.use(DownloadData);
 
 Vue.config.productionTip = false;
 
