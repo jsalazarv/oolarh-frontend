@@ -1,5 +1,6 @@
 <template>
   <v-dialog
+    scrollable
     v-model="isDialogOpen"
     max-width="650"
     transition="fab-transition"
@@ -7,7 +8,7 @@
   >
     <v-card>
       <v-card-title class="subtitle-1 text-uppercase font-weight-regular mb-7">
-        {{ $t("jobs.labels.response") }}
+        {{ $t("jobs.labels.dialogs.response.title") }}
         <v-spacer></v-spacer>
         <v-btn small :copy="textCode" @click="copyCode">
           <v-icon dark>mdi-clipboard-text-multiple</v-icon>
