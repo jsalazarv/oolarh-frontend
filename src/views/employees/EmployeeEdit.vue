@@ -78,6 +78,7 @@
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
+          <pre>{{ employeeData }}</pre>
         </v-card>
       </v-col>
     </v-row>
@@ -163,10 +164,19 @@ export default class EmployeeEdit extends Vue {
 
   updateVacancy(vacancy: IVacancy): void {
     this.vacancy = vacancy;
+    this.employeeData.vacancy_id = vacancy.id;
   }
 
   updateGeneralData(generalData: any): void {
     this.generalData = generalData;
+    this.employeeData.names = generalData.names;
+    this.employeeData.first_surname = generalData.first_surname;
+    this.employeeData.second_surname = generalData.second_surname;
+    this.employeeData.birthday = generalData.birthday;
+    this.employeeData.gender = generalData.gender;
+    this.employeeData.rfc = generalData.rfc;
+    this.employeeData.ssn = generalData.ssn;
+    this.employeeData.resume = generalData.resume;
   }
 
   next(): void {
