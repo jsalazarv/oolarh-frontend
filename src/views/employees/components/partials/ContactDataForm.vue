@@ -246,7 +246,14 @@
 </template>
 
 <script lang="ts">
-import { Component, PropSync, Vue, Watch } from "vue-property-decorator";
+import {
+  Component,
+  Emit,
+  Prop,
+  PropSync,
+  Vue,
+  Watch,
+} from "vue-property-decorator";
 import LocationService from "@/services/LocationService";
 import { IEmployeeRequest } from "@/services/EmployeeService/types";
 import { ICity, ICountry, IState } from "@/services/LocationService/types";
@@ -274,42 +281,32 @@ export default class ContactDataForm extends Vue {
   public countries: Array<ICountry> = [];
   public states: Array<IState> = [];
   public cities: Array<ICity> = [];
-  public employee: Partial<IEmployeeRequest> = {
-    email: "juan@oolaa.com",
-    cellphone: "998118613",
-    phone: "5549281837",
-    country: "",
-    state: "",
-    municipality: "",
-    suburb: "Bosques de la colmena",
-    street: "Avenida de las flores",
-    outdoor_number: "15",
-    interior_number: "sn",
-    postal_code: "54476",
-  };
 
-  @PropSync("clenUp", { default: false })
+  @PropSync("data", { type: Object, default: {} })
+  employee?: Partial<IEmployeeRequest>;
+
+  @Prop({ default: true })
   public clearable!: boolean;
 
-  submit(): void {
-    this.$emit("submit", { ...this.employee });
+  @Emit("submit")
+  submit(): Partial<IEmployeeRequest> {
+    return this.employee as Partial<IEmployeeRequest>;
+  }
+
+  @Emit("clear")
+  clear(): Partial<IEmployeeRequest> {
+    this.employee = initEmployeeData;
+    return this.employee;
+  }
+
+  cancel(): void {
+    if (this.clearable) {
+      this.clear();
+    }
   }
 
   goBack(): void {
     this.$emit("back");
-  }
-
-  cancel(): void {
-    this.$emit("clear", { ...this.employee });
-    if (this.clearable) {
-      this.employee = initEmployeeData;
-    }
-  }
-
-  @Watch("clearable")
-  clear(): void {
-    this.cancel();
-    this.$emit("clear", { ...this.employee });
   }
 
   getCountries(): void {
@@ -325,10 +322,11 @@ export default class ContactDataForm extends Vue {
       });
   }
 
+  @Watch("employee")
   getStates(): void {
     this.isLoadingStates = true;
     this.locationService
-      .getStates(this.employee.country as string)
+      .getStates(this.employee?.country as string)
       .then((response) => {
         this.states = response.data;
       })
@@ -338,10 +336,14 @@ export default class ContactDataForm extends Vue {
       });
   }
 
+  @Watch("employee")
   getCities(): void {
     this.isLoadingCities = true;
     this.locationService
-      .getCities(this.employee.country as string, this.employee.state as string)
+      .getCities(
+        this.employee?.country as string,
+        this.employee?.state as string
+      )
       .then((response) => {
         this.cities = response.data;
       })

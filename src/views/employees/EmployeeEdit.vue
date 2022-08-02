@@ -69,8 +69,8 @@
                 <ContactDataForm
                   @submit="submitContactDataForm"
                   @back="prev"
-                  @clear="cancel"
-                  :clen-up.sync="clearable"
+                  :clearable="clearable"
+                  :data="contactData"
                 />
               </v-stepper-content>
               <v-stepper-content step="3" class="pa-0">
@@ -92,6 +92,7 @@ import GeneralDataForm from "@/views/employees/components/partials/GeneralDataFo
 import VacancySelector from "@/components/VacancySelector/VacancySelector.vue";
 import VacancyListDialog from "@/components/VacancyList/VacancyListDialog.vue";
 import {
+  IAddress,
   IContact,
   IEmployeeRequest,
   IEmployeeResponse,
@@ -143,6 +144,7 @@ export default class EmployeeEdit extends Vue {
 
   public vacancy: any = {};
   public generalData: any = {};
+  public contactData: any = {};
 
   getEmployeeData(): void {
     this.isLoadingVacancyData = true;
@@ -155,6 +157,7 @@ export default class EmployeeEdit extends Vue {
 
         vacancy && this.updateVacancy(vacancy);
         generalData && this.updateGeneralData(generalData);
+        contact && this.updateContactData(contact, address);
       })
       .catch()
       .finally(() => {
@@ -169,6 +172,7 @@ export default class EmployeeEdit extends Vue {
 
   updateGeneralData(generalData: any): void {
     this.generalData = generalData;
+
     this.employeeData.names = generalData.names;
     this.employeeData.first_surname = generalData.first_surname;
     this.employeeData.second_surname = generalData.second_surname;
@@ -177,6 +181,22 @@ export default class EmployeeEdit extends Vue {
     this.employeeData.rfc = generalData.rfc;
     this.employeeData.ssn = generalData.ssn;
     this.employeeData.resume = generalData.resume;
+  }
+
+  updateContactData(contactData: any, addressData: any): void {
+    this.contactData = { ...contactData, ...addressData };
+
+    this.employeeData.email = this.contactData.email;
+    this.employeeData.phone = this.contactData.phone;
+    this.employeeData.cellphone = this.contactData.cellphone;
+    this.employeeData.country = this.contactData.country;
+    this.employeeData.state = this.contactData.state;
+    this.employeeData.municipality = this.contactData.municipality;
+    this.employeeData.suburb = this.contactData.suburb;
+    this.employeeData.street = this.contactData.street;
+    this.employeeData.outdoor_number = this.contactData.outdoor_number;
+    this.employeeData.interior_number = this.contactData.interior_number;
+    this.employeeData.postal_code = this.contactData.postal_code;
   }
 
   next(): void {
@@ -208,8 +228,8 @@ export default class EmployeeEdit extends Vue {
     this.next();
   }
 
-  submitContactDataForm(contact: IContact): void {
-    //this.updateContactData(contact);
+  submitContactDataForm(contact: IContact, address: IAddress): void {
+    this.updateContactData(contact, address);
     this.next();
   }
 
