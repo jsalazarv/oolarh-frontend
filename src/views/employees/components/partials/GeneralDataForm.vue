@@ -2,9 +2,6 @@
   <ValidationObserver ref="form" v-slot="{ invalid }">
     <v-container fluid class="pa-0">
       <v-card class="px-4 py-2" elevation="0">
-        <v-toolbar-title class="subtitle-1 text-uppercase mb-10">
-          {{ $t("employees.create.title") }}
-        </v-toolbar-title>
         <v-row>
           <v-col cols="12" md="4">
             <ValidationProvider

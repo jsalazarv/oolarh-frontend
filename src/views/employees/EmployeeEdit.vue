@@ -13,43 +13,40 @@
       </v-col>
       <v-col cols="12" md="8">
         <v-card class="py-8 px-4" elevation="0">
-          <v-toolbar flat class="transparent mb-2">
-            <v-spacer />
-            <div class="d-flex align-end justify-end">
-              <v-stepper
-                elevation="0"
-                v-model="currentStep"
-                max-height="100"
-                class="transparent"
-              >
-                <v-stepper-header class="without-shadow stepper-header-width">
-                  <v-stepper-step
-                    :complete="currentStep > 1"
-                    step="1"
-                    class="pa-2"
-                  >
-                    {{ $t("employees.labels.steps.generalData") }}
-                  </v-stepper-step>
-                  <v-divider></v-divider>
-                  <v-stepper-step
-                    :complete="currentStep > 2"
-                    step="2"
-                    class="pa-2"
-                  >
-                    {{ $t("employees.labels.steps.contactInformation") }}
-                  </v-stepper-step>
-                  <v-divider></v-divider>
-                  <v-stepper-step
-                    :complete="currentStep > 3"
-                    step="3"
-                    class="pa-2"
-                  >
-                    {{ $t("employees.labels.steps.employmentData") }}
-                  </v-stepper-step>
-                </v-stepper-header>
-              </v-stepper>
-            </div>
-          </v-toolbar>
+          <div class="d-flex align-end justify-end">
+            <v-stepper
+              elevation="0"
+              v-model="currentStep"
+              max-height="100"
+              class="transparent"
+            >
+              <v-stepper-header class="without-shadow stepper-header-width">
+                <v-stepper-step
+                  :complete="currentStep > 1"
+                  step="1"
+                  class="pa-2"
+                >
+                  {{ $t("employees.labels.steps.generalData") }}
+                </v-stepper-step>
+                <v-divider></v-divider>
+                <v-stepper-step
+                  :complete="currentStep > 2"
+                  step="2"
+                  class="pa-2"
+                >
+                  {{ $t("employees.labels.steps.contactInformation") }}
+                </v-stepper-step>
+                <v-divider></v-divider>
+                <v-stepper-step
+                  :complete="currentStep > 3"
+                  step="3"
+                  class="pa-2"
+                >
+                  {{ $t("employees.labels.steps.employmentData") }}
+                </v-stepper-step>
+              </v-stepper-header>
+            </v-stepper>
+          </div>
           <v-stepper
             v-model="currentStep"
             alt-labels
@@ -74,7 +71,12 @@
                 />
               </v-stepper-content>
               <v-stepper-content step="3" class="pa-0">
-                <EmploymentDataForm />
+                <EmploymentDataForm
+                  @submit="submitEmploymentDataForm"
+                  @back="prev"
+                  :clearable="clearable"
+                  :data="employmentData"
+                />
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
@@ -145,6 +147,7 @@ export default class EmployeeEdit extends Vue {
   public vacancy: any = {};
   public generalData: any = {};
   public contactData: any = {};
+  public employmentData: any = {};
 
   getEmployeeData(): void {
     this.isLoadingVacancyData = true;
@@ -158,6 +161,7 @@ export default class EmployeeEdit extends Vue {
         vacancy && this.updateVacancy(vacancy);
         generalData && this.updateGeneralData(generalData);
         contact && this.updateContactData(contact, address);
+        generalData && this.updateEmploymentData(generalData);
       })
       .catch()
       .finally(() => {
@@ -199,6 +203,13 @@ export default class EmployeeEdit extends Vue {
     this.employeeData.postal_code = this.contactData.postal_code;
   }
 
+  updateEmploymentData(generalData: any): void {
+    this.employmentData = generalData;
+
+    this.employeeData.salary = generalData.salary;
+    this.employeeData.psychometric_test = generalData.psychometric_test;
+  }
+
   next(): void {
     const nextStep = this.currentStep + 1;
 
@@ -231,6 +242,10 @@ export default class EmployeeEdit extends Vue {
   submitContactDataForm(contact: IContact, address: IAddress): void {
     this.updateContactData(contact, address);
     this.next();
+  }
+
+  submitEmploymentDataForm(data: any): void {
+    this.updateEmploymentData(data);
   }
 
   mounted(): void {
