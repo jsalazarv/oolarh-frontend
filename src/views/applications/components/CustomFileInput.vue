@@ -35,10 +35,10 @@ export default class CustomFileInput extends Vue {
   currentFileName!: string;
 
   @PropSync("isDisabled", { type: Boolean, default: false })
-  disabled!: false;
+  disabled?: false;
 
   @PropSync("isLoading", { type: Boolean, default: false })
-  loading!: false;
+  loading?: false;
 
   public selectedFile: File | null = null;
   public isSelecting = false;

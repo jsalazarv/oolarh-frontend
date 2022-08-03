@@ -138,22 +138,11 @@
             <ValidationProvider
               :name="$t('employees.attributes.resume')"
               rules="required"
-              v-slot="{ errors }"
             >
-              <v-file-input
-                outlined
-                dense
-                required
-                autocomplete="off"
-                name="resume"
-                accept=".pdf"
-                prepend-icon=""
-                prepend-inner-icon="mdi-file-account"
-                :label="$t('employees.attributes.resume')"
-                :error-messages="errors"
-                :value="employee.resume"
-                v-model="employee.resume"
-              ></v-file-input>
+              <CustomFileInput
+                :file-name="fileName"
+                @onFileChanged="updateFileValue"
+              />
             </ValidationProvider>
           </v-col>
         </v-row>
@@ -180,7 +169,7 @@
 <script lang="ts">
 import { Component, Emit, Prop, PropSync, Vue } from "vue-property-decorator";
 import GenderService from "@/services/GenderService";
-import { IEmployeeRequest } from "@/services/EmployeeService/types";
+import { IEmployeeRequest, IResume } from "@/services/EmployeeService/types";
 import { IGender } from "@/services/GenderService/types";
 import CustomFileInput from "@/views/applications/components/CustomFileInput.vue";
 
@@ -203,7 +192,7 @@ export default class GeneralDataForm extends Vue {
   public isLoadingGenderList = false;
 
   @PropSync("data", { type: Object, default: {} })
-  employee?: Partial<IEmployeeRequest>;
+  employee!: Partial<IEmployeeRequest>;
 
   @Prop({ default: true })
   public clearable!: boolean;
@@ -236,6 +225,14 @@ export default class GeneralDataForm extends Vue {
     if (this.clearable) {
       this.clear();
     }
+  }
+
+  get fileName(): Partial<IResume> {
+    return this.employee.resume?.file_name;
+  }
+
+  updateFileValue(data: File): void {
+    this.employee.resume = data;
   }
 
   mounted(): void {

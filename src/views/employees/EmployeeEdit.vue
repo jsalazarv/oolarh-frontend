@@ -80,7 +80,6 @@
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
-          <pre>{{ employeeData }}</pre>
         </v-card>
       </v-col>
     </v-row>
@@ -246,6 +245,15 @@ export default class EmployeeEdit extends Vue {
 
   submitEmploymentDataForm(data: any): void {
     this.updateEmploymentData(data);
+    this.updateEmployee();
+  }
+
+  updateEmployee(): void {
+    this.employeeService
+      .update(parseInt(this.$route.params.id), this.employeeData)
+      .then()
+      .catch()
+      .finally();
   }
 
   mounted(): void {

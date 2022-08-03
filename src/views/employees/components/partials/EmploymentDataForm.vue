@@ -56,8 +56,7 @@
                 small
                 color="success"
                 @click.prevent="submit"
-                :disabled="invalid || creating"
-                :loading="creating"
+                :disabled="invalid"
               >
                 Registrar
               </v-btn>
