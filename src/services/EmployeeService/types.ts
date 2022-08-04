@@ -58,7 +58,7 @@ export interface IAddress {
   street: string;
   outdoor_number: string;
   interior_number: string;
-  postal_code: number | null;
+  postal_code: string;
 }
 
 export interface IEmployeeResponse {
