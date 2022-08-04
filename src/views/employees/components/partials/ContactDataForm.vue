@@ -279,7 +279,7 @@ export default class ContactDataForm extends Vue {
   public states: Array<IState> = [];
   public cities: Array<ICity> = [];
 
-  @PropSync("data", { type: Object, default: {} })
+  @PropSync("data", { type: Object, default: () => ({}) })
   employee?: Partial<IEmployeeRequest>;
 
   @Prop({ default: true })

@@ -81,7 +81,7 @@ import { IVacancy } from "@/services/VacancyService/types";
 export default class VacancySelector extends Vue {
   public isVacancyDialogOpen = false;
 
-  @PropSync("data", { default: {} })
+  @PropSync("data", { default: () => ({}) })
   vacancy?: IVacancy;
 
   @PropSync("isDisabled", { default: false })

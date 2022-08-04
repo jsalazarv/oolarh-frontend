@@ -205,7 +205,7 @@ export default class GeneralDataForm extends Vue {
   public genders: Array<IGender> = [];
   public isLoadingGenderList = false;
 
-  @PropSync("data", { type: Object, default: {} })
+  @PropSync("data", { type: Object, default: () => ({}) })
   employee!: Partial<IEmployeeRequest>;
 
   @PropSync("isLoading", { default: false })
