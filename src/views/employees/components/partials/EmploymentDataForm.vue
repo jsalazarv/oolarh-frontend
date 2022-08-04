@@ -45,10 +45,22 @@
 
             <v-card-actions class="white">
               <v-spacer />
-              <v-btn depressed small color="primary" @click="cancel">
+              <v-btn
+                depressed
+                small
+                color="primary"
+                @click="cancel"
+                :disabled="creating"
+              >
                 Cancelar
               </v-btn>
-              <v-btn depressed small color="primary" @click.prevent="goBack">
+              <v-btn
+                depressed
+                small
+                color="primary"
+                @click.prevent="goBack"
+                :disabled="creating"
+              >
                 <v-icon dark> mdi-chevron-left </v-icon>
               </v-btn>
               <v-btn
@@ -56,7 +68,8 @@
                 small
                 color="success"
                 @click.prevent="submit"
-                :disabled="invalid"
+                :disabled="invalid || creating"
+                :loading="creating"
               >
                 Registrar
               </v-btn>
@@ -86,6 +99,9 @@ const initEmployeeData = {
 export default class EmploymentDataForm extends Vue {
   @PropSync("data", { type: Object, default: {} })
   employee?: Partial<IEmployeeRequest>;
+
+  @PropSync("isCreating", { default: false })
+  public creating!: boolean;
 
   @Prop({ default: true })
   public clearable!: boolean;

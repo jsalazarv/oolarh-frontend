@@ -16,6 +16,8 @@
                 autocomplete="off"
                 name="name"
                 :label="$t('employees.attributes.name')"
+                :loading="loading"
+                :disabled="loading"
                 :error-messages="errors"
                 v-model="employee.names"
               ></v-text-field>
@@ -33,6 +35,8 @@
                 required
                 autocomplete="off"
                 name="first_surname"
+                :loading="loading"
+                :disabled="loading"
                 :label="$t('employees.attributes.first_surname')"
                 :error-messages="errors"
                 v-model="employee.first_surname"
@@ -51,6 +55,8 @@
                 required
                 autocomplete="off"
                 name="second_surname"
+                :loading="loading"
+                :disabled="loading"
                 :label="$t('employees.attributes.second_surname')"
                 :error-messages="errors"
                 v-model="employee.second_surname"
@@ -69,6 +75,8 @@
                 required
                 autocomplete="off"
                 name="birthday"
+                :loading="loading"
+                :disabled="loading"
                 :label="$t('employees.attributes.birthday')"
                 :error-messages="errors"
                 v-model="employee.birthday"
@@ -88,8 +96,8 @@
                 autocomplete="off"
                 name="gender"
                 :label="$t('employees.attributes.gender')"
-                :loading="isLoadingGenderList"
-                :disabled="isLoadingGenderList"
+                :loading="isLoadingGenderList || loading"
+                :disabled="isLoadingGenderList || loading"
                 :error-messages="errors"
                 :items="genders"
                 item-text="name"
@@ -110,6 +118,8 @@
                 required
                 autocomplete="off"
                 name="rfc"
+                :loading="loading"
+                :disabled="loading"
                 :label="$t('employees.attributes.rfc')"
                 :error-messages="errors"
                 v-model="employee.rfc"
@@ -128,6 +138,8 @@
                 required
                 autocomplete="off"
                 name="ssn"
+                :loading="loading"
+                :disabled="loading"
                 :label="$t('employees.attributes.ssn')"
                 :error-messages="errors"
                 v-model="employee.ssn"
@@ -141,6 +153,8 @@
             >
               <CustomFileInput
                 :file-name="fileName"
+                :is-loading="loading"
+                :is-disabled="loading"
                 @onFileChanged="updateFileValue"
               />
             </ValidationProvider>
@@ -193,6 +207,9 @@ export default class GeneralDataForm extends Vue {
 
   @PropSync("data", { type: Object, default: {} })
   employee!: Partial<IEmployeeRequest>;
+
+  @PropSync("isLoading", { default: false })
+  public loading!: boolean;
 
   @Prop({ default: true })
   public clearable!: boolean;

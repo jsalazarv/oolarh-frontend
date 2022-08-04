@@ -58,6 +58,7 @@
                 <GeneralDataForm
                   @submit="submitGeneralDataForm"
                   @clear="cancel"
+                  :is-loading="isLoading"
                   :clearable="clearable"
                   :data="generalData"
                 />
@@ -66,6 +67,7 @@
                 <ContactDataForm
                   @submit="submitContactDataForm"
                   @back="prev"
+                  @clear="cancel"
                   :clearable="clearable"
                   :data="contactData"
                 />
@@ -74,8 +76,10 @@
                 <EmploymentDataForm
                   @submit="submitEmploymentDataForm"
                   @back="prev"
+                  @clear="cancel"
                   :clearable="clearable"
                   :data="employmentData"
+                  :is-creating="isCreating"
                 />
               </v-stepper-content>
             </v-stepper-items>
@@ -113,7 +117,9 @@ import EmploymentDataForm from "@/views/employees/components/partials/Employment
 })
 export default class EmployeeEdit extends Vue {
   protected employeeService = new EmployeeService();
+  public isLoading = false;
   public isEditing = false;
+  public isCreating = false;
   public isLoadingVacancyData = false;
   public currentStep = 1;
   public clearable = true;
@@ -150,6 +156,7 @@ export default class EmployeeEdit extends Vue {
 
   getEmployeeData(): void {
     this.isLoadingVacancyData = true;
+    this.isLoading = true;
     this.employeeService
       .findById(this.$route.params.id)
       .then((response) => {
@@ -165,6 +172,7 @@ export default class EmployeeEdit extends Vue {
       .catch()
       .finally(() => {
         this.isLoadingVacancyData = false;
+        this.isLoading = false;
       });
   }
 
@@ -184,6 +192,9 @@ export default class EmployeeEdit extends Vue {
     this.employeeData.rfc = generalData.rfc;
     this.employeeData.ssn = generalData.ssn;
     this.employeeData.resume = generalData.resume;
+
+    console.log("ED", this.employeeData.resume);
+    console.log("GD", generalData.resume);
   }
 
   updateContactData(contactData: any, addressData: any): void {
@@ -226,11 +237,12 @@ export default class EmployeeEdit extends Vue {
   }
 
   cancel(): void {
-    const { resume, contact, address, vacancy, ...rest } = this.employee;
+    const { contact, address, vacancy, ...rest } = this.employee;
 
     vacancy && this.updateVacancy(vacancy as IVacancy);
     rest && this.updateGeneralData(rest);
     this.prev();
+    this.$router.push({ name: "employees:list" });
   }
 
   submitGeneralDataForm(data: any): void {
@@ -249,11 +261,17 @@ export default class EmployeeEdit extends Vue {
   }
 
   updateEmployee(): void {
+    if (!(this.employeeData.resume instanceof File))
+      delete this.employeeData.resume;
+
+    this.isCreating = true;
     this.employeeService
       .update(parseInt(this.$route.params.id), this.employeeData)
       .then()
       .catch()
-      .finally();
+      .finally(() => {
+        this.isCreating = false;
+      });
   }
 
   mounted(): void {
