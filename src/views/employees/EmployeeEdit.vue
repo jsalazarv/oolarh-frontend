@@ -5,7 +5,7 @@
         <v-card class="py-8 px-4" elevation="0">
           <VacancySelector
             :data="vacancy"
-            :is-loading="isLoadingVacancyData"
+            :is-loading="isLoadingVacancyData || isEditing || isCreating"
             :is-disabled="isEditing"
             @update:data="updateVacancy"
           />
@@ -192,9 +192,6 @@ export default class EmployeeEdit extends Vue {
     this.employeeData.rfc = generalData.rfc;
     this.employeeData.ssn = generalData.ssn;
     this.employeeData.resume = generalData.resume;
-
-    console.log("ED", this.employeeData.resume);
-    console.log("GD", generalData.resume);
   }
 
   updateContactData(contactData: any, addressData: any): void {
@@ -267,7 +264,9 @@ export default class EmployeeEdit extends Vue {
     this.isCreating = true;
     this.employeeService
       .update(parseInt(this.$route.params.id), this.employeeData)
-      .then()
+      .then((response) => {
+        response && this.$router.push({ name: "employees:list" });
+      })
       .catch()
       .finally(() => {
         this.isCreating = false;

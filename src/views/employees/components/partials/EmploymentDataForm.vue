@@ -97,7 +97,7 @@ const initEmployeeData = {
   components: { VacancySelector, VacancyListDialog, NoTableData },
 })
 export default class EmploymentDataForm extends Vue {
-  @PropSync("data", { type: Object, default: {} })
+  @PropSync("data", { type: Object, default: () => ({}) })
   employee?: Partial<IEmployeeRequest>;
 
   @PropSync("isCreating", { default: false })
