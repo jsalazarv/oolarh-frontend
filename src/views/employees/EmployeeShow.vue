@@ -177,8 +177,8 @@
                     <strong>
                       {{
                         employee.employee_status === "active"
-                          ? "Activo"
-                          : "Inactivo"
+                          ? $t("employees.labels.active")
+                          : $t("employees.labels.inactive")
                       }}
                     </strong>
                   </p>
@@ -195,13 +195,95 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import EmployeeService from "@/services/EmployeeService";
-import { IEmployeeResponse } from "@/services/EmployeeService/types";
+import {
+  IAddress,
+  IContact,
+  IEmployeeResponse,
+  IResume,
+} from "@/services/EmployeeService/types";
+import { IVacancy } from "@/services/VacancyService/types";
+import { IBranchOffices } from "@/services/BranchOfficesService/types";
+import { IDepartment } from "@/services/DepartmentService/types";
+import { IJob } from "@/services/JobService/types";
 
 @Component({})
 export default class EmployeeShow extends Vue {
   protected employeeService = new EmployeeService();
   public isLoadingEmployeeData = false;
-  employee: IEmployeeResponse | Record<string, unknown> = {};
+  employee: IEmployeeResponse = {
+    id: null,
+    names: "",
+    first_surname: "",
+    second_surname: "",
+    fullName: "",
+    birthday: "",
+    gender: "",
+    rfc: "",
+    ssn: "",
+    resume: {
+      id: null,
+      url: "",
+      path: "",
+      file_name: "",
+    },
+    contact: {
+      id: null,
+      email: "",
+      phone: "",
+      cellphone: "",
+    },
+    address: {
+      id: null,
+      country: "",
+      state: "",
+      municipality: "",
+      suburb: "",
+      street: "",
+      outdoor_number: "",
+      interior_number: "",
+      postal_code: "",
+    },
+    vacancy: {
+      id: null,
+      name: "",
+      description: "",
+      salary: "",
+      branch_office: {
+        id: null,
+        name: "",
+        contact: {
+          id: null,
+          email: "",
+          phone: "",
+          cellphone: "",
+        },
+        address: {
+          id: null,
+          country: "",
+          state: "",
+          municipality: "",
+          suburb: "",
+          street: "",
+          outdoor_number: "",
+          interior_number: "",
+          postal_code: null,
+        },
+      },
+      department: {
+        id: null,
+        name: "",
+      },
+      job: {
+        id: null,
+        name: "",
+        description: "",
+      },
+    },
+    psychometric_test: "",
+    salary: "",
+    employee_status: "",
+    profile_status: "",
+  };
 
   getEmployeeData(): void {
     this.isLoadingEmployeeData = true;
