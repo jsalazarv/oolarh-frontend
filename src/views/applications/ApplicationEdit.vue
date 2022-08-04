@@ -271,7 +271,7 @@ export default class ApplicationEdit extends Vue {
   update(): void {
     const data: IUpdateApplicant = {
       names: this.applicant.names,
-      vacancy_id: this.updatedVacancy,
+      vacancy_id: this.applicant.vacancy.id,
       first_surname: this.applicant.first_surname,
       second_surname: this.applicant.second_surname,
       email: this.applicant.email,
