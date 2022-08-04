@@ -57,8 +57,7 @@
             color="primary"
             x-small
             fab
-            disabled
-            @click="editDialog(item)"
+            :to="{ name: 'employees:show', params: { id: item.id } }"
           >
             <v-icon dark>mdi-account-eye</v-icon>
           </v-btn>
