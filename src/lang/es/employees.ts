@@ -57,6 +57,9 @@ export default {
     status: "Estatus",
     active: "Activo",
     inactive: "Inactivo",
+    complete: "Completo",
+    incomplete: "Incompleto",
+    profile: "Perfil",
     steps: {
       generalData: "Datos generales",
       contactInformation: "Datos de contacto",

@@ -42,6 +42,26 @@
           </a>
         </template>
 
+        <template v-slot:[`item.profile_status`]="{ item }">
+          <v-tooltip right v-if="item.profile_status === 'complete'">
+            <template v-slot:activator="{ on, attrs }">
+              <v-avatar size="25" color="success" v-bind="attrs" v-on="on">
+                <v-icon dark> mdi-check-circle-outline </v-icon>
+              </v-avatar>
+            </template>
+            <span>{{ $t("employees.labels.complete") }}</span>
+          </v-tooltip>
+
+          <v-tooltip right v-else>
+            <template v-slot:activator="{ on, attrs }">
+              <v-avatar size="25" color="orange" v-bind="attrs" v-on="on">
+                <v-icon dark> mdi-alert-circle-outline </v-icon>
+              </v-avatar>
+            </template>
+            <span>{{ $t("employees.labels.incomplete") }}</span>
+          </v-tooltip>
+        </template>
+
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             class="mx-1"
@@ -155,6 +175,11 @@ export default class EmployeeList extends Vue {
       {
         text: this.$t("employees.attributes.psychometric_test") as string,
         value: "psychometric_test",
+        sortable: false,
+      },
+      {
+        text: this.$t("employees.labels.profile") as string,
+        value: "profile_status",
         sortable: false,
       },
       { text: "", value: "actions", align: "end", sortable: false },
