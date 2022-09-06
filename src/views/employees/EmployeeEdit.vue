@@ -234,7 +234,7 @@ export default class EmployeeEdit extends Vue {
   }
 
   cancel(): void {
-    const { contact, address, vacancy, ...rest } = this.employee;
+    const { vacancy, ...rest } = this.employee;
 
     vacancy && this.updateVacancy(vacancy as IVacancy);
     rest && this.updateGeneralData(rest);

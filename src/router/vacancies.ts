@@ -1,8 +1,10 @@
+import { VueModule } from "@/router/types";
+
 export default [
   {
     path: "/vacancies",
     name: "vacancies:list",
-    component: () => import("@/views/vacancies/VacancyList.vue"),
+    component: (): VueModule => import("@/views/vacancies/VacancyList.vue"),
     meta: { public: false },
   },
 ];

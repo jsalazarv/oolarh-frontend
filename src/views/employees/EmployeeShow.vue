@@ -195,16 +195,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import EmployeeService from "@/services/EmployeeService";
-import {
-  IAddress,
-  IContact,
-  IEmployeeResponse,
-  IResume,
-} from "@/services/EmployeeService/types";
-import { IVacancy } from "@/services/VacancyService/types";
-import { IBranchOffices } from "@/services/BranchOfficesService/types";
-import { IDepartment } from "@/services/DepartmentService/types";
-import { IJob } from "@/services/JobService/types";
+import { IEmployeeResponse } from "@/services/EmployeeService/types";
 
 @Component({})
 export default class EmployeeShow extends Vue {

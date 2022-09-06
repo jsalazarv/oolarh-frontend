@@ -8,7 +8,11 @@ const AuthorizationRequestInterceptor: IRequestInterceptor = async (
 ) => {
   const type = store.state.auth.access.token_type;
   const token = store.state.auth.access.access_token;
-  config.headers.Authorization = `${type} ${token}`;
+
+  config.headers = {
+    ...config.headers,
+    Authorization: `${type} ${token}`,
+  };
 
   return config;
 };

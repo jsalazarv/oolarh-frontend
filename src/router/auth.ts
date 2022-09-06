@@ -1,8 +1,11 @@
+import { VueModule } from "@/router/types";
+
 export default [
   {
     path: "/",
     name: "login",
-    component: () => import("@/views/loginOrRegister/LoginOrRegister.vue"),
+    component: (): VueModule =>
+      import("@/views/loginOrRegister/LoginOrRegister.vue"),
     meta: { public: true },
   },
 ];
