@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {AxiosDefaults, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
 import {
   IRequestInterceptor,
   IResponseInterceptor,
@@ -17,7 +17,7 @@ class HttpClient {
   /**
    * Return axios config for current instance
    */
-  get config(): AxiosRequestConfig {
+  get config(): AxiosDefaults {
     return this.http.defaults;
   }
 
