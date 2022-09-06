@@ -346,6 +346,7 @@ export default class BranchOfficesCreate extends Vue {
     this.locationService
       .getCountries()
       .then((response) => {
+        console.log(response.data);
         this.countries = response.data;
       })
       .catch()
