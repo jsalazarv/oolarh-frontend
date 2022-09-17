@@ -9,7 +9,7 @@ import { IJob, IJobQueryParams } from "@/services/JobService/types";
 export default class JobService extends BaseService {
   getAll(query: IJobQueryParams = {}): IPaginatedResponse<Array<IJob>> {
     const config = {
-      headers: { Accept: "application/xml" },
+      headers: { Accept: "application/json" },
     };
 
     return this.client.get("/jobs", query, config);
