@@ -13,7 +13,11 @@ export default class WorkplaceService extends BaseService {
   getAll(
     query: IDepartmentQueryParams = {}
   ): IPaginatedResponse<Array<IDepartment>> {
-    return this.client.get("/departments", query);
+    const config = {
+      headers: { Accept: "application/xml" },
+    };
+
+    return this.client.get("/departments", query, config);
   }
 
   create(department: IDepartment): IPlainResponse<IDepartment> {

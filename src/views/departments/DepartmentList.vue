@@ -90,6 +90,7 @@ import EditDialog from "@/views/departments/components/EditDialog.vue";
 import DeleteDialog from "@/views/departments/components/DeleteDialog.vue";
 import { IHeaders, IMeta } from "@/services/types";
 import NoTableData from "@/components/NoTableData/NoTableData.vue";
+import Parser from "fast-xml-parser";
 
 @Component({
   components: { NoTableData, DeleteDialog, EditDialog, CreateDialog },
@@ -117,6 +118,8 @@ export default class DepartmentList extends Vue {
     to: 1,
     total: 0,
   };
+
+  public parser = new Parser.XMLParser();
 
   get headers(): Array<IHeaders> {
     return [
@@ -151,8 +154,20 @@ export default class DepartmentList extends Vue {
     this.departmentService
       .getAll(filters)
       .then((response) => {
-        this.departmentList = response.data;
-        this.pagination = response.meta;
+        const responseType = typeof response;
+
+        if (responseType === "object") {
+          this.departmentList = response.data;
+          this.pagination = response.meta;
+        }
+
+        const {
+          root: {
+            data: { item: parsingResponse },
+          },
+        } = this.parser.parse(response);
+
+        this.departmentList = parsingResponse;
       })
       .finally(() => {
         this.isLoadingDepartmentList = false;
