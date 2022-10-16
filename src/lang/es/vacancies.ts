@@ -1,0 +1,71 @@
+export default {
+  list: {
+    title: "Lista de vacantes",
+  },
+  show: {
+    title: "Consulta vacante",
+  },
+  edit: {
+    title: "Editar vacante",
+  },
+  create: {
+    title: "Registrar vacante",
+  },
+  delete: {
+    title: "",
+  },
+  attributes: {
+    id: "Id",
+    name: "Nombre",
+    description: "Descripción",
+    salary: "Salario",
+    branch_office: "Sucursal",
+    department: "Departamento",
+    job: "Puesto",
+  },
+  labels: {
+    create: "Registrar",
+    edit: "Editar",
+    search: "Buscar",
+    dialogs: {
+      create: {
+        title: "Registrar vacante",
+        actions: {
+          dismiss: "Cancelar",
+          create: "Registrar",
+        },
+      },
+      edit: {
+        title: "Editar vacante",
+        actions: {
+          dismiss: "Cancelar",
+          edit: "Editar",
+        },
+      },
+      show: {
+        title: "Información de la vacante",
+        actions: {
+          dismiss: "Cancelar",
+          edit: "Editar",
+        },
+      },
+      delete: {
+        title: "Eliminar vacante",
+        labels: {
+          areYouSureYouWantToDelete: "Estas seguro de eliminar a",
+          fromTheListOfVacancies: "de la lista de vacantes",
+        },
+        actions: {
+          dismiss: "Cancelar",
+          delete: "Eliminar",
+        },
+      },
+      selectVacancy: {
+        actions: {
+          cancel: "Cancelar",
+          confirm: "Confirmar",
+        },
+      },
+    },
+  },
+};
