@@ -4,7 +4,7 @@
       flat
       tile
       class="mx-auto"
-      width="450"
+      width="320"
       color="transparent"
       :loading="isAuthenticating"
     >
