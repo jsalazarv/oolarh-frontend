@@ -5,82 +5,16 @@
     class="fill-height pa-0 back"
     :class="{ 'sign-in-active': signIn }"
   >
-    <div class="overlay-container">
-      <div class="overlay">
-        <div class="overlay-left">
-          <v-card
-            dark
-            flat
-            tile
-            class="mx-auto"
-            width="100%"
-            color="transparent"
-          >
-            <v-card-title class="justify-center">POSTULARSE</v-card-title>
-            <v-card-text class="text&#45;&#45;white">
-              <div>Lorem ipsum dolor sit amet.</div>
-              <div>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              </div>
-            </v-card-text>
-            <v-card-actions class="justify-center">
-              <v-btn
-                large
-                outlined
-                rounded
-                color="white"
-                class="invert"
-                id="signIn"
-                @click="signIn = !signIn"
-              >
-                Postularse
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </div>
-        <div class="overlay-right align-center">
-          <v-card
-            dark
-            flat
-            tile
-            class="mx-auto"
-            width="100%"
-            color="transparent"
-          >
-            <v-card-title class="justify-center">INICIAR SESIÓN</v-card-title>
-            <v-card-text class="text&#45;&#45;white">
-              <div>Lorem ipsum dolor sit amet.</div>
-              <div>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              </div>
-            </v-card-text>
-            <v-card-actions class="justify-center">
-              <v-btn
-                large
-                outlined
-                rounded
-                color="white"
-                class="invert"
-                id="signUp"
-                @click="signIn = !signIn"
-              >
-                Iniciar sesión
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </div>
-      </div>
-    </div>
     <v-row>
-      <v-col cols="6">
-        <div class="d-flex align-center justify-center">
-          <sign-up-form />
+      <v-col cols="12" md="6" class="login-col">
+        <div class="overlay">
+          <div class="d-flex align-center justify-center"></div>
         </div>
       </v-col>
-      <v-col cols="6">
-        <div class="d-flex align-center justify-center">
+      <v-col cols="12" md="6" class="login-col">
+        <v-card height="100%" class="d-flex align-center justify-center py-10">
           <sign-in-form />
-        </div>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -95,7 +29,7 @@ import SignUpForm from "@/views/loginOrRegister/partials/signUp/SignUpForm.vue";
   components: { SignUpForm, SignInForm },
 })
 export default class LoginOrRegister extends Vue {
-  public signIn = false;
+  public signIn = true;
 }
 </script>
 
