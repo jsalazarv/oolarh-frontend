@@ -1,5 +1,7 @@
 # oolarh-frontend
 
+Sistema para la gestión de empleados, postulanetes, vacantes, sucursales y departamentos de una emepresa.
+
 ## Requirements
 
 Install nvm
