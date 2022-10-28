@@ -3,7 +3,7 @@ export default {
     title: "Applicant list",
   },
   show: {
-    title: "Applicant information",
+    title: "Applicant info",
   },
   edit: {
     title: "Edit applicant",
@@ -17,8 +17,8 @@ export default {
   attributes: {
     id: "Id",
     name: "Name",
-    first_surname: "First surname",
-    second_surname: "Second surname",
+    first_surname: "Last name",
+    second_surname: "Mother's last name",
     email: "Email",
     cellphone: "Cellphone",
     psychometric_test: "Psychometric test",
@@ -38,16 +38,16 @@ export default {
     selectVacancy: "Select vacancy",
     dialogs: {
       show: {
-        title: "Applicant information",
+        title: "Applicant Information",
         labels: {},
         actions: {
           close: "Close",
         },
       },
       delete: {
-        title: "Delete applicant",
+        title: "Delete Applicant",
         labels: {
-          areYouSureYouWantToDelete: "Are you sure you want to delete",
+          areYouSureYouWantToDelete: "Are you sure to delete",
           fromTheListOfApplicants: "from the list of applicants",
         },
         actions: {

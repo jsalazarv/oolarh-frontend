@@ -3,7 +3,7 @@ export default {
     title: "Department list",
   },
   show: {
-    title: "Consult department",
+    title: "Department info",
   },
   edit: {
     title: "Edit department",
