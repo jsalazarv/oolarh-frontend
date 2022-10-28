@@ -1,4 +1,6 @@
-# oolarh-frontend
+# OOLAA-RH
+
+Sistema para la gestión de empleados, postulanetes, vacantes, sucursales y departamentos de una emepresa.
 
 ## Requirements
 

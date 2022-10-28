@@ -3,10 +3,10 @@ export default {
     title: "Job list",
   },
   show: {
-    title: "Job Information",
+    title: "Job info",
   },
   edit: {
-    title: "Edit job information",
+    title: "Edit job",
   },
   create: {
     title: "Register job",
