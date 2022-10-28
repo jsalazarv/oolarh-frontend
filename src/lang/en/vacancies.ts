@@ -3,7 +3,7 @@ export default {
     title: "Vacancy list",
   },
   show: {
-    title: "Vacancy information",
+    title: "Vacant info",
   },
   edit: {
     title: "Edit vacancy",
@@ -43,7 +43,7 @@ export default {
         },
       },
       show: {
-        title: "Vacancy information",
+        title: "Vacancy info",
         actions: {
           dismiss: "Cancel",
           edit: "Edit",
